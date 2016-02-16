@@ -16,7 +16,7 @@ public class Connect {
 	//method to create a new user that has full privileges.  IE the inventory manager 
 	protected void createMasterUser(String username, String password) throws ClassNotFoundException{
 		try{
-			Connection conn = makeNewConnection("stagbar", "Nkucsc440");//have to connect to the database with an admin account 
+			Connection conn = makeNewConnection("*****", "*******");//have to connect to the database with an admin account 
 																		//to create a new user
 			Statement sta = conn.createStatement();
 			sta.execute("create user " + "\'" + username + "\'@\'%\'" + " IDENTIFIED BY \'" + password + "\';" );
@@ -32,7 +32,7 @@ public class Connect {
 	protected void deleteUser(String username) throws ClassNotFoundException{
 		try{
 			
-			Connection conn = makeNewConnection("stagbar", "Nkucsc440");//have to connect as admin.  
+			Connection conn = makeNewConnection("*****", "********");//have to connect as admin.  
 			Statement sta = conn.createStatement();
 			sta.execute("DELETE FROM mysql.user WHERE User = \'" + username + "\';");
 			conn.close();
