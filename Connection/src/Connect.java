@@ -18,7 +18,7 @@ public class Connect {
 	//method to create a new user that has full privileges.  IE the inventory manager 
 	protected static boolean createMasterUser(String username, String password) throws ClassNotFoundException{
 		try{
-			Connection conn = makeNewConnection("*****", "*******");//have to connect to the database with an admin account 
+			Connection conn = makeNewConnection("stagbar", "Nkucsc440");//have to connect to the database with an admin account 
 																		//to create a new user
 			//Statement sta = conn.createStatement();
 			String statement = "SELECT * FROM mysql.user WHERE user = ?;";
@@ -63,11 +63,6 @@ public class Connect {
 		boolean succesful = false;
 		try{
 			
-<<<<<<< Updated upstream
-			Connection conn = makeNewConnection("*****", "********");//have to connect as admin.  
-			Statement sta = conn.createStatement();
-			sta.execute("DELETE FROM mysql.user WHERE User = \'" + username + "\';");
-=======
 			Connection conn = makeNewConnection("stagbar", "Nkucsc440");//have to connect as admin.  
 			String statement = "DROP USER ?;";
 			PreparedStatement pSta = conn.prepareStatement(statement);
@@ -75,7 +70,6 @@ public class Connect {
 			succesful = pSta.execute();
 			//Statement sta = conn.createStatement();
 			//sta.execute("DROP USER \'" + username + "\';");
->>>>>>> Stashed changes
 			conn.close();
 		}
 		catch(SQLException e){
@@ -114,10 +108,11 @@ public class Connect {
 		}
 		return successful;
 	}
+	/*
 	public static void main(String args[]) throws ClassNotFoundException, SQLException{
 		
 		//createMasterUser("crewlounge", "1234");
-		Connection c = makeNewConnection("stagbar", "Nkucsc440");
+		
 		Statement s = c.createStatement();
 		ResultSet r = s.executeQuery("SELECT user FROM mysql.user;");
 		//deleteUser("crewlounge");
@@ -126,5 +121,6 @@ public class Connect {
 		}
 		//deleteUser("crewlounge");
 		c.close();
-	}
+	}*/
 }
+
