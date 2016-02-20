@@ -18,7 +18,7 @@ public class Connect {
 	//method to create a new user that has full privileges.  IE the inventory manager 
 	protected static boolean createMasterUser(String username, String password) throws ClassNotFoundException{
 		try{
-			Connection conn = makeNewConnection("stagbar", "Nkucsc440");//have to connect to the database with an admin account 
+			Connection conn = makeNewConnection("*****", "****");//have to connect to the database with an admin account 
 																		//to create a new user
 			//Statement sta = conn.createStatement();
 			String statement = "SELECT * FROM mysql.user WHERE user = ?;";
@@ -63,7 +63,7 @@ public class Connect {
 		boolean succesful = false;
 		try{
 			
-			Connection conn = makeNewConnection("stagbar", "Nkucsc440");//have to connect as admin.  
+			Connection conn = makeNewConnection("****", "****");//have to connect as admin.  
 			String statement = "DROP USER ?;";
 			PreparedStatement pSta = conn.prepareStatement(statement);
 			pSta.setString(1, username);
