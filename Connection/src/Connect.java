@@ -1,7 +1,7 @@
 import java.sql.*;
 public class Connect {
-	//method to make a connection to the database
-	protected Connection makeNewConnection(String username, String password) throws ClassNotFoundException{
+	//method to make a connection to the database, will return null if unsuccessful.
+	protected static Connection makeNewConnection(String username, String password) throws ClassNotFoundException{
 		Class.forName("com.mysql.jdbc.Driver");
 		Connection conn = null;
 		try{
@@ -9,63 +9,122 @@ public class Connect {
 			conn = DriverManager.getConnection(url, username, password);
 		}
 		catch(Exception e){
+			conn = null;
 			System.out.println(e);
+			return conn;
 		}
 		return conn;
 	}
 	//method to create a new user that has full privileges.  IE the inventory manager 
-	protected void createMasterUser(String username, String password) throws ClassNotFoundException{
+	protected static boolean createMasterUser(String username, String password) throws ClassNotFoundException{
 		try{
 			Connection conn = makeNewConnection("*****", "*******");//have to connect to the database with an admin account 
 																		//to create a new user
-			Statement sta = conn.createStatement();
-			sta.execute("create user " + "\'" + username + "\'@\'%\'" + " IDENTIFIED BY \'" + password + "\';" );
-			sta.execute("grant all privileges on  on *.* to \'" + username
-					+ "\'@\'%\' identifeid by \'" + password + "\';");
+			//Statement sta = conn.createStatement();
+			String statement = "SELECT * FROM mysql.user WHERE user = ?;";
+			PreparedStatement pSta = conn.prepareStatement(statement);
+			pSta.setString(1, username);
+			ResultSet checkResults = pSta.executeQuery();
+			boolean exists;
+			if(checkResults.next()){
+				exists = true;
+			}
+			else {
+				exists = false;
+			}
+			System.out.println(exists);
+			if(exists == false){
+				String createUserStatement = "CREATE USER ? @'%' IDENTIFIED BY ?;";
+				pSta = conn.prepareStatement(createUserStatement);
+				pSta.setString(1, username);
+				pSta.setString(2, password);
+				pSta.execute();
+				
+				String grantPrivStatement = "GRANT ALL PRIVILEGES ON *.* TO ? @'%' IDENTIFIED BY ?;";
+				pSta = conn.prepareStatement(grantPrivStatement);
+				pSta.setString(1, username);
+				pSta.setString(2, password);
+				pSta.execute();
+				//sta.execute("create user " + "\'" + username + "\'@\'%\'" + " IDENTIFIED BY \'" + password + "\';" );
+				//sta.execute("grant all privileges on *.* to \'" + username
+					//+ "\'@\'%\' identified by \'" + password + "\';");
+				conn.close();
+				return true;
+			}
 			conn.close();
 		}
 		catch(SQLException e){
-			
+			System.out.println(e);
 		}
+		return false;
 	}
 	//method to delete a user from the database
-	protected void deleteUser(String username) throws ClassNotFoundException{
+	protected static boolean deleteUser(String username) throws ClassNotFoundException{
+		boolean succesful = false;
 		try{
 			
+<<<<<<< Updated upstream
 			Connection conn = makeNewConnection("*****", "********");//have to connect as admin.  
 			Statement sta = conn.createStatement();
 			sta.execute("DELETE FROM mysql.user WHERE User = \'" + username + "\';");
+=======
+			Connection conn = makeNewConnection("stagbar", "Nkucsc440");//have to connect as admin.  
+			String statement = "DROP USER ?;";
+			PreparedStatement pSta = conn.prepareStatement(statement);
+			pSta.setString(1, username);
+			succesful = pSta.execute();
+			//Statement sta = conn.createStatement();
+			//sta.execute("DROP USER \'" + username + "\';");
+>>>>>>> Stashed changes
 			conn.close();
 		}
 		catch(SQLException e){
-			
+			System.out.println(e);
 		}
+		return succesful;
 	}
 	//method to create a table to store the different kinds of alcohol
-	protected void addNewGroup(Connection conn, String groupName, int code){
+	protected static boolean addNewGroup(Connection conn, String groupName, int code){
+		boolean successful = false;
 		/* code will indicate the type
 		 * 1 = bottled beer
 		 * 2 = draft beer
 		 * 3 = liqour
-		 * 
-		 * 
 		 */
 		try{
+			//Statement sta = conn.createStatement();
+			String statement = "";
+			PreparedStatement pSta;
 			
-			Statement sta = conn.createStatement();
 			switch (code){
-				case 1: sta.execute("CREATE TABLE " + groupName + " (name varchar(50) not null, previous integer, current integer, primary key (name) );  ");
+				case 1: statement = "CREATE TABLE ? (name varchar(50) not null, previous integer, current integer, primary key(name))";
 						break;
-				case 2: sta.execute("CREATE TABLE " + groupName + " (name varchar(50) not null, previous double, current double, primary key (name) );  ");
+				case 2: statement = "CREATE TABLE ? (name varchar(50) not null, previous double, current double, primary key(name))"; 
 						break;
-				case 3: sta.execute("CREATE TABLE " + groupName + " (name varchar(50) not null, previous double, current double, fullBottles integer, primary key (name) );  ");
+				case 3: statement = "CREATE TABLE ? (name varchar(50) not null, previous double, current double, fullBottles integer, primary key (name))"; 
 						break;
 			}
+			pSta = conn.prepareStatement(statement);
+			pSta.setString(1, groupName);
+			successful = pSta.execute();
 			conn.close();
 		}
 		catch(Exception e){
-			
+			System.out.println(e);
 		}
+		return successful;
 	}
-	
+	public static void main(String args[]) throws ClassNotFoundException, SQLException{
+		
+		//createMasterUser("crewlounge", "1234");
+		Connection c = makeNewConnection("stagbar", "Nkucsc440");
+		Statement s = c.createStatement();
+		ResultSet r = s.executeQuery("SELECT user FROM mysql.user;");
+		//deleteUser("crewlounge");
+		while(r.next()){
+			System.out.println(r.getString(1));
+		}
+		//deleteUser("crewlounge");
+		c.close();
+	}
 }
