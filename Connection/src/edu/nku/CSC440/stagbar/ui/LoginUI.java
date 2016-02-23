@@ -5,6 +5,7 @@ import edu.nku.CSC440.stagbar.service.LoginService;
 import javax.swing.*;
 import java.awt.event.*;
 
+// s
 public class LoginUI extends JDialog {
 	private JPanel contentPane;
 	private JButton buttonOK;
