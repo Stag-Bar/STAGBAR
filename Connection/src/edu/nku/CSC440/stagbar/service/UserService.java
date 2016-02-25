@@ -74,9 +74,6 @@ public class UserService {
 	}
 
 	public boolean login(String username, char[] password) {
-		System.out.println("Username: " + username);
-		System.out.println("Password: " + new String(password));
-
 		if(null == username) { return false; }
 
 		String passwordFromUser = new String(password);

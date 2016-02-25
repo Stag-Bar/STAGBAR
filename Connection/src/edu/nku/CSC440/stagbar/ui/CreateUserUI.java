@@ -104,12 +104,4 @@ public class CreateUserUI {
 		}
 	}
 
-	//TODO Delete test method.
-	public static void main(String[] args) {
-		JFrame frame = new JFrame("CreateUserUI");
-		frame.setContentPane(new CreateUserUI().contentPane);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
-	}
 }
