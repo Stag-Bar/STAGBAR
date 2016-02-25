@@ -72,6 +72,7 @@ public class LoginUI extends JDialog {
 		dispose();
 	}
 
+	//TODO Delete test method.
 	public static void main(String[] args) {
 		LoginUI dialog = new LoginUI();
 		dialog.setVisible(true);

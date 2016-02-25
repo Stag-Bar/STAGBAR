@@ -10,12 +10,14 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class CreateUserUI extends JPanel{
+public class CreateUserUI {
 	public static final String ERROR_REQUIRED_FIELDS = "All fields must be filled.";
 	public static final String ERROR_PASSWORD_MATCH = "Password does not match the confirm password.";
 	public static final String ERROR_USER_EXISTS = "A user of that name already exists.";
-	public static final String MESSAGE_NEW_USER = "New user: %s has been created.";
+	public static final String MESSAGE_NEW_USER = "New user %s has been created.";
 	public static final String ERROR_CANNOT_SAVE = "Unable to save new user. Try again later.";
+	public static final String TITLE_NEW_USER = "User Created";
+	public static final String TITLE_CANNOT_SAVE = "User Creation Failed";
 	private JTextField usernameTextField;
 	private JPasswordField passwordPasswordField;
 	private JPasswordField confirmPasswordPasswordField;
@@ -74,12 +76,12 @@ public class CreateUserUI extends JPanel{
 		// Save user to DB
 		else if(userService.saveNewUser(usernameTextField.getText(), passwordPasswordField.getPassword(), (PermissionLevel)permissionLevelComboBox.getSelectedItem())) {
 			// Display confirmation to user
-			JOptionPane.showMessageDialog(this, String.format(MESSAGE_NEW_USER, usernameTextField.getText()));
+			JOptionPane.showMessageDialog(contentPane, String.format(MESSAGE_NEW_USER, usernameTextField.getText()), TITLE_NEW_USER, JOptionPane.INFORMATION_MESSAGE);
 			okButton.setEnabled(false);
 			//TODO: Navigate user away from page.
 		}
 		else
-			JOptionPane.showMessageDialog(this, ERROR_CANNOT_SAVE);
+			JOptionPane.showMessageDialog(contentPane, ERROR_CANNOT_SAVE, TITLE_CANNOT_SAVE, JOptionPane.ERROR_MESSAGE);
 	}
 
 	/** Turns blank fields RED and reverts filled fields to BLACK. */
@@ -87,7 +89,7 @@ public class CreateUserUI extends JPanel{
 		usernameLabel.setForeground(usernameTextField.getText().isEmpty() ?
 																Color.RED : Color.BLACK);
 
-		passwordLabel.setForeground( 0 == passwordPasswordField.getPassword().length ?
+		passwordLabel.setForeground(0 == passwordPasswordField.getPassword().length ?
 																 Color.RED : Color.BLACK);
 
 		confirmPasswordLabel.setForeground(0 == confirmPasswordPasswordField.getPassword().length ?
@@ -102,6 +104,7 @@ public class CreateUserUI extends JPanel{
 		return contentPane;
 	}
 
+	//TODO Delete test method.
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("CreateUserUI");
 		frame.setContentPane(new CreateUserUI().contentPane);
