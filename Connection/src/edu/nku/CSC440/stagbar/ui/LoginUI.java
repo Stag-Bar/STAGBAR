@@ -7,14 +7,14 @@ import java.awt.event.*;
 
 public class LoginUI extends JDialog {
 	public static final String TITLE = "Login";
-	private JPanel contentPane;
-	private JButton buttonOK;
-	private JButton buttonCancel;
-	private JPasswordField password;
-	private JTextField username;
-	private JLabel errorMessage;
 	private static final String INVALID_LOGIN = "Invalid Username/Password.";
+	private JButton buttonCancel;
+	private JButton buttonOK;
+	private JPanel contentPane;
+	private JLabel errorMessage;
+	private JPasswordField password;
 	private UserService userService;
+	private JTextField username;
 
 	// TODO Call super (<T> owner, String title, boolean modal)
 	// owner type TBD, title: "Login", modal: true
@@ -58,18 +58,18 @@ public class LoginUI extends JDialog {
 		setResizable(false);
 	}
 
+	private void onCancel() {
+		dispose();
+	}
+
 	private void onOK() {
-		if(userService.login(username.getText(), password.getPassword())){
+		if(userService.login(username.getText(), password.getPassword())) {
 			System.out.println("Login Successful");
 			dispose();
 		}
 
 		errorMessage.setText(INVALID_LOGIN);
 		pack();
-	}
-
-	private void onCancel() {
-		dispose();
 	}
 
 	//TODO Delete test method.

@@ -11,25 +11,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CreateUserUI {
-	public static final String ERROR_REQUIRED_FIELDS = "All fields must be filled.";
+	public static final String ERROR_CANNOT_SAVE = "Unable to save new user. Try again later.";
 	public static final String ERROR_PASSWORD_MATCH = "Password does not match the confirm password.";
+	public static final String ERROR_REQUIRED_FIELDS = "All fields must be filled.";
 	public static final String ERROR_USER_EXISTS = "A user of that name already exists.";
 	public static final String MESSAGE_NEW_USER = "New user %s has been created.";
-	public static final String ERROR_CANNOT_SAVE = "Unable to save new user. Try again later.";
-	public static final String TITLE_NEW_USER = "User Created";
 	public static final String TITLE_CANNOT_SAVE = "User Creation Failed";
-	private JTextField usernameTextField;
-	private JPasswordField passwordPasswordField;
-	private JPasswordField confirmPasswordPasswordField;
-	private JComboBox permissionLevelComboBox;
-	private JButton okButton;
-	private JLabel errorMessage;
-	private JPanel contentPane;
-	private JLabel usernameLabel;
-	private JLabel passwordLabel;
+	public static final String TITLE_NEW_USER = "User Created";
 	private JLabel confirmPasswordLabel;
+	private JPasswordField confirmPasswordPasswordField;
+	private JPanel contentPane;
+	private JLabel errorMessage;
+	private JButton okButton;
+	private JLabel passwordLabel;
+	private JPasswordField passwordPasswordField;
+	private JComboBox permissionLevelComboBox;
 	private JLabel permissionLevelLabel;
 	private UserService userService;
+	private JLabel usernameLabel;
+	private JTextField usernameTextField;
 
 
 	public CreateUserUI() {
@@ -50,6 +50,25 @@ public class CreateUserUI {
 		permissionLevelComboBox = new JComboBox(tempPermissionsList.toArray());
 	}
 
+	public JPanel getContentPane() {
+		return contentPane;
+	}
+
+	/** Turns blank fields RED and reverts filled fields to BLACK. */
+	private void highlightEmptyFields() {
+		usernameLabel.setForeground(usernameTextField.getText().isEmpty() ?
+																Color.RED : Color.BLACK);
+
+		passwordLabel.setForeground(0 == passwordPasswordField.getPassword().length ?
+																Color.RED : Color.BLACK);
+
+		confirmPasswordLabel.setForeground(0 == confirmPasswordPasswordField.getPassword().length ?
+																			 Color.RED : Color.BLACK);
+
+		permissionLevelLabel.setForeground(null == permissionLevelComboBox.getSelectedItem() ?
+																			 Color.RED : Color.BLACK);
+	}
+
 	private void onOK() {
 		highlightEmptyFields();
 
@@ -67,7 +86,7 @@ public class CreateUserUI {
 			confirmPasswordPasswordField.requestFocusInWindow();
 		}
 		// Check that username is unique in DB
-		else if(userService.doesUserExist(usernameTextField.getText())){
+		else if(userService.doesUserExist(usernameTextField.getText())) {
 			errorMessage.setText(ERROR_USER_EXISTS);
 			usernameLabel.setForeground(Color.RED);
 			usernameTextField.selectAll();
@@ -80,28 +99,9 @@ public class CreateUserUI {
 			okButton.setEnabled(false);
 			//TODO: Navigate user away from page.
 		}
-		else
+		else {
 			JOptionPane.showMessageDialog(contentPane, ERROR_CANNOT_SAVE, TITLE_CANNOT_SAVE, JOptionPane.ERROR_MESSAGE);
-	}
-
-	/** Turns blank fields RED and reverts filled fields to BLACK. */
-	private void highlightEmptyFields() {
-		usernameLabel.setForeground(usernameTextField.getText().isEmpty() ?
-																Color.RED : Color.BLACK);
-
-		passwordLabel.setForeground(0 == passwordPasswordField.getPassword().length ?
-																 Color.RED : Color.BLACK);
-
-		confirmPasswordLabel.setForeground(0 == confirmPasswordPasswordField.getPassword().length ?
-																			 Color.RED : Color.BLACK);
-
-		permissionLevelLabel.setForeground(null == permissionLevelComboBox.getSelectedItem() ?
-																			 Color.RED : Color.BLACK);
-	}
-
-
-	public JPanel getContentPane() {
-		return contentPane;
+		}
 	}
 
 	//TODO Delete test method.
