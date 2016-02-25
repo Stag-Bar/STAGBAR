@@ -2,6 +2,8 @@ package edu.nku.CSC440.stagbar.service;
 
 import edu.nku.CSC440.stagbar.dataaccess.PermissionLevel;
 
+import java.util.Arrays;
+
 public class UserService {
 
 	/**
@@ -57,6 +59,10 @@ public class UserService {
 	 */
 	public boolean saveNewUser(String username, char[] password, PermissionLevel permissionLevel) {
 		//TODO: Create user in database
+
+		//Zero out the possible password, for security.
+		Arrays.fill(password, '0');
+
 		return true;
 	}
 
@@ -68,6 +74,10 @@ public class UserService {
 	 */
 	public boolean changePassword(String username, char[] password) {
 		//TODO: Update password in database
+
+		//Zero out the possible password, for security.
+		Arrays.fill(password, '0');
+
 		return true;
 	}
 
