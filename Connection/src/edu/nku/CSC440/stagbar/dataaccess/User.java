@@ -1,8 +1,5 @@
 package edu.nku.CSC440.stagbar.dataaccess;
 
-/**
- * @author Anthony.
- */
 public class User {
 	private String username;
 	private String password; // TODO: store this as a hash

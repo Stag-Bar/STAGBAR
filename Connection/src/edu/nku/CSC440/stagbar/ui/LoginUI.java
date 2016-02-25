@@ -1,11 +1,12 @@
 package edu.nku.CSC440.stagbar.ui;
 
-import edu.nku.CSC440.stagbar.service.LoginService;
+import edu.nku.CSC440.stagbar.service.UserService;
 
 import javax.swing.*;
 import java.awt.event.*;
 
 public class LoginUI extends JDialog {
+	public static final String TITLE = "Login";
 	private JPanel contentPane;
 	private JButton buttonOK;
 	private JButton buttonCancel;
@@ -13,14 +14,18 @@ public class LoginUI extends JDialog {
 	private JTextField username;
 	private JLabel errorMessage;
 	private static final String INVALID_LOGIN = "Invalid Username/Password.";
-	private LoginService loginService;
+	private UserService userService;
 
+	// TODO Call super (<T> owner, String title, boolean modal)
+	// owner type TBD, title: "Login", modal: true
+	// public LoginUI(<T> owner) {
+	// super(owner, TITLE, true);
 	public LoginUI() {
-		loginService = new LoginService();
+		userService = new UserService();
 
 		setContentPane(contentPane);
+		setTitle(TITLE);
 		setModal(true);
-		setTitle("Login");
 
 		getRootPane().setDefaultButton(buttonOK);
 
@@ -54,7 +59,7 @@ public class LoginUI extends JDialog {
 	}
 
 	private void onOK() {
-		if(loginService.login(username.getText(), password.getPassword())){
+		if(userService.login(username.getText(), password.getPassword())){
 			System.out.println("Login Successful");
 			dispose();
 		}

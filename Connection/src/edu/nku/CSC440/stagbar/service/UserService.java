@@ -1,6 +1,7 @@
 package edu.nku.CSC440.stagbar.service;
 
-public class LoginService {
+public class UserService {
+
 	public boolean login(String username, char[] password) {
 		System.out.println("Username: " + username);
 		System.out.println("Password: " + new String(password));
