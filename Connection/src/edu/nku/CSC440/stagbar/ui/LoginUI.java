@@ -64,7 +64,7 @@ public class LoginUI extends JDialog {
 
 	private void onOK() {
 		if(userService.login(username.getText(), password.getPassword())) {
-			System.out.println("Login Successful");
+			System.out.format("Login as %s Successful", username.getText());
 			dispose();
 		}
 
