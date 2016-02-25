@@ -80,8 +80,6 @@ public class CreateUserUI extends JPanel{
 		}
 		else
 			JOptionPane.showMessageDialog(this, ERROR_CANNOT_SAVE);
-
-		System.out.println(errorMessage.getSize());
 	}
 
 	/** Turns blank fields RED and reverts filled fields to BLACK. */
