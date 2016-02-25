@@ -125,11 +125,11 @@ public class Connect {
 		}
 		return successful;
 	}
-	/*
+	
 	public static void main(String args[]) throws ClassNotFoundException, SQLException{
 		
 		//createMasterUser("crewlounge", "1234");
-		
+		Connection c = makeNewConnection("stagbar", "Nkucsc440");
 		Statement s = c.createStatement();
 		ResultSet r = s.executeQuery("SELECT user FROM mysql.user;");
 		//deleteUser("crewlounge");
@@ -138,6 +138,6 @@ public class Connect {
 		}
 		//deleteUser("crewlounge");
 		c.close();
-	}*/
+	}
 }
 
