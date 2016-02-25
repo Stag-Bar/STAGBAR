@@ -4,6 +4,7 @@ import edu.nku.CSC440.stagbar.dataaccess.PermissionLevel;
 import edu.nku.CSC440.stagbar.service.UserService;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -21,11 +22,17 @@ public class CreateUserUI extends JPanel{
 	private JButton okButton;
 	private JLabel errorMessage;
 	private JPanel contentPane;
+	private JLabel usernameLabel;
+	private JLabel passwordLabel;
+	private JLabel confirmPasswordLabel;
+	private JLabel permissionLevelLabel;
 	private UserService userService;
 
 
 	public CreateUserUI() {
 		userService = new UserService();
+
+		//TODO: Fill combobox
 
 		okButton.addActionListener(new ActionListener() {
 			@Override
@@ -36,14 +43,14 @@ public class CreateUserUI extends JPanel{
 	}
 
 	private void onOK() {
-		// TODO: Check that all fields are filled
+		highlightEmptyFields();
+
+		// Check that all fields are filled.
+		// TODO: Verify combobox function.
 		if(usernameTextField.getText().isEmpty() || 0 == passwordPasswordField.getPassword().length ||
 				0 == confirmPasswordPasswordField.getPassword().length || null == permissionLevelComboBox.getSelectedItem()) {
 			errorMessage.setText(ERROR_REQUIRED_FIELDS);
 		}
-
-		//TODO: Turn blank fields RED; revert fixed fields to BLACK
-
 		// Check that passwords match
 		else if(!Arrays.equals(passwordPasswordField.getPassword(), confirmPasswordPasswordField.getPassword())) {
 			errorMessage.setText(ERROR_PASSWORD_MATCH);
@@ -63,9 +70,29 @@ public class CreateUserUI extends JPanel{
 			JOptionPane.showMessageDialog(this, ERROR_CANNOT_SAVE);
 	}
 
-	private void higlightEmptyFields() {
+	/** Turns blank fields RED and reverts filled fields to BLACK. */
+	private void highlightEmptyFields() {
+		if(usernameTextField.getText().isEmpty())
+			usernameLabel.setForeground(Color.RED);
+		else
+			usernameLabel.setForeground(Color.BLACK);
 
+		if(0 == passwordPasswordField.getPassword().length)
+			passwordLabel.setForeground(Color.RED);
+		else
+			passwordLabel.setForeground(Color.BLACK);
+
+		if(0 == confirmPasswordPasswordField.getPassword().length)
+			confirmPasswordLabel.setForeground(Color.RED);
+		else
+			confirmPasswordLabel.setForeground(Color.BLACK);
+
+		if(null == permissionLevelComboBox.getSelectedItem())
+			permissionLevelLabel.setForeground(Color.RED);
+		else
+			permissionLevelLabel.setForeground(Color.BLACK);
 	}
+
 
 	public JPanel getContentPane() {
 		return contentPane;

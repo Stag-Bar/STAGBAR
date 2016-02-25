@@ -37,7 +37,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="4e4bf" class="javax.swing.JLabel">
+          <component id="4e4bf" class="javax.swing.JLabel" binding="usernameLabel">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -54,7 +54,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="9ae5f" class="javax.swing.JLabel">
+          <component id="9ae5f" class="javax.swing.JLabel" binding="passwordLabel">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -71,7 +71,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="48b8d" class="javax.swing.JLabel">
+          <component id="48b8d" class="javax.swing.JLabel" binding="confirmPasswordLabel">
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -88,7 +88,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="90167" class="javax.swing.JLabel">
+          <component id="90167" class="javax.swing.JLabel" binding="permissionLevelLabel">
             <constraints>
               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
