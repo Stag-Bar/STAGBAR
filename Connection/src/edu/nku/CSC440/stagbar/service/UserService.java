@@ -4,6 +4,11 @@ import edu.nku.CSC440.stagbar.dataaccess.PermissionLevel;
 
 import java.util.Arrays;
 
+/**
+ * Intermediary between UI and DataAccess layers.
+ * Contains business logic for handling users.
+ * This class manipulates methods from classes on the DataAccess layer to perform its functions and does not handle SQL directly.
+ */
 public class UserService {
 
 	/**
