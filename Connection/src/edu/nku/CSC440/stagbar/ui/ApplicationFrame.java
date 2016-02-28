@@ -25,6 +25,9 @@ public class ApplicationFrame {
 
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		LoginUI loginUI = new LoginUI(frame);
+		loginUI.setVisible(true);
 	}
 
 	public JFrame getFrame() {

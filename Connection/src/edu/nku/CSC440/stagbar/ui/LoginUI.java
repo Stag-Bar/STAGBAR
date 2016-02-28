@@ -16,11 +16,8 @@ public class LoginUI extends JDialog {
 	private UserService userService;
 	private JTextField username;
 
-	// TODO Call super (<T> owner, String title, boolean modal)
-	// owner type TBD, title: "Login", modal: true
-	// public LoginUI(<T> owner) {
-	// super(owner, TITLE, true);
-	public LoginUI() {
+	public LoginUI(JFrame owner) {
+		super(owner, TITLE, true);
 		userService = new UserService();
 
 		setContentPane(contentPane);
