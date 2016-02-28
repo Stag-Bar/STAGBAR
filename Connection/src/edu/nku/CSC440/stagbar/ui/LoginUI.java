@@ -55,8 +55,13 @@ public class LoginUI extends JDialog {
 		setResizable(false);
 	}
 
+	/**
+	 * As of now, the only login screen happens when the application is booted.
+	 * If the user cannot succeccfully login, the application closes.
+	 * Consider changing if we allow switching user while application is running.
+	 */
 	private void onCancel() {
-		dispose();
+		System.exit(0);
 	}
 
 	private void onOK() {
