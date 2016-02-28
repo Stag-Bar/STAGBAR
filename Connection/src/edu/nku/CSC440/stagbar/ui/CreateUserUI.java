@@ -30,9 +30,10 @@ public class CreateUserUI {
 	private JLabel usernameLabel;
 	private JTextField usernameTextField;
 
-
 	public CreateUserUI() {
 		userService = new UserService();
+
+		contentPane.setName("Create User");
 
 		okButton.addActionListener(new ActionListener() {
 			@Override
@@ -93,8 +94,10 @@ public class CreateUserUI {
 		else if(userService.saveNewUser(usernameTextField.getText(), passwordPasswordField.getPassword(), (PermissionLevel)permissionLevelComboBox.getSelectedItem())) {
 			// Display confirmation to user
 			JOptionPane.showMessageDialog(contentPane, String.format(MESSAGE_NEW_USER, usernameTextField.getText()), TITLE_NEW_USER, JOptionPane.INFORMATION_MESSAGE);
-			okButton.setEnabled(false);
+
 			//TODO: Navigate user away from page.
+			okButton.setEnabled(false);
+			uiHacks.killMeThenGoToLastPage(contentPane);
 		}
 		else {
 			JOptionPane.showMessageDialog(contentPane, ERROR_CANNOT_SAVE, TITLE_CANNOT_SAVE, JOptionPane.ERROR_MESSAGE);

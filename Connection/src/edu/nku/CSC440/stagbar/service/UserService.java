@@ -1,5 +1,4 @@
 package edu.nku.CSC440.stagbar.service;
-import edu.nku.CSC440.stagbar.Connect.*;
 
 import edu.nku.CSC440.stagbar.dataaccess.PermissionLevel;
 
@@ -21,7 +20,7 @@ public class UserService {
 	 */
 	public boolean changePassword(String username, char[] password) {
 		//TODO: Update password in database
-		
+
 		//Zero out the possible password, for security.
 		Arrays.fill(password, '0');
 
@@ -79,7 +78,7 @@ public class UserService {
 
 		String passwordFromUser = new String(password);
 		String passwordFromDatabase = getPasswordForUser(username);
-		
+
 		return null != passwordFromDatabase && passwordFromUser.equals(passwordFromDatabase);
 	}
 
