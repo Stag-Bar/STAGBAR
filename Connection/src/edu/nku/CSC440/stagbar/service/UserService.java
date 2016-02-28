@@ -2,6 +2,11 @@ package edu.nku.CSC440.stagbar.service;
 
 import edu.nku.CSC440.stagbar.dataaccess.PermissionLevel;
 
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 /**
@@ -10,6 +15,36 @@ import java.util.Arrays;
  * This class manipulates methods from classes on the DataAccess layer to perform its functions and does not handle SQL directly.
  */
 public class UserService {
+
+	/**
+	 * Converts given character array to a SHA-256 hash.
+	 * @param password Password to convert.
+	 * @return SHA-256 hash of given password.
+	 */
+	private static byte[] getHash(char[] password) {
+		try {
+			MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+			messageDigest.update(toBytes(password));
+			return messageDigest.digest();
+		} catch(NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * Converts given character array to a byte array.
+	 * @param chars Characters to convert.
+	 * @return Byte array from given characters.
+	 */
+	private static byte[] toBytes(char[] chars) {
+		CharBuffer charBuffer = CharBuffer.wrap(chars);
+		ByteBuffer byteBuffer = Charset.forName("UTF-8").encode(charBuffer);
+		byte[] bytes = Arrays.copyOfRange(byteBuffer.array(),
+				byteBuffer.position(), byteBuffer.limit());
+		Arrays.fill(charBuffer.array(), '\u0000'); // clear sensitive data
+		Arrays.fill(byteBuffer.array(), (byte)0); // clear sensitive data
+		return bytes;
+	}
 
 	/**
 	 * Searches for existing user in database and updates password.
@@ -62,24 +97,24 @@ public class UserService {
 	 * @param username Username to search database for.
 	 * @return Password for user if found; otherwise returns null.
 	 */
-	private String getPasswordForUser(String username) {
+	private byte[] getPasswordForUser(String username) {
 		//TODO: Search database for user's password.
 
 		// TODO: Delete hardcoded test data.
 		if("user".equals(username)) {
-			return "password";
+			return getHash("password".toCharArray());
 		}
 
 		return null;
 	}
 
 	public boolean login(String username, char[] password) {
-		if(null == username) { return false; }
+		if(null == username) return false;
 
-		String passwordFromUser = new String(password);
-		String passwordFromDatabase = getPasswordForUser(username);
+		byte[] passwordHashFromUser = getHash(password);
+		byte[] passwordHashFromDatabase = getPasswordForUser(username);
 
-		return null != passwordFromDatabase && passwordFromUser.equals(passwordFromDatabase);
+		return null != passwordHashFromDatabase && Arrays.equals(passwordHashFromDatabase, passwordHashFromUser);
 	}
 
 	/**
