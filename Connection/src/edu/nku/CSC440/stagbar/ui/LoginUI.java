@@ -53,6 +53,7 @@ public class LoginUI extends JDialog {
 		pack();
 		setLocationRelativeTo(null);
 		setResizable(false);
+		toFront();
 	}
 
 	/**
