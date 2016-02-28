@@ -19,33 +19,21 @@ public class ApplicationFrame {
 
 		frame.setContentPane(masterPanel);
 
+		MainMenuUI mainMenuUI = new MainMenuUI();
+		masterPanel.add(mainMenuUI.getContentPane());
+		frame.pack();
 
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
-
-	public void setScreen_UserAccountManagement(){
-		UserAccountManagementUI userAccountManagementUI = new UserAccountManagementUI();
-		masterPanel.add(userAccountManagementUI.getContentPane(), TITLE_MANAGE_USERS);
-		setTitle(TITLE_MANAGE_USERS);
-		frame.pack();
 	}
 
 	public JFrame getFrame() {
 		return frame;
 	}
 
-	private void setTitle(String screen){
-		frame.setTitle(String.format("STAGBAR - %s", screen));
-	}
-
-
-
-
 	//TODO: Delete test main method
 	public static void main(String[] args) {
-		ApplicationFrame frame = new ApplicationFrame();
-		frame.setScreen_UserAccountManagement();
+		new ApplicationFrame();
 	}
 
 }

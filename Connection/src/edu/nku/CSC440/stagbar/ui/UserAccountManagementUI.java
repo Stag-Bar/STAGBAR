@@ -11,7 +11,7 @@ public class UserAccountManagementUI {
 	private JButton editUserPermissionsButton;
 
 	public UserAccountManagementUI() {
-		contentPane.setName("User Account Management");
+		contentPane.setName("Manage Users");
 
 		createUserButton.addActionListener(new ActionListener() {
 			@Override
