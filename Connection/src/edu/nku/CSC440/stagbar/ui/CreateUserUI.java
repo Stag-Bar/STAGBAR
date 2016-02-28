@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CreateUserUI {
@@ -44,10 +43,8 @@ public class CreateUserUI {
 	}
 
 	private void createUIComponents() {
-		ArrayList<PermissionLevel> tempPermissionsList = new ArrayList(); //FIXME: Hack to default combobox to null. Consider defaulting to Guest.
-		tempPermissionsList.add(null);
-		tempPermissionsList.addAll(Arrays.asList(PermissionLevel.values()));
-		permissionLevelComboBox = new JComboBox(tempPermissionsList.toArray());
+		permissionLevelComboBox = new JComboBox(PermissionLevel.values());
+		permissionLevelComboBox.setSelectedIndex(-1);
 	}
 
 	public JPanel getContentPane() {
