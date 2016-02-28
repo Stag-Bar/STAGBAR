@@ -5,21 +5,62 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainMenuUI {
-	private JButton newAlcoholButton;
-	private JButton inventoryButton;
-	private JButton salesButton;
-	private JButton mixedDrinksButton;
-	private JButton retireBeverageButton;
-	private JButton reportsButton;
-	private JButton manageUsersButton;
 	private JPanel contentPane;
+	private JButton inventoryButton;
+	private JButton manageUsersButton;
+	private JButton mixedDrinksButton;
+	private JButton newAlcoholButton;
+	private JButton reportsButton;
+	private JButton retireBeverageButton;
+	private JButton salesButton;
 
 	public MainMenuUI() {
+
+		contentPane.setName("Main Menu");
+
+		inventoryButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {onInventory();}
+		});
 
 		manageUsersButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {onManageUsers();}
 		});
+
+		mixedDrinksButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {onMixedDrinks();}
+		});
+
+		newAlcoholButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {onNewAlcohol();}
+		});
+
+		reportsButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {onReports();}
+		});
+
+		retireBeverageButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {onRetireBeverage();}
+		});
+
+		salesButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {onSales();}
+		});
+
+	}
+
+	public JPanel getContentPane() {
+		return contentPane;
+	}
+
+	private void onInventory() {
+
 	}
 
 	private void onManageUsers() {
@@ -27,7 +68,23 @@ public class MainMenuUI {
 		uiHacks.goToPanel(contentPane, manageUsers.getContentPane());
 	}
 
-	public JPanel getContentPane() {
-		return contentPane;
+	private void onMixedDrinks() {
+
+	}
+
+	private void onNewAlcohol() {
+
+	}
+
+	private void onReports() {
+
+	}
+
+	private void onRetireBeverage() {
+
+	}
+
+	private void onSales() {
+
 	}
 }
