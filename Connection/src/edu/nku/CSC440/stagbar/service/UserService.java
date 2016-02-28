@@ -126,6 +126,8 @@ public class UserService {
 	 * @return <code>true</code> if save is successful, <code>false</code> otherwise.
 	 */
 	public boolean saveNewUser(String username, char[] password, PermissionLevel permissionLevel) {
+		byte[] passwordHash = getHash(password);
+
 		//TODO: Create user in database
 
 		//Zero out the possible password, for security.
