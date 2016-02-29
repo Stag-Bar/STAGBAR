@@ -1,0 +1,48 @@
+<project name=“StagBar” default="compile">
+	<property file="build.properties"/>
+	<property name="src.dir" location=“checkout/src"/>
+	<property name="src.dataacess.dir" location="${src.dir}/edu/nku/CSC440/stagbar/dataaccess”/>
+	<property name="src.service.dir" location="${src.dir}/edu/nku/CSC440/stagbar/service”/>
+	<property name="src.Connect.dir" location="${src.dir}/edu/nku/CSC440/stagbar/Connect”/>
+	<property name="src.ui.dir" location="${src.dir}/edu/nku/CSC440/stagbar/ui”/>
+
+	<property name=“mysql-connector-java-5.1.38-bin.jar" location=“src/mysql-connector-java-5.1.38/mysql-connector-java-5.1.38-bin.jar"/>
+	<property name="target.dir" location="target" />
+	<property name="target.classes.java.dir" location="${target.dir}/classes/main" />
+
+  <target name="checkout.repository">
+  	<exec executable="git">
+  		<arg value="clone" />
+ 		<arg value="https://github.com/mcadamss1/STAGBAR.git"/>
+ 		<arg value="checkout/"/>
+ 	</exec>
+  	
+  </target>
+
+  <target name="compile" depends="checkout.repository">
+  	<mkdir dir="${target.classes.java.dir}"/>
+  	<javac destdir="${target.classes.java.dir}">
+		<src path="${src.ui.dir}"/>
+		<src path="${src.database.dir}"/>
+		<src path="${src.service.dir}"/>
+		<src path="${src.Connect.dir}"/>
+		<classpath>
+			<pathelement location="${target.classes.java.dir}"/>
+		</classpath>
+	</javac>
+  </target>
+
+    <target name="jar" depends=“compile">
+        <mkdir dir="${target.dir}/jar"/>
+        <jar destfile="${target.dir}/jar/Stagbar.jar" basedir="${target.classes.java.dir}" />
+    </target>
+
+    <target name="run" depends=“jar”>
+        <java jar=“${target.dir}/jar/Stagbar.jar" fork="true"/>
+    </target>
+
+    <target name="clean">
+        <delete dir=“${target}”/>
+    </target>
+
+</project>
