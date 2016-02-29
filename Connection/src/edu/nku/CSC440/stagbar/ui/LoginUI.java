@@ -67,6 +67,8 @@ public class LoginUI extends JDialog {
 
 	private void onOK() {
 		if(userService.login(username.getText(), password.getPassword())) {
+			//Some where hear we need to call connection method.  This will return a connection which
+			//will then be used for all further actions.
 			System.out.format("Login as %s Successful", username.getText());
 			dispose();
 		}
