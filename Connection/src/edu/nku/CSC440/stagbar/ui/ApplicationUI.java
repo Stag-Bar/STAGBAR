@@ -9,7 +9,7 @@ public class ApplicationUI {
 	private static final String APPLICATION_TITLE = "STAGBAR";
 	private JPanel masterPanel;
 
-	ApplicationUI(){
+	public ApplicationUI(){
 		frame = new JFrame(APPLICATION_TITLE);
 
 		masterPanel = new JPanel(new CardLayout());
@@ -31,11 +31,6 @@ public class ApplicationUI {
 
 	public JFrame getFrame() {
 		return frame;
-	}
-
-	//TODO: Delete test main method
-	public static void main(String[] args) {
-		new ApplicationUI();
 	}
 
 }
