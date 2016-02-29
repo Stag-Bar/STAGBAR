@@ -18,7 +18,7 @@ public class LoginUI extends JDialog {
 
 	public LoginUI(JFrame owner) {
 		super(owner, TITLE, true);
-		userService = new UserService();
+		userService = UserService.getInstance();
 
 		setContentPane(contentPane);
 		setTitle(TITLE);

@@ -31,7 +31,7 @@ public class CreateUserUI {
 	private JTextField usernameTextField;
 
 	public CreateUserUI() {
-		userService = new UserService();
+		userService = UserService.getInstance();
 
 		contentPane.setName("Create User");
 

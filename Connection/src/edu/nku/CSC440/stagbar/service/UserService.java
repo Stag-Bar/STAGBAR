@@ -16,6 +16,14 @@ import java.util.Arrays;
  */
 public class UserService {
 
+	private static UserService userService = new UserService();
+
+	private UserService(){}
+
+	public static UserService getInstance(){
+		return userService;
+	}
+
 	/**
 	 * Converts given character array to a SHA-256 hash.
 	 * @param password Password to convert.
