@@ -1,7 +1,5 @@
 package edu.nku.CSC440.stagbar;
 
-import edu.nku.CSC440.stagbar.ui.ApplicationUI;
-
 import java.awt.*;
 
 /** Using this class to launch application. Subject to change. */
@@ -9,7 +7,7 @@ public class main {
 
 	public static void main(String[] args) {
 		new Splash();
-		new ApplicationUI();
+		Application.getInstance().getApplicationUI();
 	}
 
 }

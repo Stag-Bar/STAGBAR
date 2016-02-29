@@ -122,7 +122,12 @@ public class UserService {
 		byte[] passwordHashFromUser = getHash(password);
 		byte[] passwordHashFromDatabase = getPasswordForUser(username);
 
-		return null != passwordHashFromDatabase && Arrays.equals(passwordHashFromDatabase, passwordHashFromUser);
+		if(null != passwordHashFromDatabase && Arrays.equals(passwordHashFromDatabase, passwordHashFromUser)){
+			//TODO: Create Connection with database
+//			Application.getInstance().setConnection([ConnectionFromDatabase]);
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -143,4 +148,5 @@ public class UserService {
 
 		return true;
 	}
+
 }
