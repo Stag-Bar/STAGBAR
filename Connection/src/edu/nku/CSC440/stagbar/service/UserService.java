@@ -1,5 +1,6 @@
 package edu.nku.CSC440.stagbar.service;
 
+import edu.nku.CSC440.stagbar.Connect.Connect;
 import edu.nku.CSC440.stagbar.dataaccess.PermissionLevel;
 
 import java.nio.ByteBuffer;
@@ -137,12 +138,13 @@ public class UserService {
 	 * @param password        Password of new user. Password is hashed before stored in database.
 	 * @param permissionLevel Permission level of new user.
 	 * @return <code>true</code> if save is successful, <code>false</code> otherwise.
+	 * @throws ClassNotFoundException 
 	 */
-	public boolean saveNewUser(String username, char[] password, PermissionLevel permissionLevel) {
+	public boolean saveNewUser(String username, char[] password, PermissionLevel permissionLevel) throws ClassNotFoundException {
 		byte[] passwordHash = getHash(password);
 
-		//TODO: Create user in database
-
+		//This method below will create a new user (with all permissions) in the database
+		Connect.createMasterUser(username, new String(password), "test");
 		//Zero out the possible password, for security.
 		Arrays.fill(password, '0');
 
