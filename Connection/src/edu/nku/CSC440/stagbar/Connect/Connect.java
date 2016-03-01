@@ -1,37 +1,42 @@
 package edu.nku.CSC440.stagbar.Connect;
 import java.sql.*;
 public class Connect {
-	//method to make a connection to the database, will return null if unsuccessful.
-	public static Connection makeNewConnection(String username, String password) throws ClassNotFoundException{
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection conn = null;
-		try{
-			String url = "jdbc:mysql://stagbar.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306";
-			conn = DriverManager.getConnection(url, username, password);
-		}
-		catch(Exception e){
-			conn = null;
-			System.out.println(e);
-			return conn;
-		}
-		return conn;
+
+	private static Connect connect = new Connect();
+	private Connection userConnection;
+
+	private Connect(){}
+
+	public static Connect getInstance(){
+		return connect;
 	}
-	public static Connection makeNewConnection(String username, String password, String dataBaseName) throws ClassNotFoundException{
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection conn = null;
+
+
+	/** Make a connection to the database, will return null if unsuccessful. */
+	private Connection makeNewConnection(String username, String password) {
+		return makeNewConnection(username, password, "");
+	}
+
+	private Connection makeNewConnection(String username, String password, String dataBaseName) {
+		Connection conn;
 		try{
+			Class.forName("com.mysql.jdbc.Driver");
 			String url = "jdbc:mysql://stagbar.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306/" + dataBaseName;
 			conn = DriverManager.getConnection(url, username, password);
 		}
-		catch(Exception e){
+		catch(ClassNotFoundException|SQLException e){
 			conn = null;
-			System.out.println(e);
-			return conn;
+			throw new RuntimeException("Unable to connect to database");
 		}
 		return conn;
 	}
-	//method to create a new user that has full privileges.  IE the inventory manager 
-	public static boolean createDatabase(String name){
+
+	/**
+	 * Create a new user that has full privileges.  IE the inventory manager
+	 * @param name Name of database to create.
+	 * @return <code>true</code> if successful, <code>false</code> otherwise.
+	 */
+	public boolean createDatabase(String name){
 		Connection c;
 		boolean success = false;
 		try {
@@ -39,15 +44,15 @@ public class Connect {
 			Statement sta = c.createStatement();
 			success =  sta.execute("CREATE DATABASE " + name + ";");
 			c.close();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 		return success;
 	}
-	public static boolean createMasterUser(String username, String password, String company) throws ClassNotFoundException{
+
+	public boolean createMasterUser(String username, String password, String company) {
 		try{
-			Connection conn = makeNewConnection("stagbar", "Nkucsc440", company);//have to connect to the database with an admin account 
+			Connection conn = makeNewConnection("stagbar", "Nkucsc440", company);//have to connect to the database with an admin account
 																		//to create a new user
 			//Statement sta = conn.createStatement();
 			String statement = "SELECT * FROM mysql.user WHERE user = ?;";
@@ -87,8 +92,13 @@ public class Connect {
 		}
 		return false;
 	}
-	//method to delete a user from the database
-	protected static boolean deleteUser(String username) throws ClassNotFoundException{
+
+	/**
+	 * Delete given user from the database.
+	 * @param username User to delete.
+	 * @return <code>true</code> if successful, <code>false</code> otherwise.
+	 */
+	protected boolean deleteUser(String username) {
 		boolean succesful = false;
 		try{
 			
@@ -107,8 +117,8 @@ public class Connect {
 		return succesful;
 	}
 
-	//method to create a table to store the different kinds of alcohol
-	protected static boolean addNewGroup(Connection conn, String groupName, int code){
+	/** Create a table to store the different kinds of alcohol */
+	protected boolean addNewGroup(Connection conn, String groupName, int code){
 		boolean successful = false;
 		/* code will indicate the type
 		 * 1 = bottled beer
@@ -156,8 +166,9 @@ public class Connect {
 		}
 		return successful;
 	}
+
 	public static void main(String args[]){
-		Connect.createDatabase("test");
+		Connect.getInstance().createDatabase("test");
 	}
 }
 

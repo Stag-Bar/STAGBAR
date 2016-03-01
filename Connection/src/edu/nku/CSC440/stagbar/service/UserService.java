@@ -138,13 +138,12 @@ public class UserService {
 	 * @param password        Password of new user. Password is hashed before stored in database.
 	 * @param permissionLevel Permission level of new user.
 	 * @return <code>true</code> if save is successful, <code>false</code> otherwise.
-	 * @throws ClassNotFoundException 
 	 */
-	public boolean saveNewUser(String username, char[] password, PermissionLevel permissionLevel) throws ClassNotFoundException {
+	public boolean saveNewUser(String username, char[] password, PermissionLevel permissionLevel) {
 		byte[] passwordHash = getHash(password);
 
 		//This method below will create a new user (with all permissions) in the database
-		Connect.createMasterUser(username, new String(password), "test");
+			Connect.getInstance().createMasterUser(username, new String(password), "test");
 		//Zero out the possible password, for security.
 		Arrays.fill(password, '0');
 

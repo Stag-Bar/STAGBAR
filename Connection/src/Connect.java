@@ -1,4 +1,5 @@
 import java.sql.*;
+@Deprecated
 public class Connect {
 	//method to make a connection to the database, will return null if unsuccessful.
 	protected static Connection makeNewConnection(String username, String password) throws ClassNotFoundException{
