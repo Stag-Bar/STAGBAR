@@ -11,12 +11,23 @@ public class Connect {
 		return connect;
 	}
 
-
-	/** Make a connection to the database, will return null if unsuccessful. */
+	/**
+	 * Make a connection to the database.
+	 * @param username
+	 * @param password
+	 * @return Connection to database if successful, otherwise returns <code>null</code>.
+	 */
 	private Connection makeNewConnection(String username, String password) {
 		return makeNewConnection(username, password, "");
 	}
 
+	/**
+	 * Make a connection to the database.
+	 * @param username
+	 * @param password
+	 * @param dataBaseName
+	 * @return Connection to database if successful, otherwise returns <code>null</code>.
+	 */
 	private Connection makeNewConnection(String username, String password, String dataBaseName) {
 		Connection conn;
 		try{
@@ -26,7 +37,7 @@ public class Connect {
 		}
 		catch(ClassNotFoundException|SQLException e){
 			conn = null;
-			throw new RuntimeException("Unable to connect to database");
+			throw new RuntimeException("Unable to connect to database", e);
 		}
 		return conn;
 	}
@@ -102,7 +113,7 @@ public class Connect {
 		boolean succesful = false;
 		try{
 			
-			Connection conn = makeNewConnection("stagbar", "Nkucsc440");//have to connect as admin.  
+			Connection conn = makeNewConnection("stagbar", "Nkucsc440");//have to connect as admin.
 			String statement = "DROP USER ?;";
 			PreparedStatement pSta = conn.prepareStatement(statement);
 			pSta.setString(1, username);

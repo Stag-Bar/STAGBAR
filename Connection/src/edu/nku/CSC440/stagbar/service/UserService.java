@@ -1,7 +1,9 @@
 package edu.nku.CSC440.stagbar.service;
 
+import edu.nku.CSC440.stagbar.Application;
 import edu.nku.CSC440.stagbar.Connect.Connect;
 import edu.nku.CSC440.stagbar.dataaccess.PermissionLevel;
+import edu.nku.CSC440.stagbar.dataaccess.User;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -19,29 +21,15 @@ public class UserService {
 
 	private static UserService userService = new UserService();
 
-	private UserService(){}
+	private UserService() {}
 
-	public static UserService getInstance(){
+	public static UserService getInstance() {
 		return userService;
 	}
 
 	/**
-	 * Converts given character array to a SHA-256 hash.
-	 * @param password Password to convert.
-	 * @return SHA-256 hash of given password.
-	 */
-	private static byte[] getHash(char[] password) {
-		try {
-			MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-			messageDigest.update(toBytes(password));
-			return messageDigest.digest();
-		} catch(NoSuchAlgorithmException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	/**
 	 * Converts given character array to a byte array.
+	 *
 	 * @param chars Characters to convert.
 	 * @return Byte array from given characters.
 	 */
@@ -53,6 +41,22 @@ public class UserService {
 		Arrays.fill(charBuffer.array(), '\u0000'); // clear sensitive data
 		Arrays.fill(byteBuffer.array(), (byte)0); // clear sensitive data
 		return bytes;
+	}
+
+	/**
+	 * Converts given character array to a SHA-256 hash.
+	 *
+	 * @param password Password to convert.
+	 * @return SHA-256 hash of given password.
+	 */
+	private static byte[] toHash(char[] password) {
+		try {
+			MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+			messageDigest.update(toBytes(password));
+			return messageDigest.digest();
+		} catch(NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**
@@ -110,24 +114,34 @@ public class UserService {
 		//TODO: Search database for user's password.
 
 		// TODO: Delete hardcoded test data.
-		if("user".equals(username)) {
-			return getHash("password".toCharArray());
+		if("stagbar".equalsIgnoreCase(username)) {
+			return toHash("Nkucsc440".toCharArray());
 		}
 
 		return null;
 	}
 
+	private PermissionLevel getPermissionsForUser(String username) {
+		//TODO: Search database for user's permisison level.
+
+		//TODO: Delete test data
+		return PermissionLevel.ADMIN;
+	}
+
 	public boolean login(String username, char[] password) {
 		if(null == username) return false;
 
-		byte[] passwordHashFromUser = getHash(password);
+		byte[] passwordHashFromUser = toHash(password);
 		byte[] passwordHashFromDatabase = getPasswordForUser(username);
 
-		if(null != passwordHashFromDatabase && Arrays.equals(passwordHashFromDatabase, passwordHashFromUser)){
+		if(null != passwordHashFromDatabase && Arrays.equals(passwordHashFromDatabase, passwordHashFromUser)) {
 			//TODO: Create Connection with database
 //			Application.getInstance().setConnection([ConnectionFromDatabase]);
+			User currentUser = new User(username, getPermissionsForUser(username));
+			Application.getInstance().setUser(currentUser);
 			return true;
 		}
+
 		return false;
 	}
 
@@ -140,10 +154,10 @@ public class UserService {
 	 * @return <code>true</code> if save is successful, <code>false</code> otherwise.
 	 */
 	public boolean saveNewUser(String username, char[] password, PermissionLevel permissionLevel) {
-		byte[] passwordHash = getHash(password);
+		byte[] passwordHash = toHash(password);
 
 		//This method below will create a new user (with all permissions) in the database
-			Connect.getInstance().createMasterUser(username, new String(password), "test");
+		Connect.getInstance().createMasterUser(username, new String(password), "test");
 		//Zero out the possible password, for security.
 		Arrays.fill(password, '0');
 
