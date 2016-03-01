@@ -1,9 +1,12 @@
 package edu.nku.CSC440.stagbar.Connect;
+
+import edu.nku.CSC440.stagbar.Application;
+
 import java.sql.*;
 public class Connect {
 
 	private static Connect connect = new Connect();
-	private Connection userConnection;
+	private Connection activeConnection;
 
 	private Connect(){}
 
@@ -32,7 +35,7 @@ public class Connect {
 		Connection conn;
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
-			String url = "jdbc:mysql://stagbar.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306/" + dataBaseName;
+			String url = "jdbc:mysql://stagbar2.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306/" + dataBaseName;
 			conn = DriverManager.getConnection(url, username, password);
 		}
 		catch(ClassNotFoundException|SQLException e){
@@ -40,6 +43,20 @@ public class Connect {
 			throw new RuntimeException("Unable to connect to database", e);
 		}
 		return conn;
+	}
+
+	/**
+	 * @return <code>true</code> if given username & password can connect to database
+	 * @deprecated Temporary method. Unsecure.
+	 */
+	public boolean createUserConnection(String username, String password){
+		Connection c = makeNewConnection(username, password, "test");
+		if(c != null){
+			Application.getInstance().setConnection(c);
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -61,31 +78,26 @@ public class Connect {
 		return success;
 	}
 
-	public boolean createMasterUser(String username, String password, String company) {
+	public boolean createMasterUser(String username, String password, String database) {
 		try{
-			Connection conn = makeNewConnection("stagbar", "Nkucsc440", company);//have to connect to the database with an admin account
+			Connection conn = makeNewConnection("stagbar", "Nkucsc440", database);//have to connect to the database with an admin account
 																		//to create a new user
 			//Statement sta = conn.createStatement();
 			String statement = "SELECT * FROM mysql.user WHERE user = ?;";
 			PreparedStatement pSta = conn.prepareStatement(statement);
 			pSta.setString(1, username);
 			ResultSet checkResults = pSta.executeQuery();
-			boolean exists;
-			if(checkResults.next()){
-				exists = true;
-			}
-			else {
-				exists = false;
-			}
+			boolean exists = checkResults.next();
 			System.out.println(exists);
-			if(exists == false){
+
+			if(!exists){
 				String createUserStatement = "CREATE USER ? @'%' IDENTIFIED BY ?;";
 				pSta = conn.prepareStatement(createUserStatement);
 				pSta.setString(1, username);
 				pSta.setString(2, password);
 				pSta.execute();
-				
-				String grantPrivStatement = "GRANT ALL PRIVILEGES ON *.* TO ? @'%' IDENTIFIED BY ?;";
+
+				String grantPrivStatement = "GRANT ALL PRIVILEGES ON " + database + " TO ? @'%' IDENTIFIED BY ?;";
 				pSta = conn.prepareStatement(grantPrivStatement);
 				pSta.setString(1, username);
 				pSta.setString(2, password);
@@ -96,7 +108,9 @@ public class Connect {
 				conn.close();
 				return true;
 			}
-			conn.close();
+			else {
+				conn.close();
+			}
 		}
 		catch(SQLException e){
 			System.out.println(e);
@@ -112,7 +126,6 @@ public class Connect {
 	protected boolean deleteUser(String username) {
 		boolean succesful = false;
 		try{
-			
 			Connection conn = makeNewConnection("stagbar", "Nkucsc440");//have to connect as admin.
 			String statement = "DROP USER ?;";
 			PreparedStatement pSta = conn.prepareStatement(statement);
@@ -178,8 +191,5 @@ public class Connect {
 		return successful;
 	}
 
-	public static void main(String args[]){
-		Connect.getInstance().createDatabase("test");
-	}
 }
 

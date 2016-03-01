@@ -134,9 +134,8 @@ public class UserService {
 		byte[] passwordHashFromUser = toHash(password);
 		byte[] passwordHashFromDatabase = getPasswordForUser(username);
 
-		if(null != passwordHashFromDatabase && Arrays.equals(passwordHashFromDatabase, passwordHashFromUser)) {
-			//TODO: Create Connection with database
-//			Application.getInstance().setConnection([ConnectionFromDatabase]);
+//		if(null != passwordHashFromDatabase && Arrays.equals(passwordHashFromDatabase, passwordHashFromUser)) {
+		if(Connect.getInstance().createUserConnection(username, new String(password))){
 			User currentUser = new User(username, getPermissionsForUser(username));
 			Application.getInstance().setUser(currentUser);
 			return true;
@@ -157,11 +156,12 @@ public class UserService {
 		byte[] passwordHash = toHash(password);
 
 		//This method below will create a new user (with all permissions) in the database
-		Connect.getInstance().createMasterUser(username, new String(password), "test");
+		boolean successful = Connect.getInstance().createMasterUser(username, new String(password), "test");
+
 		//Zero out the possible password, for security.
 		Arrays.fill(password, '0');
 
-		return true;
+		return successful;
 	}
 
 }
