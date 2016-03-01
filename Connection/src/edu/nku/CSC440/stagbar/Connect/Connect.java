@@ -35,7 +35,7 @@ public class Connect {
 	private Connection makeNewConnection(String username, String password, String dataBaseName) {
 		Connection conn;
 		try{
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.jdbc.Driver"); // What purpose does this line serve? It returns a class we never use.
 			String url = "jdbc:mysql://stagbar2.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306/" + dataBaseName;
 			conn = DriverManager.getConnection(url, username, password);
 		}
@@ -79,13 +79,13 @@ public class Connect {
 		return success;
 	}
 
-
 	/**
 	 * Create a new user that has full privileges.  IE the inventory manager
 	 * @return <code>true</code> if successful, <code>false</code> otherwise.
 	 */
 	public boolean createMasterUser(String username, String password, String database) {
 		try{
+			//FIXME: Use existing connection.
 			Connection conn = makeNewConnection("stagbar", "Nkucsc440", database);//have to connect to the database with an admin account
 																		//to create a new user
 			//Statement sta = conn.createStatement();
