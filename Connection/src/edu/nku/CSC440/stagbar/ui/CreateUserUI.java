@@ -39,7 +39,12 @@ public class CreateUserUI {
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				onOK();
+				try {
+					onOK();
+				} catch (HeadlessException | ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 	}
@@ -135,7 +140,7 @@ public class CreateUserUI {
 																			 Color.RED : Color.BLACK);
 	}
 
-	private void onOK() {
+	private void onOK() throws HeadlessException, ClassNotFoundException {
 		highlightEmptyFields();
 
 		// Check that all fields are filled.

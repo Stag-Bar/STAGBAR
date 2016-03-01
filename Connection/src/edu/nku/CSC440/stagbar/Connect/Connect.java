@@ -156,8 +156,5 @@ public class Connect {
 		}
 		return successful;
 	}
-	public static void main(String args[]){
-		Connect.createDatabase("test");
-	}
 }
 

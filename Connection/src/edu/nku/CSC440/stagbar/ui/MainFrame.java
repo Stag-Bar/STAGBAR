@@ -1,3 +1,5 @@
+package edu.nku.CSC440.stagbar.ui;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridLayout;

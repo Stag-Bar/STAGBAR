@@ -1,5 +1,6 @@
 package edu.nku.CSC440.stagbar.service;
 
+import edu.nku.CSC440.stagbar.Application;
 import edu.nku.CSC440.stagbar.Connect.Connect;
 import edu.nku.CSC440.stagbar.dataaccess.PermissionLevel;
 
@@ -8,6 +9,7 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
 import java.util.Arrays;
 
 /**
@@ -117,18 +119,21 @@ public class UserService {
 		return null;
 	}
 
-	public boolean login(String username, char[] password) {
+	public boolean login(String username, char[] password) throws ClassNotFoundException {
 		if(null == username) return false;
-
+		String pass = new String(password);
 		byte[] passwordHashFromUser = getHash(password);
 		byte[] passwordHashFromDatabase = getPasswordForUser(username);
-
-		if(null != passwordHashFromDatabase && Arrays.equals(passwordHashFromDatabase, passwordHashFromUser)){
-			//TODO: Create Connection with database
-//			Application.getInstance().setConnection([ConnectionFromDatabase]);
+		Connection c = Connect.makeNewConnection(username, pass);
+		if(c != null){
+			Application.getInstance().setConnection(c);
 			return true;
 		}
-		return false;
+			//if(null != passwordHashFromDatabase && Arrays.equals(passwordHashFromDatabase, passwordHashFromUser)){
+			//TODO: Create Connection with database
+			return false;
+		
+		//return false;
 	}
 
 	/**

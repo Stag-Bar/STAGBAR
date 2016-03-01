@@ -28,7 +28,12 @@ public class LoginUI extends JDialog {
 		getRootPane().setDefaultButton(buttonOK);
 
 		buttonOK.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {onOK();}
+			public void actionPerformed(ActionEvent e) {try {
+				onOK();
+			} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}}
 		});
 
 		buttonCancel.addActionListener(new ActionListener() {
@@ -122,7 +127,7 @@ public class LoginUI extends JDialog {
 		System.exit(0);
 	}
 
-	private void onOK() {
+	private void onOK() throws ClassNotFoundException {
 		if(userService.login(username.getText(), password.getPassword())) {
 			System.out.format("Login as %s Successful", username.getText());
 			dispose();
