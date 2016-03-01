@@ -99,6 +99,7 @@ public class Connect {
 				pSta.setString(2, password);
 				pSta.execute();
 
+				//FIXME: This statement is not granting priveleges. I had to manually set priveleges in the DB to log in with a new user.
 				String grantPrivStatement = "GRANT ALL PRIVILEGES ON " + database + " TO ? @'%' IDENTIFIED BY ?;";
 				pSta = conn.prepareStatement(grantPrivStatement);
 				pSta.setString(1, username);
