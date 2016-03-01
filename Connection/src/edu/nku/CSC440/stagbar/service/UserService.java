@@ -152,11 +152,13 @@ public class UserService {
 		System.out.println(pass);
 		//This method below will create a new user (with all permissions) in the database
 		successful =  Connect.createMasterUser(username, pass , "test");
-		//Zero out the possible password, for security.
-		Arrays.fill(password, '0');
-		
+		if(successful == true){
+			//Zero out the possible password, for security.
+			Arrays.fill(password, '0');
+			return true;
+		}
 
-		return true;
+		return false;
 	}
 
 }
