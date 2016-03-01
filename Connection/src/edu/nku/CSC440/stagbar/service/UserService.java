@@ -122,9 +122,9 @@ public class UserService {
 	public boolean login(String username, char[] password) throws ClassNotFoundException {
 		if(null == username) return false;
 		String pass = new String(password);
-		byte[] passwordHashFromUser = getHash(password);
-		byte[] passwordHashFromDatabase = getPasswordForUser(username);
-		Connection c = Connect.makeNewConnection(username, pass);
+		//byte[] passwordHashFromUser = getHash(password);
+		//byte[] passwordHashFromDatabase = getPasswordForUser(username);
+		Connection c = Connect.makeNewConnection(username, pass, "test");
 		if(c != null){
 			Application.getInstance().setConnection(c);
 			return true;
@@ -146,12 +146,15 @@ public class UserService {
 	 * @throws ClassNotFoundException 
 	 */
 	public boolean saveNewUser(String username, char[] password, PermissionLevel permissionLevel) throws ClassNotFoundException {
-		byte[] passwordHash = getHash(password);
-
+		//byte[] passwordHash = getHash(password);
+		boolean successful = false;
+		String pass = new String(password);
+		System.out.println(pass);
 		//This method below will create a new user (with all permissions) in the database
-		Connect.createMasterUser(username, new String(password), "test");
+		successful =  Connect.createMasterUser(username, pass , "test");
 		//Zero out the possible password, for security.
 		Arrays.fill(password, '0');
+		
 
 		return true;
 	}

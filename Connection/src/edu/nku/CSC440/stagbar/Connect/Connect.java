@@ -1,12 +1,13 @@
 package edu.nku.CSC440.stagbar.Connect;
 import java.sql.*;
 public class Connect {
+	
 	//method to make a connection to the database, will return null if unsuccessful.
 	public static Connection makeNewConnection(String username, String password) throws ClassNotFoundException{
 		Class.forName("com.mysql.jdbc.Driver");
 		Connection conn = null;
 		try{
-			String url = "jdbc:mysql://stagbar.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306";
+			String url = "jdbc:mysql://stagbar2.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306";
 			conn = DriverManager.getConnection(url, username, password);
 		}
 		catch(Exception e){
@@ -16,6 +17,7 @@ public class Connect {
 		}
 		return conn;
 	}
+	
 	public static Connection makeNewConnection(String username, String password, String dataBaseName) throws ClassNotFoundException{
 		Class.forName("com.mysql.jdbc.Driver");
 		Connection conn = null;
@@ -45,9 +47,9 @@ public class Connect {
 		}
 		return success;
 	}
-	public static boolean createMasterUser(String username, String password, String company) throws ClassNotFoundException{
+	public static boolean createMasterUser(String username, String password, String database) throws ClassNotFoundException{
 		try{
-			Connection conn = makeNewConnection("stagbar", "Nkucsc440", company);//have to connect to the database with an admin account 
+			Connection conn = makeNewConnection("stagbar", "Nkucsc440", database);//have to connect to the database with an admin account 
 																		//to create a new user
 			//Statement sta = conn.createStatement();
 			String statement = "SELECT * FROM mysql.user WHERE user = ?;";
@@ -62,6 +64,7 @@ public class Connect {
 				exists = false;
 			}
 			System.out.println(exists);
+			
 			if(exists == false){
 				String createUserStatement = "CREATE USER ? @'%' IDENTIFIED BY ?;";
 				pSta = conn.prepareStatement(createUserStatement);
@@ -69,8 +72,8 @@ public class Connect {
 				pSta.setString(2, password);
 				pSta.execute();
 				
-				String grantPrivStatement = "GRANT ALL PRIVILEGES ON *.* TO ? @'%' IDENTIFIED BY ?;";
-				pSta = conn.prepareStatement(grantPrivStatement);
+				String grantPrivStatement = "GRANT ALL PRIVILEGES ON " + database + " TO ? @'%' IDENTIFIED BY ?;";
+			    pSta = conn.prepareStatement(grantPrivStatement);
 				pSta.setString(1, username);
 				pSta.setString(2, password);
 				pSta.execute();
@@ -80,7 +83,9 @@ public class Connect {
 				conn.close();
 				return true;
 			}
-			conn.close();
+			else{
+				conn.close();
+			}
 		}
 		catch(SQLException e){
 			System.out.println(e);
@@ -91,7 +96,6 @@ public class Connect {
 	protected static boolean deleteUser(String username) throws ClassNotFoundException{
 		boolean succesful = false;
 		try{
-			
 			Connection conn = makeNewConnection("stagbar", "Nkucsc440");//have to connect as admin.  
 			String statement = "DROP USER ?;";
 			PreparedStatement pSta = conn.prepareStatement(statement);
@@ -149,12 +153,12 @@ public class Connect {
 			//pSta.setString(1, groupName);
 			successful = sta.execute(statement);
 			//successful = pSta.execute();
-			conn.close();
 		}
 		catch(Exception e){
 			System.out.println(e);
 		}
 		return successful;
 	}
+	
 }
 
