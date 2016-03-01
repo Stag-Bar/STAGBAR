@@ -61,7 +61,6 @@ public class Connect {
 	}
 
 	/**
-	 * Create a new user that has full privileges.  IE the inventory manager
 	 * @param name Name of database to create.
 	 * @return <code>true</code> if successful, <code>false</code> otherwise.
 	 */
@@ -79,16 +78,18 @@ public class Connect {
 		return success;
 	}
 
+
+	/**
+	 * Create a new user that has full privileges.  IE the inventory manager
+	 * @return <code>true</code> if successful, <code>false</code> otherwise.
+	 */
 	public boolean createMasterUser(String username, String password, String database) {
 		try{
 			Connection conn = makeNewConnection("stagbar", "Nkucsc440", database);//have to connect to the database with an admin account
 																		//to create a new user
 			//Statement sta = conn.createStatement();
-			String statement = "SELECT * FROM mysql.user WHERE user = ?;";
-			PreparedStatement pSta = conn.prepareStatement(statement);
-			pSta.setString(1, username);
-			ResultSet checkResults = pSta.executeQuery();
-			boolean exists = checkResults.next();
+			boolean exists = doesUserExist(username, conn);
+			PreparedStatement pSta;
 
 			if(!exists){
 				String createUserStatement = "CREATE USER ? @'%' IDENTIFIED BY ?;";
@@ -116,6 +117,35 @@ public class Connect {
 			System.out.println(e);
 		}
 		return false;
+	}
+
+	//TODO: Delete after we discuss maintaining connections.
+	/** @deprecated defer to public method.  */
+	private boolean doesUserExist(String username, Connection conn) throws SQLException {
+		String statement = "SELECT * FROM mysql.user WHERE user = ?;";
+		PreparedStatement pSta = conn.prepareStatement(statement);
+		pSta.setString(1, username);
+		ResultSet checkResults = pSta.executeQuery();
+		return checkResults.next();
+	}
+
+	/**
+	 * Checks database for given username.
+	 *
+	 * @param username Username to check database for.
+	 * @return <code>true</code> if given username is in the database,
+	 * <code>false</code> otherwise.
+	 */
+	public boolean doesUserExist(String username){
+		String statement = "SELECT * FROM mysql.user WHERE user = ?;";
+		try {
+			PreparedStatement pSta = activeConnection.prepareStatement(statement);
+			pSta.setString(1, username);
+			ResultSet checkResults = pSta.executeQuery();
+			return checkResults.next();
+		} catch(SQLException e) {
+			throw new RuntimeException("Unable to connect to database.",e);
+		}
 	}
 
 	/**

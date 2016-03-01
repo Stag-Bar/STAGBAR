@@ -95,10 +95,7 @@ public class UserService {
 	 * <code>false</code> otherwise.
 	 */
 	public boolean doesUserExist(String username) {
-		//TODO: Search database for user.
-
-		// TODO: Delete hardcoded test data.
-		return "user".equals(username);
+		return Connect.getInstance().doesUserExist(username);
 	}
 
 	/**
@@ -138,6 +135,7 @@ public class UserService {
 		if(Connect.getInstance().createUserConnection(username, new String(password))){
 			User currentUser = new User(username, getPermissionsForUser(username));
 			Application.getInstance().setUser(currentUser);
+			System.out.format("Login as %s Successful\n", username);
 			return true;
 		}
 
@@ -152,11 +150,12 @@ public class UserService {
 	 * @param permissionLevel Permission level of new user.
 	 * @return <code>true</code> if save is successful, <code>false</code> otherwise.
 	 */
-	public boolean saveNewUser(String username, char[] password, PermissionLevel permissionLevel) {
+	public boolean createNewUser(String username, char[] password, PermissionLevel permissionLevel) {
 		byte[] passwordHash = toHash(password);
 
 		//This method below will create a new user (with all permissions) in the database
 		boolean successful = Connect.getInstance().createMasterUser(username, new String(password), "test");
+		if(successful) System.out.format("New user %s has been created\n", username);
 
 		//Zero out the possible password, for security.
 		Arrays.fill(password, '0');
