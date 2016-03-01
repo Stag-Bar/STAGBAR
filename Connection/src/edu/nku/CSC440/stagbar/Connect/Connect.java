@@ -30,6 +30,7 @@ public class Connect {
 	 * @param password
 	 * @param dataBaseName
 	 * @return Connection to database if successful, otherwise returns <code>null</code>.
+	 * @throws RuntimeException If mysql is not setup properly.
 	 */
 	private Connection makeNewConnection(String username, String password, String dataBaseName) {
 		Connection conn;
@@ -41,7 +42,7 @@ public class Connect {
 		catch(SQLException e){
 			conn = null;
 		} catch(ClassNotFoundException e){
-			throw new RuntimeException("Unable to connect to database", e);
+			throw new RuntimeException("Check mysql setup!", e);
 		}
 		return conn;
 	}
@@ -135,6 +136,7 @@ public class Connect {
 	 * @param username Username to check database for.
 	 * @return <code>true</code> if given username is in the database,
 	 * <code>false</code> otherwise.
+	 * @throws RuntimeException If user's database connection is closed.
 	 */
 	public boolean doesUserExist(String username){
 		String statement = "SELECT * FROM mysql.user WHERE user = ?;";
@@ -144,7 +146,7 @@ public class Connect {
 			ResultSet checkResults = pSta.executeQuery();
 			return checkResults.next();
 		} catch(SQLException e) {
-			throw new RuntimeException("Unable to connect to database.",e);
+			throw new RuntimeException("Connection to database has been closed.",e);
 		}
 	}
 
