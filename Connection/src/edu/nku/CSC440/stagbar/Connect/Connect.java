@@ -35,7 +35,7 @@ public class Connect {
 	private Connection makeNewConnection(String username, String password, String dataBaseName) {
 		Connection conn;
 		try{
-			Class.forName("com.mysql.jdbc.Driver"); // What purpose does this line serve? It returns a class we never use.
+			Class.forName("com.mysql.jdbc.Driver"); // Register MySQL Driver. Needed?
 			String url = "jdbc:mysql://stagbar2.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306/" + dataBaseName;
 			conn = DriverManager.getConnection(url, username, password);
 		}
