@@ -38,8 +38,9 @@ public class Connect {
 			String url = "jdbc:mysql://stagbar2.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306/" + dataBaseName;
 			conn = DriverManager.getConnection(url, username, password);
 		}
-		catch(ClassNotFoundException|SQLException e){
+		catch(SQLException e){
 			conn = null;
+		} catch(ClassNotFoundException e){
 			throw new RuntimeException("Unable to connect to database", e);
 		}
 		return conn;
@@ -50,9 +51,9 @@ public class Connect {
 	 * @deprecated Temporary method. Unsecure.
 	 */
 	public boolean createUserConnection(String username, String password){
-		Connection c = makeNewConnection(username, password, "test");
-		if(c != null){
-			Application.getInstance().setConnection(c);
+		activeConnection = makeNewConnection(username, password, "test");
+		if(activeConnection != null){
+			Application.getInstance().setConnection(activeConnection);
 			return true;
 		}
 
@@ -88,7 +89,6 @@ public class Connect {
 			pSta.setString(1, username);
 			ResultSet checkResults = pSta.executeQuery();
 			boolean exists = checkResults.next();
-			System.out.println(exists);
 
 			if(!exists){
 				String createUserStatement = "CREATE USER ? @'%' IDENTIFIED BY ?;";

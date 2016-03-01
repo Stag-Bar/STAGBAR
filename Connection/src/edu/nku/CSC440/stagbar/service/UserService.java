@@ -131,8 +131,8 @@ public class UserService {
 	public boolean login(String username, char[] password) {
 		if(null == username) return false;
 
-		byte[] passwordHashFromUser = toHash(password);
-		byte[] passwordHashFromDatabase = getPasswordForUser(username);
+//		byte[] passwordHashFromUser = toHash(password);
+//		byte[] passwordHashFromDatabase = getPasswordForUser(username);
 
 //		if(null != passwordHashFromDatabase && Arrays.equals(passwordHashFromDatabase, passwordHashFromUser)) {
 		if(Connect.getInstance().createUserConnection(username, new String(password))){
