@@ -6,7 +6,7 @@
 	<property name="src.Connect.dir" location="${src.dir}/edu/nku/CSC440/stagbar/Connect”/>
 	<property name="src.ui.dir" location="${src.dir}/edu/nku/CSC440/stagbar/ui”/>
 
-	<property name=“mysql-connector-java-5.1.38-bin.jar" location=“src/mysql-connector-java-5.1.38/mysql-connector-java-5.1.38-bin.jar"/>
+	<property name=“mysql-connector-java-5.1.38-bin.jar" location=“lib/mysql-connector-java-5.1.38-bin.jar"/>
 	<property name="target.dir" location="target" />
 	<property name="target.classes.java.dir" location="${target.dir}/classes/main" />
 
