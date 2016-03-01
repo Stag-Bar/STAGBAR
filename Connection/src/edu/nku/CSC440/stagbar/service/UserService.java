@@ -88,6 +88,27 @@ public class UserService {
 	}
 
 	/**
+	 * Creates new user entry in database with given username, password and permission level.
+	 *
+	 * @param username        Username of new user
+	 * @param password        Password of new user. Password is hashed before stored in database.
+	 * @param permissionLevel Permission level of new user.
+	 * @return <code>true</code> if save is successful, <code>false</code> otherwise.
+	 */
+	public boolean createNewUser(String username, char[] password, PermissionLevel permissionLevel) {
+		byte[] passwordHash = toHash(password);
+
+		//This method below will create a new user (with all permissions) in the database
+		boolean successful = Connect.getInstance().createMasterUser(username, new String(password), "test");
+		if(successful) System.out.format("New user %s has been created\n", username);
+
+		//Zero out the possible password, for security.
+		Arrays.fill(password, '0');
+
+		return successful;
+	}
+
+	/**
 	 * Checks database for given username.
 	 *
 	 * @param username Username to check database for.
@@ -132,7 +153,7 @@ public class UserService {
 //		byte[] passwordHashFromDatabase = getPasswordForUser(username);
 
 //		if(null != passwordHashFromDatabase && Arrays.equals(passwordHashFromDatabase, passwordHashFromUser)) {
-		if(Connect.getInstance().createUserConnection(username, new String(password))){
+		if(Connect.getInstance().createUserConnection(username, new String(password))) {
 			User currentUser = new User(username, getPermissionsForUser(username));
 			Application.getInstance().setUser(currentUser);
 			System.out.format("Login as %s Successful\n", username);
@@ -140,27 +161,6 @@ public class UserService {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Creates new user entry in database with given username, password and permission level.
-	 *
-	 * @param username        Username of new user
-	 * @param password        Password of new user. Password is hashed before stored in database.
-	 * @param permissionLevel Permission level of new user.
-	 * @return <code>true</code> if save is successful, <code>false</code> otherwise.
-	 */
-	public boolean createNewUser(String username, char[] password, PermissionLevel permissionLevel) {
-		byte[] passwordHash = toHash(password);
-
-		//This method below will create a new user (with all permissions) in the database
-		boolean successful = Connect.getInstance().createMasterUser(username, new String(password), "test");
-		if(successful) System.out.format("New user %s has been created\n", username);
-
-		//Zero out the possible password, for security.
-		Arrays.fill(password, '0');
-
-		return successful;
 	}
 
 }
