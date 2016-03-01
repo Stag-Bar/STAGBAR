@@ -1,15 +1,9 @@
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.GridLayout;
+package edu.nku.CSC440.stagbar.ui;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
 public class MainFrame extends JFrame {
 
 /*This isn't anywhere as close to being as done as I'd like it to be when I commit it, but I didn't want to sit on it for so long
