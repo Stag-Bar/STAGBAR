@@ -5,6 +5,7 @@ import edu.nku.CSC440.stagbar.Application;
 import java.sql.*;
 public class Connect {
 
+	private static final String DATABASE_URL = "jdbc:mysql://stagbar.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306";
 	private static Connect connect = new Connect();
 	private Connection activeConnection;
 
@@ -36,7 +37,7 @@ public class Connect {
 		Connection conn;
 		try{
 			Class.forName("com.mysql.jdbc.Driver"); // Register MySQL Driver. Needed?
-			String url = "jdbc:mysql://stagbar2.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306/" + dataBaseName;
+			String url = DATABASE_URL + "/" + dataBaseName;
 			conn = DriverManager.getConnection(url, username, password);
 		}
 		catch(SQLException e){
@@ -201,22 +202,21 @@ public class Connect {
 			// Table ALCOHOL_TYPE, Columns ID, type
 			// Where ID is the primary key, numbers 1-3
 			// & type is the associated string
-			
-		
+
+
 
 			switch (code){
 				case 1: statement = "CREATE TABLE " + groupName  + " (name varchar(50), previous integer, current integer, primary key(name));";
 						break;
-				case 2: statement = "CREATE TABLE " + groupName  + " (name varchar(50), previous double, current double, primary key(name));"; 
+				case 2: statement = "CREATE TABLE " + groupName  + " (name varchar(50), previous double, current double, primary key(name));";
 						break;
-				case 3: statement = "CREATE TABLE " + groupName  + " (name varchar(50), previous double, current double, fullBottles integer, primary key (name));"; 
+				case 3: statement = "CREATE TABLE " + groupName  + " (name varchar(50), previous double, current double, fullBottles integer, primary key (name));";
 						break;
 			}
 			//pSta = conn.prepareStatement(statement);
 			//pSta.setString(1, groupName);
 			successful = sta.execute(statement);
 			//successful = pSta.execute();
-			conn.close();
 		}
 		catch(Exception e){
 			System.out.println(e);
