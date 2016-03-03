@@ -74,7 +74,7 @@ public class Connect {
 		Connection c;
 		boolean success = false;
 		try {
-			c = makeNewConnection("stagbar", "Nkucsc440");
+			c = makeNewMasterConnection("");
 			Statement sta = c.createStatement();
 			success = sta.execute("CREATE DATABASE " + name + ";");
 			c.close();
@@ -91,32 +91,24 @@ public class Connect {
 	 */
 	public boolean createMasterUser(String username, String password, String database) {
 		try {
-			//FIXME: Use existing connection.
-			Connection conn = makeNewMasterConnection(database);//have to connect to the database with an admin account
-
-			//to create a new user
-			boolean exists = doesUserExist(username, conn);
+			boolean exists = doesUserExist(username);
 			PreparedStatement pSta;
 
 			if(!exists) {
 				String createUserStatement = "CREATE USER ? @'%' IDENTIFIED BY ?;";
-				pSta = conn.prepareStatement(createUserStatement);
+				pSta = activeConnection.prepareStatement(createUserStatement);
 				pSta.setString(1, username);
 				pSta.setString(2, password);
 				pSta.execute();
 
 				//FIXME: This statement is not granting priveleges. I had to manually set priveleges in the DB to log in with a new user.
 				String grantPrivStatement = "GRANT ALL PRIVILEGES ON " + database + " TO ? @'%' IDENTIFIED BY ?;";
-				pSta = conn.prepareStatement(grantPrivStatement);
+				pSta = activeConnection.prepareStatement(grantPrivStatement);
 				pSta.setString(1, username);
 				pSta.setString(2, password);
 				pSta.execute();
 
-				conn.close();
 				return true;
-			}
-			else {
-				conn.close();
 			}
 		} catch(SQLException e) {
 			System.out.println(e);
@@ -148,7 +140,7 @@ public class Connect {
 	protected boolean deleteUser(String username) {
 		boolean succesful = false;
 		try {
-			Connection conn = makeNewConnection("stagbar", "Nkucsc440");//have to connect as admin.
+			Connection conn = makeNewMasterConnection("");//have to connect as admin.
 			String statement = "DROP USER ?;";
 			PreparedStatement pSta = conn.prepareStatement(statement);
 			pSta.setString(1, username);
