@@ -92,9 +92,9 @@ public class Connect {
 	public boolean createMasterUser(String username, String password, String database) {
 		try {
 			//FIXME: Use existing connection.
-			Connection conn = makeNewConnection("stagbar", "Nkucsc440", database);//have to connect to the database with an admin account
+			Connection conn = makeNewMasterConnection(database);//have to connect to the database with an admin account
+
 			//to create a new user
-			//Statement sta = conn.createStatement();
 			boolean exists = doesUserExist(username, conn);
 			PreparedStatement pSta;
 
@@ -111,9 +111,7 @@ public class Connect {
 				pSta.setString(1, username);
 				pSta.setString(2, password);
 				pSta.execute();
-				//sta.execute("create user " + "\'" + username + "\'@\'%\'" + " IDENTIFIED BY \'" + password + "\';" );
-				//sta.execute("grant all privileges on *.* to \'" + username
-				//+ "\'@\'%\' identified by \'" + password + "\';");
+
 				conn.close();
 				return true;
 			}
@@ -131,7 +129,8 @@ public class Connect {
 	 * @deprecated Temporary method. Unsecure.
 	 */
 	public boolean createUserConnection(String username, String password) {
-		activeConnection = makeNewConnection(username, password, "test");
+//		activeConnection = makeNewConnection(username, password, "test");
+		activeConnection = makeNewMasterConnection("test"); // TODO: Delete line after testing.
 		if(activeConnection != null) {
 			Application.getInstance().setConnection(activeConnection);
 			return true;
@@ -164,7 +163,6 @@ public class Connect {
 	}
 
 	//TODO: Delete after we discuss maintaining connections.
-
 	/** @deprecated defer to public method. */
 	private boolean doesUserExist(String username, Connection conn) throws SQLException {
 		String statement = "SELECT * FROM mysql.user WHERE user = ?;";
@@ -226,6 +224,14 @@ public class Connect {
 	 */
 	private Connection makeNewConnection(String username, String password) {
 		return makeNewConnection(username, password, "");
+	}
+
+	/**
+	 * Connect to database with master user.
+	 * @deprecated We should do this as little as possible.
+	 */
+	private Connection makeNewMasterConnection(String database){
+		return makeNewConnection("stagbar", "Nkucsc440", database);
 	}
 
 }
