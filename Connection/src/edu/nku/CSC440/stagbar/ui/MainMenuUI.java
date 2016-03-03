@@ -1,5 +1,7 @@
 package edu.nku.CSC440.stagbar.ui;
 
+import edu.nku.CSC440.stagbar.Application;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +19,9 @@ public class MainMenuUI {
 	public MainMenuUI() {
 
 		contentPane.setName("Main Menu");
+
+		if(!Application.getInstance().getUser().isAdmin())
+			disableAdminOnlyButtons();
 
 		inventoryButton.addActionListener(new ActionListener() {
 			@Override
@@ -52,6 +57,15 @@ public class MainMenuUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {onSales();}
 		});
+
+	}
+
+	private void disableAdminOnlyButtons() {
+		newAlcoholButton.setEnabled(false);
+		inventoryButton.setEnabled(false);
+		salesButton.setEnabled(false);
+		retireBeverageButton.setEnabled(false);
+		manageUsersButton.setEnabled(false);
 
 	}
 
