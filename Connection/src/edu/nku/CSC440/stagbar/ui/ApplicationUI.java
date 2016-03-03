@@ -1,5 +1,7 @@
 package edu.nku.CSC440.stagbar.ui;
 
+import edu.nku.CSC440.stagbar.Application;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -27,6 +29,9 @@ public class ApplicationUI {
 
 		LoginUI loginUI = new LoginUI(frame);
 		loginUI.setVisible(true);
+
+		if(!Application.getInstance().getUser().isAdmin())
+			mainMenuUI.disableAdminOnlyButtons();
 	}
 
 	public JFrame getFrame() {
