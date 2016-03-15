@@ -82,7 +82,8 @@ public class MainMenuUI {
 	}
 
 	private void onNewAlcohol() {
-
+		NewAlcoholUI newAlcoholUI = new NewAlcoholUI();
+		uiHacks.goToPanel(contentPane, newAlcoholUI.getContentPane());
 	}
 
 	private void onReports() {

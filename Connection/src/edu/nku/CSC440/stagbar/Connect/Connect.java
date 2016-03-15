@@ -34,7 +34,6 @@ public class Connect {
 			// We will have to write code to check that the input is an integer for previous/current on bottled beer anyway,
 			// we shouldn't need to verify it at the database level as well.
 			// It won't cause any problems to have empty fields for some of the drinks
-			// This also makes adds and especially
 
 			// The combined table would have previous double, current double, name &
 			// another 2 columns:
