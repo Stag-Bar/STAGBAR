@@ -1,6 +1,7 @@
 package edu.nku.CSC440.stagbar.Connect;
 
 import edu.nku.CSC440.stagbar.Application;
+import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
 
 import java.sql.*;
 
@@ -223,6 +224,39 @@ public class Connect {
 	 */
 	private Connection makeNewMasterConnection(String database){
 		return makeNewConnection("stagbar", "Nkucsc440", database);
+	}
+
+	/**
+	 * Saves a new Alcohol record.
+	 * Should be written in a way that can be called effectively once or in a loop.
+	 *
+	 * @return <code>true</code> if successful, <code>false</code> otherwise.
+	 */
+	public boolean saveAlcohol(Alcohol alcohol) {
+		//TODO: Save to database
+		return true;
+	}
+
+	/**
+	 * Updates an existing Alcohol record.
+	 * Should be written in a way that can be called effectively once or in a loop.
+	 *
+	 * @return <code>true</code> if successful, <code>false</code> otherwise.
+	 */
+	public boolean updateAlcohol(Alcohol alcohol) {
+		//TODO: Update in database
+		return true;
+	}
+
+	/**
+	 * Searches database for an Alcohol with given name.
+	 *
+	 * @param name
+	 * @return Alcohol with given name if found, otherwise returns <code>null</code>.
+	 */
+	public Alcohol findAlcoholByName(String name) {
+		//TODO: Search database for alcohol with given name
+		return null;
 	}
 
 }

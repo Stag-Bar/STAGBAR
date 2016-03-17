@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public class UserService {
 
-	private static UserService userService = new UserService();
+	private static final UserService userService = new UserService();
 
 	private UserService() {}
 
