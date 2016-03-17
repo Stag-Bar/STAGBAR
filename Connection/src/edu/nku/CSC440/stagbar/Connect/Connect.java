@@ -74,7 +74,7 @@ public class Connect {
 		Connection c;
 		boolean success = false;
 		try {
-			c = makeNewMasterConnection("");
+			c = makeNewMasterConnection(null);
 			Statement sta = c.createStatement();
 			success = sta.execute("CREATE DATABASE " + name + ";");
 			c.close();
@@ -136,7 +136,7 @@ public class Connect {
 	protected boolean deleteUser(String username) {
 		boolean succesful = false;
 		try {
-			Connection conn = makeNewMasterConnection("");//have to connect as admin.
+			Connection conn = makeNewMasterConnection(null);//have to connect as admin.
 			String statement = "DROP USER ?;";
 			PreparedStatement pSta = conn.prepareStatement(statement);
 			pSta.setString(1, username);
@@ -230,7 +230,7 @@ public class Connect {
 		Connection conn;
 		try {
 			Class.forName("com.mysql.jdbc.Driver"); // Register MySQL Driver. Needed?
-			String url = DATABASE_URL + "/" + dataBaseName;
+			String url = DATABASE_URL + null == dataBaseName ? "" : "/" + dataBaseName;
 			conn = DriverManager.getConnection(url, username, password);
 		} catch(SQLException e) {
 			conn = null;
@@ -249,7 +249,7 @@ public class Connect {
 	 * @deprecated
 	 */
 	private Connection makeNewConnection(String username, String password) {
-		return makeNewConnection(username, password, "");
+		return makeNewConnection(username, password, null);
 	}
 
 	/**
