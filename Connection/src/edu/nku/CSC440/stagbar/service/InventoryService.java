@@ -21,7 +21,6 @@ public class InventoryService {
 	public boolean saveNewAlcohol(String name, AlcoholType type, int bottles, double amount) {
 		Alcohol newAlcohol = new Alcohol(name, type, bottles, amount);
 
-		//TODO: save to database
 		return Connect.getInstance().saveAlcohol(newAlcohol);
 	}
 }

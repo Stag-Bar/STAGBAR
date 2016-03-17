@@ -8,13 +8,13 @@ import java.awt.*;
 import java.util.Arrays;
 
 public class CreateUserUI {
-	public static final String ERROR_CANNOT_SAVE = "Unable to save new user. Try again later.";
-	public static final String ERROR_PASSWORD_MATCH = "Password does not match the confirm password.";
-	public static final String ERROR_REQUIRED_FIELDS = "All fields must be filled.";
-	public static final String ERROR_USER_EXISTS = "A user of that name already exists.";
-	public static final String MESSAGE_NEW_USER = "New user %s has been created.";
-	public static final String TITLE_CANNOT_SAVE = "User Creation Failed";
-	public static final String TITLE_NEW_USER = "User Created";
+	private static final String ERROR_CANNOT_SAVE = "Unable to save new user. Try again later.";
+	private static final String ERROR_PASSWORD_MATCH = "Password does not match the confirm password.";
+	private static final String ERROR_REQUIRED_FIELDS = "All fields must be filled.";
+	private static final String ERROR_USER_EXISTS = "A user of that name already exists.";
+	private static final String MESSAGE_NEW_USER = "New user %s has been created.";
+	private static final String TITLE_CANNOT_SAVE = "User Creation Failed";
+	private static final String TITLE_NEW_USER = "User Created";
 	private JLabel confirmPasswordLabel;
 	private JPasswordField confirmPasswordPasswordField;
 	private JPanel contentPane;
@@ -63,12 +63,12 @@ public class CreateUserUI {
 	private void onOK() {
 		highlightEmptyFields();
 
-		// Check that all fields are filled.
+		// Check all fields are filled.
 		if(usernameTextField.getText().isEmpty() || 0 == passwordPasswordField.getPassword().length ||
 				0 == confirmPasswordPasswordField.getPassword().length || null == permissionLevelComboBox.getSelectedItem()) {
 			errorMessage.setText(ERROR_REQUIRED_FIELDS);
 		}
-		// Check that passwords match
+		// Check passwords match.
 		else if(!Arrays.equals(passwordPasswordField.getPassword(), confirmPasswordPasswordField.getPassword())) {
 			errorMessage.setText(ERROR_PASSWORD_MATCH);
 			passwordLabel.setForeground(Color.RED); // Color reset by highlightEmptyFields() on next OK.
@@ -76,14 +76,14 @@ public class CreateUserUI {
 			confirmPasswordPasswordField.selectAll();
 			confirmPasswordPasswordField.requestFocusInWindow();
 		}
-		// Check that username is unique in DB
+		// Check username is unique in database.
 		else if(userService.doesUserExist(usernameTextField.getText())) {
 			errorMessage.setText(ERROR_USER_EXISTS);
 			usernameLabel.setForeground(Color.RED);
 			usernameTextField.selectAll();
 			usernameTextField.requestFocusInWindow();
 		}
-		// Save user to DB
+		// Save user to database.
 		else if(userService.createNewUser(usernameTextField.getText(), passwordPasswordField.getPassword(), (PermissionLevel)permissionLevelComboBox.getSelectedItem())) {
 			// Display confirmation to user
 			JOptionPane.showMessageDialog(contentPane, String.format(MESSAGE_NEW_USER, usernameTextField.getText()), TITLE_NEW_USER, JOptionPane.INFORMATION_MESSAGE);

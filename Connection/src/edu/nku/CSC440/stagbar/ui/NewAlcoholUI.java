@@ -10,21 +10,27 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 public class NewAlcoholUI {
+	private static final String ERROR_CANNOT_SAVE = "Unable to save new alcohol. Try again later.";
+	private static final String ERROR_INVALID_QUANTITIES = "Invalid entry in Bottles/Amount fields.";
 	private static final String ERROR_NAME_NOT_UNIQUE = "An alcohol with that name already exists.";
-	private JButton OKButton;
+	private static final String ERROR_REQUIRED_FIELDS = "All fields must be filled.";
+	private static final String MESSAGE_NEW_ALCOHOL = "%s has been saved.";
+	private static final String TITLE_CANNOT_SAVE = "Alcohol Save Failed";
+	private static final String TITLE_NEW_ALCOHOL = "Save Successful";
 	private JFormattedTextField amountFormattedTextField;
 	private JFormattedTextField bottlesFormattedTextField;
 	private JPanel contentPane;
 	private JLabel errorMessage;
+	private JLabel nameLabel;
 	private JTextField nameTextField;
+	private JButton okButton;
 	private JComboBox<AlcoholType> typeComboBox;
 	private JLabel typeLabel;
-	private JLabel nameLabel;
 
 	public NewAlcoholUI() {
 		contentPane.setName("New Alcohol");
 
-		OKButton.addActionListener(e -> onOK());
+		okButton.addActionListener(e -> onOK());
 		typeComboBox.addItemListener(e -> {
 			if(e.getStateChange() == ItemEvent.SELECTED) {
 				toggleFields((AlcoholType)e.getItem());
@@ -61,31 +67,46 @@ public class NewAlcoholUI {
 	}
 
 	private void onOK() {
-		int bottles;
-		double amount;
+		int bottles = 0;
+		double amount = 0.0;
+		boolean validQuantities = true;
 
-		// Validate Fields
-		// TODO: Ensure valid values in bottles/amount (numbers only)
+		highlightEmptyFields();
+
 		try {
 			bottles = Integer.parseInt(bottlesFormattedTextField.getText());
 			amount = Double.parseDouble(amountFormattedTextField.getText());
 		} catch(NumberFormatException e) {
-			return; // UI should already have a red background indicator for invalid fields.
+			validQuantities = false;
 		}
 
-		// TODO: Check name is unique in database
-		if(!InventoryService.isNameUnique(nameTextField.getText())) {
-			//TODO: Highlight label
+		// Check name & type fields are filled.
+		if(nameTextField.getText().isEmpty() || null == typeComboBox.getSelectedItem()) {
+			errorMessage.setText(ERROR_REQUIRED_FIELDS);
+		}
+		// Check bottles & amount have valid values.
+		else if(!validQuantities) { // UI should already have a red background indicator for invalid fields.
+			errorMessage.setText(ERROR_INVALID_QUANTITIES);
+		}
+		// Check name is unique in database.
+		else if(!InventoryService.isNameUnique(nameTextField.getText())) {
+			nameLabel.setForeground(Color.RED);
 			errorMessage.setText(ERROR_NAME_NOT_UNIQUE);
 			nameTextField.selectAll();
 			nameTextField.requestFocusInWindow();
 		}
+		// Save alcohol to database.
+		else if(InventoryService.getInstance().saveNewAlcohol(nameTextField.getText(), (AlcoholType)typeComboBox.getSelectedItem(), bottles, amount)) {
+			// Display confirmation to user
+			JOptionPane.showMessageDialog(contentPane, String.format(MESSAGE_NEW_ALCOHOL, nameTextField.getText()), TITLE_NEW_ALCOHOL, JOptionPane.INFORMATION_MESSAGE);
 
-		// TODO: Check value selected for type
-
-		// Save
-		// TODO: Initiate save to database
-		InventoryService.getInstance().saveNewAlcohol(nameTextField.getText(), (AlcoholType)typeComboBox.getSelectedItem(), bottles, amount);
+			//TODO: Navigate user away from page.
+			okButton.setEnabled(false);
+			uiHacks.killMeThenGoToLastPage(contentPane);
+		}
+		else {
+			JOptionPane.showMessageDialog(contentPane, ERROR_CANNOT_SAVE, TITLE_CANNOT_SAVE, JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	private void toggleFields(AlcoholType type) {
