@@ -181,6 +181,43 @@ public class Connect {
 	}
 
 	/**
+	 * Searches database for an Alcohol with given name.
+	 *
+	 * @param name
+	 * @return Alcohol with given name if found, otherwise returns <code>null</code>.
+	 */
+	public Alcohol findAlcoholByName(String name) {
+		//TODO: Search database for alcohol with given name
+		return null;
+	}
+
+	private Connection getActiveConnection() {
+		if(!isConnectionValid()) // Lazy initialization in case connection is closed/corrupted.
+		{ activeConnection = makeNewMasterConnection(getDatabaseName()); }
+
+		return activeConnection;
+	}
+
+	private String getDatabaseName() {
+		if(null == databaseName) { databaseName = getDatabaseNameFromFile(); }
+
+		return databaseName;
+	}
+
+	/** Gets database name from file. */
+	private String getDatabaseNameFromFile() {
+		return "test";
+	}
+
+	private boolean isConnectionValid() {
+		try {
+			return null != activeConnection && activeConnection.isValid(300);
+		} catch(SQLException e) {
+			return false;
+		}
+	}
+
+	/**
 	 * Make a connection to the database.
 	 *
 	 * @param username
@@ -222,32 +259,6 @@ public class Connect {
 		return makeNewConnection("stagbar", "Nkucsc440", database);
 	}
 
-	private Connection getActiveConnection() {
-		if(!isConnectionValid()) // Lazy initialization in case connection is closed/corrupted.
-		{ activeConnection = makeNewMasterConnection(getDatabaseName()); }
-
-		return activeConnection;
-	}
-
-	private String getDatabaseName() {
-		if(null == databaseName) { databaseName = getDatabaseNameFromFile(); }
-
-		return databaseName;
-	}
-
-	/** Gets database name from file. */
-	private String getDatabaseNameFromFile() {
-		return "test";
-	}
-
-	private boolean isConnectionValid() {
-		try {
-			return null != activeConnection && activeConnection.isValid(300);
-		} catch(SQLException e) {
-			return false;
-		}
-	}
-
 	/**
 	 * Saves a new Alcohol record.
 	 * Should be written in a way that can be called effectively once or in a loop.
@@ -268,17 +279,6 @@ public class Connect {
 	public boolean updateAlcohol(Alcohol alcohol) {
 		//TODO: Update in database
 		return true;
-	}
-
-	/**
-	 * Searches database for an Alcohol with given name.
-	 *
-	 * @param name
-	 * @return Alcohol with given name if found, otherwise returns <code>null</code>.
-	 */
-	public Alcohol findAlcoholByName(String name) {
-		//TODO: Search database for alcohol with given name
-		return null;
 	}
 
 }
