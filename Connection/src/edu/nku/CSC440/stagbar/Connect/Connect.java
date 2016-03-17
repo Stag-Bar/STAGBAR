@@ -241,18 +241,6 @@ public class Connect {
 	}
 
 	/**
-	 * Make a connection to the database.
-	 *
-	 * @param username
-	 * @param password
-	 * @return Connection to database if successful, otherwise returns <code>null</code>.
-	 * @deprecated
-	 */
-	private Connection makeNewConnection(String username, String password) {
-		return makeNewConnection(username, password, null);
-	}
-
-	/**
 	 * Connect to database as master user.
 	 */
 	private Connection makeNewMasterConnection(String database){
