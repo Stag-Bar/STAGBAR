@@ -109,6 +109,7 @@ public class NewAlcoholUI {
 		}
 	}
 
+	/** Disable bottles/amount fields based on AlcoholType selected. */
 	private void toggleFields(AlcoholType type) {
 		switch(type) {
 			case SINGLE_SERVE:
@@ -128,6 +129,7 @@ public class NewAlcoholUI {
 			case SHELF:
 				bottlesFormattedTextField.setEnabled(true);
 				bottlesFormattedTextField.requestFocusInWindow();
+
 				amountFormattedTextField.setEnabled(true);
 				break;
 			default:
