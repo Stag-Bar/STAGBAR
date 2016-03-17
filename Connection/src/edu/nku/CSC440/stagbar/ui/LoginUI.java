@@ -70,6 +70,9 @@ public class LoginUI extends JDialog {
 			dispose();
 		}
 
+		password.selectAll();
+		password.requestFocusInWindow();
+
 		errorMessage.setText(INVALID_LOGIN);
 		pack();
 	}
