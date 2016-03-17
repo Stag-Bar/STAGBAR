@@ -1,8 +1,6 @@
 package edu.nku.CSC440.stagbar.ui;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainMenuUI {
 	private JPanel contentPane;
@@ -18,41 +16,13 @@ public class MainMenuUI {
 
 		contentPane.setName("Main Menu");
 
-		inventoryButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {onInventory();}
-		});
-
-		manageUsersButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {onManageUsers();}
-		});
-
-		mixedDrinksButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {onMixedDrinks();}
-		});
-
-		newAlcoholButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {onNewAlcohol();}
-		});
-
-		reportsButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {onReports();}
-		});
-
-		retireBeverageButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {onRetireBeverage();}
-		});
-
-		salesButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {onSales();}
-		});
-
+		inventoryButton.addActionListener(e -> onInventory());
+		manageUsersButton.addActionListener(e -> onManageUsers());
+		mixedDrinksButton.addActionListener(e -> onMixedDrinks());
+		newAlcoholButton.addActionListener(e -> onNewAlcohol());
+		reportsButton.addActionListener(e -> onReports());
+		retireBeverageButton.addActionListener(e -> onRetireBeverage());
+		salesButton.addActionListener(e -> onSales());
 	}
 
 	public void disableAdminOnlyButtons() {

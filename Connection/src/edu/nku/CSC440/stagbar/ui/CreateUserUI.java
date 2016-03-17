@@ -5,8 +5,6 @@ import edu.nku.CSC440.stagbar.service.UserService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Arrays;
 
 public class CreateUserUI {
@@ -24,7 +22,7 @@ public class CreateUserUI {
 	private JButton okButton;
 	private JLabel passwordLabel;
 	private JPasswordField passwordPasswordField;
-	private JComboBox permissionLevelComboBox;
+	private JComboBox<PermissionLevel> permissionLevelComboBox;
 	private JLabel permissionLevelLabel;
 	private UserService userService;
 	private JLabel usernameLabel;
@@ -35,16 +33,11 @@ public class CreateUserUI {
 
 		contentPane.setName("Create User");
 
-		okButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				onOK();
-			}
-		});
+		okButton.addActionListener(e -> onOK());
 	}
 
 	private void createUIComponents() {
-		permissionLevelComboBox = new JComboBox(PermissionLevel.values());
+		permissionLevelComboBox = new JComboBox<>(PermissionLevel.values());
 		permissionLevelComboBox.setSelectedIndex(-1);
 	}
 

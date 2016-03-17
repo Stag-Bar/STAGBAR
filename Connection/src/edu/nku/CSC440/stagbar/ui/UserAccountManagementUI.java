@@ -1,8 +1,6 @@
 package edu.nku.CSC440.stagbar.ui;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class UserAccountManagementUI {
 	private JPanel contentPane;
@@ -13,20 +11,9 @@ public class UserAccountManagementUI {
 	public UserAccountManagementUI() {
 		contentPane.setName("Manage Users");
 
-		createUserButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) { onCreateUser(); }
-		});
-
-		deleteUserButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) { onDeleteUser(); }
-		});
-
-		editUserPermissionsButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) { onEditPermissionsUser(); }
-		});
+		createUserButton.addActionListener(e -> onCreateUser());
+		deleteUserButton.addActionListener(e -> onDeleteUser());
+		editUserPermissionsButton.addActionListener(e -> onEditPermissionsUser());
 	}
 
 	public JPanel getContentPane() {
