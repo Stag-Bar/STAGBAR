@@ -1,6 +1,5 @@
 package edu.nku.CSC440.stagbar.ui;
 
-
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
