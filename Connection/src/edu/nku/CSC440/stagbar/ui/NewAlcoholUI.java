@@ -45,11 +45,13 @@ public class NewAlcoholUI {
 		NumberFormat integerNumberInstance = NumberFormat.getIntegerInstance();
 		bottlesFormattedTextField = new ImprovedFormattedTextField(integerNumberInstance, 0);
 		bottlesFormattedTextField.setHorizontalAlignment(SwingConstants.RIGHT);
+		bottlesFormattedTextField.setFocusLostBehavior(JFormattedTextField.PERSIST);
 		bottlesFormattedTextField.setEnabled(false);
 
 		NumberFormat decimalNumberInstance = new DecimalFormat();
 		amountFormattedTextField = new ImprovedFormattedTextField(decimalNumberInstance, 0);
 		amountFormattedTextField.setHorizontalAlignment(SwingConstants.RIGHT);
+		amountFormattedTextField.setFocusLostBehavior(JFormattedTextField.PERSIST);
 		amountFormattedTextField.setEnabled(false);
 	}
 
