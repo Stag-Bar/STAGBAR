@@ -219,7 +219,7 @@ public class Connect {
 		Connection conn;
 		try {
 			Class.forName("com.mysql.jdbc.Driver"); // Register MySQL Driver. Needed?
-			String url = DATABASE_URL + null == dataBaseName ? "" : "/" + dataBaseName;
+			String url = DATABASE_URL + (null == dataBaseName ? "" : "/" + dataBaseName);
 			conn = DriverManager.getConnection(url, username, password);
 		} catch(SQLException e) {
 			conn = null;
