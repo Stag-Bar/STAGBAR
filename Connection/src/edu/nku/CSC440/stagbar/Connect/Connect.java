@@ -91,10 +91,9 @@ public class Connect {
 	 */
 	public boolean createMasterUser(String username, String password, String database) {
 		try {
-			boolean exists = doesUserExist(username);
 			PreparedStatement pSta;
 
-			if(!exists) {
+			if(!doesUserExist(username)) {
 				String createUserStatement = "CREATE USER ? @'%' IDENTIFIED BY ?;";
 				pSta = getActiveConnection().prepareStatement(createUserStatement);
 				pSta.setString(1, username);
@@ -148,16 +147,6 @@ public class Connect {
 			System.out.println(e);
 		}
 		return succesful;
-	}
-
-	//TODO: Delete after we discuss maintaining connections.
-	/** @deprecated defer to public method. */
-	private boolean doesUserExist(String username, Connection conn) throws SQLException {
-		String statement = "SELECT * FROM mysql.user WHERE user = ?;";
-		PreparedStatement pSta = conn.prepareStatement(statement);
-		pSta.setString(1, username);
-		ResultSet checkResults = pSta.executeQuery();
-		return checkResults.next();
 	}
 
 	/**
