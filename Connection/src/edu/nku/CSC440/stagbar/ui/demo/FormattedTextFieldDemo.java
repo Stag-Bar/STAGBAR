@@ -13,6 +13,7 @@ import java.text.NumberFormat;
 /**
  * See http://stackoverflow.com/q/1313390/1076463
  */
+@Deprecated
 public class FormattedTextFieldDemo {
 	public static void main( String[] args ) {
 		EventQueue.invokeLater(new Runnable() {
