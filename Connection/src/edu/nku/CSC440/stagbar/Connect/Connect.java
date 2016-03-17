@@ -1,6 +1,5 @@
 package edu.nku.CSC440.stagbar.Connect;
 
-import edu.nku.CSC440.stagbar.Application;
 import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
 
 import java.sql.*;
@@ -10,6 +9,7 @@ public class Connect {
 	private static final String DATABASE_URL = "jdbc:mysql://stagbar.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306";
 	private static Connect connect = new Connect();
 	private Connection activeConnection;
+	private String databaseName;
 
 	private Connect() {}
 
@@ -96,14 +96,14 @@ public class Connect {
 
 			if(!exists) {
 				String createUserStatement = "CREATE USER ? @'%' IDENTIFIED BY ?;";
-				pSta = activeConnection.prepareStatement(createUserStatement);
+				pSta = getActiveConnection().prepareStatement(createUserStatement);
 				pSta.setString(1, username);
 				pSta.setString(2, password);
 				pSta.execute();
 
 				//FIXME: This statement is not granting priveleges. I had to manually set priveleges in the DB to log in with a new user.
 				String grantPrivStatement = "GRANT ALL PRIVILEGES ON " + database + " TO ? @'%' IDENTIFIED BY ?;";
-				pSta = activeConnection.prepareStatement(grantPrivStatement);
+				pSta = getActiveConnection().prepareStatement(grantPrivStatement);
 				pSta.setString(1, username);
 				pSta.setString(2, password);
 				pSta.execute();
@@ -119,16 +119,12 @@ public class Connect {
 	/**
 	 * @return <code>true</code> if given username & password can connect to database
 	 * @deprecated Temporary method. Unsecure.
+	 * User does not need connection if we use a single login from system to database.
 	 */
 	public boolean createUserConnection(String username, String password) {
-//		activeConnection = makeNewConnection(username, password, "test");
-		activeConnection = makeNewMasterConnection("test"); // TODO: Delete line after testing.
-		if(activeConnection != null) {
-			Application.getInstance().setConnection(activeConnection);
-			return true;
-		}
-
-		return false;
+//		activeConnection = makeNewConnection(username, password, getDatabaseName());
+		activeConnection = makeNewMasterConnection(getDatabaseName()); // TODO: Delete line after testing.
+		return activeConnection != null;
 	}
 
 	/**
@@ -175,7 +171,7 @@ public class Connect {
 	public boolean doesUserExist(String username) {
 		String statement = "SELECT * FROM mysql.user WHERE user = ?;";
 		try {
-			PreparedStatement pSta = activeConnection.prepareStatement(statement);
+			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
 			pSta.setString(1, username);
 			ResultSet checkResults = pSta.executeQuery();
 			return checkResults.next();
@@ -213,17 +209,43 @@ public class Connect {
 	 * @param username
 	 * @param password
 	 * @return Connection to database if successful, otherwise returns <code>null</code>.
+	 * @deprecated
 	 */
 	private Connection makeNewConnection(String username, String password) {
 		return makeNewConnection(username, password, "");
 	}
 
 	/**
-	 * Connect to database with master user.
-	 * @deprecated We should do this as little as possible.
+	 * Connect to database as master user.
 	 */
 	private Connection makeNewMasterConnection(String database){
 		return makeNewConnection("stagbar", "Nkucsc440", database);
+	}
+
+	private Connection getActiveConnection() {
+		if(!isConnectionValid()) // Lazy initialization in case connection is closed/corrupted.
+		{ activeConnection = makeNewMasterConnection(getDatabaseName()); }
+
+		return activeConnection;
+	}
+
+	private String getDatabaseName() {
+		if(null == databaseName) { databaseName = getDatabaseNameFromFile(); }
+
+		return databaseName;
+	}
+
+	/** Gets database name from file. */
+	private String getDatabaseNameFromFile() {
+		return "test";
+	}
+
+	private boolean isConnectionValid() {
+		try {
+			return null != activeConnection && activeConnection.isValid(300);
+		} catch(SQLException e) {
+			return false;
+		}
 	}
 
 	/**
