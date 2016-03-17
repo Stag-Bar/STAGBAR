@@ -61,7 +61,7 @@ public class Connect {
 			successful = sta.execute(statement);
 			//successful = pSta.execute();
 		} catch(Exception e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
 		return successful;
 	}
@@ -110,7 +110,7 @@ public class Connect {
 				return true;
 			}
 		} catch(SQLException e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
 		return false;
 	}
@@ -119,6 +119,7 @@ public class Connect {
 	 * @return <code>true</code> if given username & password can connect to database
 	 * @deprecated Temporary method. Unsecure.
 	 * User does not need connection if we use a single login from system to database.
+	 * TODO: Replace with method to check against custom user table.
 	 */
 	public boolean createUserConnection(String username, String password) {
 //		activeConnection = makeNewConnection(username, password, getDatabaseName());
