@@ -15,10 +15,10 @@ public class Alcohol {
 	private int alcoholId;
 	private String name;
 	private LocalDate retireDate;
-	private AlcoholType type; //TODO: Update to use custom types
+	private CustomAlcoholType type; //TODO: Update to use custom types
 
 
-	public Alcohol(int alcoholId, String name, AlcoholType type, LocalDate retireDate) {
+	public Alcohol(int alcoholId, String name, CustomAlcoholType type, LocalDate retireDate) {
 		this.alcoholId = alcoholId;
 		this.name = name;
 		this.type = type;
@@ -59,11 +59,11 @@ public class Alcohol {
 		this.retireDate = retireDate;
 	}
 
-	public AlcoholType getType() {
+	public CustomAlcoholType getType() {
 		return type;
 	}
 
-	public void setType(AlcoholType type) {
+	public void setType(CustomAlcoholType type) {
 		this.type = type;
 	}
 

@@ -3,13 +3,13 @@ package edu.nku.CSC440.stagbar.dataaccess;
 /** User created type. */
 public class CustomAlcoholType {
 	public static final int NEW_CUSTOM_TYPE_ID = -1;
-	private String Name;
 	private AlcoholType kind;
+	private String name;
 	private int typeId;
 
 	public CustomAlcoholType(int typeId, String name, AlcoholType kind) {
 		this.typeId = typeId;
-		Name = name;
+		this.name = name;
 		this.kind = kind;
 	}
 
@@ -33,11 +33,11 @@ public class CustomAlcoholType {
 	}
 
 	public String getName() {
-		return Name;
+		return name;
 	}
 
 	public void setName(String name) {
-		Name = name;
+		this.name = name;
 	}
 
 	public int getTypeId() {
@@ -51,5 +51,10 @@ public class CustomAlcoholType {
 	@Override
 	public int hashCode() {
 		return getTypeId();
+	}
+
+	@Override
+	public String toString() {
+		return getName();
 	}
 }

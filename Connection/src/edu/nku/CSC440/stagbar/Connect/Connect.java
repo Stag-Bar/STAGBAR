@@ -1,5 +1,6 @@
 package edu.nku.CSC440.stagbar.Connect;
 
+import edu.nku.CSC440.stagbar.Connect.mock.ConnectMock;
 import edu.nku.CSC440.stagbar.dataaccess.*;
 
 import java.sql.*;
@@ -212,6 +213,10 @@ public class Connect {
 	public Alcohol findAlcoholByName(String name) {
 		//TODO: Search database for alcohol with given name
 		return null;
+	}
+
+	public Set<CustomAlcoholType> findAllCustomAlcoholTypes() {
+		return ConnectMock.findAllCustomAlcoholTypes();
 	}
 
 	/** Searches database for all mixed drinks and their corresponding ingredients. */

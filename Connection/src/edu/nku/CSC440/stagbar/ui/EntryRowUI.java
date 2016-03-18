@@ -21,7 +21,7 @@ public class EntryRowUI {
 
 		this.alcohol = alcohol;
 		alcoholLabel.setText(alcohol.getName());
-		toggleFields(alcohol.getType());
+		toggleFields(alcohol.getType().getKind());
 	}
 
 	private void createUIComponents() {

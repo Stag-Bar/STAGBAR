@@ -2,7 +2,7 @@ package edu.nku.CSC440.stagbar.service;
 
 import edu.nku.CSC440.stagbar.Connect.Connect;
 import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
-import edu.nku.CSC440.stagbar.dataaccess.AlcoholType;
+import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
 import edu.nku.CSC440.stagbar.dataaccess.Entry;
 
 import java.time.LocalDate;
@@ -39,7 +39,7 @@ public class InventoryService {
 	}
 
 	//TODO: Should we allow initial amounts to be set for alcohol or wait until inventory is done???
-	public boolean saveNewAlcohol(String name, AlcoholType type, int bottles, double amount) {
+	public boolean saveNewAlcohol(String name, CustomAlcoholType type, int bottles, double amount) {
 		Alcohol newAlcohol = new Alcohol(Alcohol.NEW_ALCOHOL_ID, name, type, null);
 
 		return Connect.getInstance().saveAlcohol(newAlcohol);

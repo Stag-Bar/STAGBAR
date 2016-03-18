@@ -1,13 +1,16 @@
 package edu.nku.CSC440.stagbar.ui;
 
 import edu.nku.CSC440.stagbar.dataaccess.AlcoholType;
+import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
 import edu.nku.CSC440.stagbar.service.InventoryService;
+import edu.nku.CSC440.stagbar.service.TypeService;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Set;
 
 public class NewAlcoholUI {
 	private static final String ERROR_CANNOT_SAVE = "Unable to save new alcohol. Try again later.";
@@ -24,7 +27,7 @@ public class NewAlcoholUI {
 	private JLabel nameLabel;
 	private JTextField nameTextField;
 	private JButton okButton;
-	private JComboBox<AlcoholType> typeComboBox; //TODO: Update to use custom types
+	private JComboBox<CustomAlcoholType> typeComboBox; //TODO: Update to use custom types
 	private JLabel typeLabel;
 
 	public NewAlcoholUI() {
@@ -39,7 +42,8 @@ public class NewAlcoholUI {
 	}
 
 	private void createUIComponents() {
-		typeComboBox = new JComboBox<>(AlcoholType.values());
+		Set<CustomAlcoholType> allCustomAlcoholTypes = TypeService.getInstance().getAllCustomAlcoholTypes();
+		typeComboBox = new JComboBox<>((CustomAlcoholType[])allCustomAlcoholTypes.toArray());
 		typeComboBox.setSelectedIndex(-1);
 
 		NumberFormat integerNumberInstance = NumberFormat.getIntegerInstance();
@@ -98,7 +102,7 @@ public class NewAlcoholUI {
 			nameTextField.requestFocusInWindow();
 		}
 		// Save alcohol to database.
-		else if(InventoryService.getInstance().saveNewAlcohol(nameTextField.getText(), (AlcoholType)typeComboBox.getSelectedItem(), bottles, amount)) {
+		else if(InventoryService.getInstance().saveNewAlcohol(nameTextField.getText(), (CustomAlcoholType)typeComboBox.getSelectedItem(), bottles, amount)) {
 			// Display confirmation to user
 			JOptionPane.showMessageDialog(contentPane, String.format(MESSAGE_NEW_ALCOHOL, nameTextField.getText()), TITLE_NEW_ALCOHOL, JOptionPane.INFORMATION_MESSAGE);
 
