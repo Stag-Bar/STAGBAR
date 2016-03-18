@@ -28,16 +28,8 @@ public class CustomAlcoholType {
 		return kind;
 	}
 
-	public void setKind(AlcoholType kind) {
-		this.kind = kind;
-	}
-
 	public String getName() {
 		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public int getTypeId() {
