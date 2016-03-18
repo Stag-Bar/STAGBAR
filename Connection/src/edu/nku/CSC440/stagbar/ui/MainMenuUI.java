@@ -4,6 +4,7 @@ import javax.swing.*;
 
 public class MainMenuUI {
 	private JPanel contentPane;
+	private JButton deliveriesButton;
 	private JButton inventoryButton;
 	private JButton manageUsersButton;
 	private JButton mixedDrinksButton;
@@ -23,6 +24,7 @@ public class MainMenuUI {
 		reportsButton.addActionListener(e -> onReports());
 		retireBeverageButton.addActionListener(e -> onRetireBeverage());
 		salesButton.addActionListener(e -> onSales());
+		deliveriesButton.addActionListener(e -> onDeliveries());
 	}
 
 	public void disableAdminOnlyButtons() {
@@ -36,6 +38,11 @@ public class MainMenuUI {
 
 	public JPanel getContentPane() {
 		return contentPane;
+	}
+
+	private void onDeliveries() {
+		DeliveryUI deliveryUI = new DeliveryUI();
+		uiHacks.goToPanel(contentPane, deliveryUI.getContentPane());
 	}
 
 	private void onInventory() {
