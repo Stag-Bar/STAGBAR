@@ -2,17 +2,22 @@ package edu.nku.CSC440.stagbar.ui;
 
 import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
 import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
+import edu.nku.CSC440.stagbar.dataaccess.Entry;
 import edu.nku.CSC440.stagbar.service.AlcoholService;
 import edu.nku.CSC440.stagbar.service.TypeService;
 
 import javax.swing.*;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class InventoryUI {
 	Map<CustomAlcoholType, TypePaneUI> typePaneUIMap;
 	private JPanel contentPane;
+	private JLabel errorMessage;
+	private JButton okButton;
 	private JPanel scrollPane;
 
 	public InventoryUI() {
@@ -21,6 +26,8 @@ public class InventoryUI {
 		typePaneUIMap = new HashMap<>();
 
 		populateInventoryByType();
+
+		okButton.addActionListener(e -> onOK());
 	}
 
 	private void createUIComponents() {
@@ -32,6 +39,23 @@ public class InventoryUI {
 		return contentPane;
 	}
 
+	public Set<Entry> getEntries() {
+		Set<Entry> results = new HashSet<>();
+		for(TypePaneUI typePaneUI : typePaneUIMap.values())
+			results.addAll(typePaneUI.getEntries());
+		return results;
+	}
+
+	private void onOK() {
+		try {
+			AlcoholService.getInstance().saveInventory(getEntries());
+			okButton.setEnabled(false);
+			uiHacks.killMeThenGoToLastPage(contentPane);
+		} catch(IllegalStateException e) {
+			errorMessage.setText("Inventory entry incomplete.");
+		}
+	}
+
 	private void populateInventoryByType() {
 		for(CustomAlcoholType type : TypeService.getInstance().getAllCustomAlcoholTypes()) {
 			TypePaneUI typePaneUI = new TypePaneUI(type);
@@ -39,6 +63,8 @@ public class InventoryUI {
 			for(Alcohol alcohol : AlcoholService.getInstance().getAlcoholByType(type, LocalDate.now(), LocalDate.now())) {
 				typePaneUI.addEntryRow(alcohol);
 			}
+
+			if(!typePaneUIMap.isEmpty()) scrollPane.add(new JSeparator(JSeparator.HORIZONTAL));
 
 			typePaneUIMap.put(type, typePaneUI);
 			scrollPane.add(typePaneUI.getContentPane());

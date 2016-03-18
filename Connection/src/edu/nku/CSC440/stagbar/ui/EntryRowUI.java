@@ -5,6 +5,7 @@ import edu.nku.CSC440.stagbar.dataaccess.AlcoholType;
 import edu.nku.CSC440.stagbar.dataaccess.Entry;
 
 import javax.swing.*;
+import java.awt.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
@@ -56,12 +57,14 @@ public class EntryRowUI {
 	public Entry getEntry() {
 		int bottles;
 		double amount;
+		alcoholLabel.setForeground(Color.BLACK);
 
 		try {
 			bottles = Integer.parseInt(bottlesFormattedTextField.getText());
 			amount = Double.parseDouble(amountFormattedTextField.getText());
 		} catch(NumberFormatException e) {
-			throw new IllegalArgumentException(e);
+			alcoholLabel.setForeground(Color.RED);
+			throw new IllegalStateException(e);
 		}
 
 		return new Entry(alcohol.getAlcoholId(), bottles, amount, LocalDate.now());
