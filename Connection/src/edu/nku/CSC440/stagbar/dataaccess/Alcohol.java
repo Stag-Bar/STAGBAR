@@ -70,4 +70,9 @@ public class Alcohol {
 		return getAlcoholId();
 	}
 
+	@Override
+	public String toString(){
+		return name;
+	}
+
 }

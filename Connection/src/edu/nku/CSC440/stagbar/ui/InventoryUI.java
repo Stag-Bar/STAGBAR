@@ -13,11 +13,26 @@ import java.util.Map;
 public class InventoryUI {
 	Map<CustomAlcoholType, TypePaneUI> typePaneUIMap;
 	private JPanel contentPane;
-	private JScrollPane scrollPane;
+	private JPanel scrollPane;
 
 	public InventoryUI() {
+		contentPane.setName("Inventory");
+
 		typePaneUIMap = new HashMap<>();
 
+		populateInventoryByType();
+	}
+
+	private void createUIComponents() {
+		scrollPane = new JPanel();
+		scrollPane.setLayout(new BoxLayout(scrollPane, BoxLayout.Y_AXIS));
+	}
+
+	public JPanel getContentPane() {
+		return contentPane;
+	}
+
+	private void populateInventoryByType() {
 		for(CustomAlcoholType type : TypeService.getInstance().getAllCustomAlcoholTypes()) {
 			TypePaneUI typePaneUI = new TypePaneUI(type);
 
@@ -28,9 +43,5 @@ public class InventoryUI {
 			typePaneUIMap.put(type, typePaneUI);
 			scrollPane.add(typePaneUI.getContentPane());
 		}
-	}
-
-	public JPanel getContentPane() {
-		return contentPane;
 	}
 }

@@ -26,13 +26,13 @@ public class EntryRowUI {
 
 	private void createUIComponents() {
 		NumberFormat integerNumberInstance = NumberFormat.getIntegerInstance();
-		bottlesFormattedTextField = new ImprovedFormattedTextField(integerNumberInstance, 0);
+		bottlesFormattedTextField = new ImprovedFormattedTextField(integerNumberInstance, null);
 		bottlesFormattedTextField.setHorizontalAlignment(SwingConstants.RIGHT);
 		bottlesFormattedTextField.setFocusLostBehavior(JFormattedTextField.PERSIST);
 		bottlesFormattedTextField.setEnabled(false);
 
 		NumberFormat decimalNumberInstance = new DecimalFormat();
-		amountFormattedTextField = new ImprovedFormattedTextField(decimalNumberInstance, 0);
+		amountFormattedTextField = new ImprovedFormattedTextField(decimalNumberInstance, null);
 		amountFormattedTextField.setHorizontalAlignment(SwingConstants.RIGHT);
 		amountFormattedTextField.setFocusLostBehavior(JFormattedTextField.PERSIST);
 		amountFormattedTextField.setEnabled(false);

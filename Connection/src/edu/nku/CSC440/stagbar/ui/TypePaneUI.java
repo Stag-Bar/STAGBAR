@@ -29,6 +29,11 @@ public class TypePaneUI {
 		rowPane.add(entryRow.getContentPane());
 	}
 
+	private void createUIComponents() {
+		rowPane = new JPanel();
+		rowPane.setLayout(new BoxLayout(rowPane, BoxLayout.Y_AXIS));
+	}
+
 	public JPanel getContentPane() {
 		return contentPane;
 	}
@@ -49,6 +54,11 @@ public class TypePaneUI {
 	public void removeEntryRow(int alcoholId) {
 		EntryRowUI entryRow = rowUIMap.remove(alcoholId);
 		rowPane.remove(entryRow.getContentPane());
+	}
+
+	@Override
+	public String toString() {
+		return type + " Pane";
 	}
 
 }
