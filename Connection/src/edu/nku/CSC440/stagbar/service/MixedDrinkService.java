@@ -11,12 +11,12 @@ import java.util.Set;
 
 public class MixedDrinkService {
 
-	private static final MixedDrinkService mixedDrinkService = new MixedDrinkService();
+	private static final MixedDrinkService MIXED_DRINK_SERVICE = new MixedDrinkService();
 
 	private MixedDrinkService() {}
 
 	public static MixedDrinkService getInstance() {
-		return mixedDrinkService;
+		return MIXED_DRINK_SERVICE;
 	}
 
 	/**

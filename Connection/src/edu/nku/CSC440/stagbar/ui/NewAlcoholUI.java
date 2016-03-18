@@ -2,7 +2,7 @@ package edu.nku.CSC440.stagbar.ui;
 
 import edu.nku.CSC440.stagbar.dataaccess.AlcoholType;
 import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
-import edu.nku.CSC440.stagbar.service.InventoryService;
+import edu.nku.CSC440.stagbar.service.AlcoholService;
 import edu.nku.CSC440.stagbar.service.TypeService;
 
 import javax.swing.*;
@@ -95,14 +95,14 @@ public class NewAlcoholUI {
 			errorMessage.setText(ERROR_INVALID_QUANTITIES);
 		}
 		// Check name is unique in database.
-		else if(!InventoryService.isNameUnique(nameTextField.getText())) {
+		else if(!AlcoholService.isNameUnique(nameTextField.getText())) {
 			nameLabel.setForeground(Color.RED);
 			errorMessage.setText(ERROR_NAME_NOT_UNIQUE);
 			nameTextField.selectAll();
 			nameTextField.requestFocusInWindow();
 		}
 		// Save alcohol to database.
-		else if(InventoryService.getInstance().saveNewAlcohol(nameTextField.getText(), (CustomAlcoholType)typeComboBox.getSelectedItem(), bottles, amount)) {
+		else if(AlcoholService.getInstance().saveNewAlcohol(nameTextField.getText(), (CustomAlcoholType)typeComboBox.getSelectedItem(), bottles, amount)) {
 			// Display confirmation to user
 			JOptionPane.showMessageDialog(contentPane, String.format(MESSAGE_NEW_ALCOHOL, nameTextField.getText()), TITLE_NEW_ALCOHOL, JOptionPane.INFORMATION_MESSAGE);
 

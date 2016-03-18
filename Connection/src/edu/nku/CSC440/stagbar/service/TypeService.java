@@ -7,12 +7,12 @@ import java.util.Set;
 
 public class TypeService {
 
-	private static final TypeService typeService = new TypeService();
+	private static final TypeService TYPE_SERVICE = new TypeService();
 
 	private TypeService() {}
 
 	public static TypeService getInstance() {
-		return typeService;
+		return TYPE_SERVICE;
 	}
 
 	// TODO: Add methods for handling custom types.

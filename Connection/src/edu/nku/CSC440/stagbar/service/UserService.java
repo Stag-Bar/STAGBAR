@@ -20,12 +20,12 @@ import java.util.Set;
  */
 public class UserService {
 
-	private static final UserService userService = new UserService();
+	private static final UserService USER_SERVICE = new UserService();
 
 	private UserService() {}
 
 	public static UserService getInstance() {
-		return userService;
+		return USER_SERVICE;
 	}
 
 	/**

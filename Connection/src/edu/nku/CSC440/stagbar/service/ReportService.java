@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class ReportService {
 
-	private static final ReportService reportService = new ReportService();
+	private static final ReportService REPORT_SERVICE = new ReportService();
 
 	private ReportService() {}
 
@@ -50,7 +50,7 @@ public class ReportService {
 	}
 
 	public ReportService getInstance() {
-		return reportService;
+		return REPORT_SERVICE;
 	}
 
 }

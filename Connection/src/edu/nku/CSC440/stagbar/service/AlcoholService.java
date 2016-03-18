@@ -8,14 +8,14 @@ import edu.nku.CSC440.stagbar.dataaccess.Entry;
 import java.time.LocalDate;
 import java.util.Set;
 
-public class InventoryService {
+public class AlcoholService {
 
-	private static final InventoryService inventoryService = new InventoryService();
+	private static final AlcoholService ALCOHOL_SERVICE = new AlcoholService();
 
-	private InventoryService() {}
+	private AlcoholService() {}
 
-	public static InventoryService getInstance() {
-		return inventoryService;
+	public static AlcoholService getInstance() {
+		return ALCOHOL_SERVICE;
 	}
 
 	public static boolean isNameUnique(String name) {
