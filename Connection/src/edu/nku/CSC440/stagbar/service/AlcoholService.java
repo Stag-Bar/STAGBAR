@@ -22,6 +22,10 @@ public class AlcoholService {
 		return null == Connect.getInstance().findAlcoholByName(name);
 	}
 
+	public Set<Alcohol> getAlcoholByType(CustomAlcoholType type, LocalDate startDate, LocalDate endDate) {
+		return Connect.getInstance().findActiveAlcoholByType(type, startDate, endDate);
+	}
+
 	public boolean retireAlcohol(Alcohol alcohol) {
 		return Connect.getInstance().retireAlcohol(alcohol.getAlcoholId(), LocalDate.now());
 	}

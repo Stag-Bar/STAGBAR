@@ -39,7 +39,8 @@ public class MainMenuUI {
 	}
 
 	private void onInventory() {
-
+		InventoryUI inventoryUI = new InventoryUI();
+		uiHacks.goToPanel(contentPane, inventoryUI.getContentPane());
 	}
 
 	private void onManageUsers() {

@@ -204,6 +204,10 @@ public class Connect {
 		}
 	}
 
+	public Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type, LocalDate startDate, LocalDate endDate) {
+		return ConnectMock.findActiveAlcoholByType(type, startDate, endDate);
+	}
+
 	/** Searches database for alcohol whose retire date is null or after the start date & whose creation date is before the end date. */
 	public Set<Alcohol> findActiveAlcoholForDateRange(LocalDate startDate, LocalDate endDate) {
 		//TODO: Find active alcohol

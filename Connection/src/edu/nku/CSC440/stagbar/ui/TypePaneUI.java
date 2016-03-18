@@ -5,6 +5,7 @@ import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
 import edu.nku.CSC440.stagbar.dataaccess.Entry;
 
 import javax.swing.*;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -19,6 +20,7 @@ public class TypePaneUI {
 	public TypePaneUI(CustomAlcoholType type) {
 		this.type = type;
 		typeLabel.setText(type.getName());
+		rowUIMap = new HashMap<>();
 	}
 
 	public void addEntryRow(Alcohol alcohol) {

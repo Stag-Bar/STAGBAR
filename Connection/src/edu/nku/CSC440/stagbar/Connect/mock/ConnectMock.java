@@ -12,6 +12,16 @@ import java.util.Set;
 public class ConnectMock {
 	private ConnectMock() {}
 
+	public static Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type, LocalDate startDate, LocalDate endDate) {
+		Set<Alcohol> results = new HashSet<>();
+		for(Alcohol alcohol : findActiveAlcoholForDateRange(startDate, endDate)) {
+			if(alcohol.getType().equals(type)) {
+				results.add(alcohol);
+			}
+		}
+		return results;
+	}
+
 	/** Searches for alcohol whose retire date is null or after the start date & whose creation date is before the end date. */
 	public static Set<Alcohol> findActiveAlcoholForDateRange(LocalDate startDate, LocalDate endDate) {
 		Set<Alcohol> results = new HashSet<>();
