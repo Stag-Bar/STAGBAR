@@ -40,7 +40,7 @@ public class AlcoholService {
 
 	//TODO: Should we allow initial amounts to be set for alcohol or wait until inventory is done???
 	public boolean saveNewAlcohol(String name, CustomAlcoholType type, int bottles, double amount) {
-		Alcohol newAlcohol = new Alcohol(Alcohol.NEW_ALCOHOL_ID, name, type, null);
+		Alcohol newAlcohol = new Alcohol(Alcohol.NEW_ALCOHOL_ID, name, type, LocalDate.now(), null);
 
 		return Connect.getInstance().saveAlcohol(newAlcohol);
 	}

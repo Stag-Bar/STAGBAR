@@ -204,6 +204,12 @@ public class Connect {
 		}
 	}
 
+	/** Searches database for alcohol whose retire date is null or after the start date & whose creation date is before the end date. */
+	public Set<Alcohol> findActiveAlcoholForDateRange(LocalDate startDate, LocalDate endDate) {
+		//TODO: Find active alcohol
+		return ConnectMock.findActiveAlcoholForDateRange(startDate, endDate);
+	}
+
 	/**
 	 * Searches database for an Alcohol with given name.
 	 *
@@ -215,7 +221,13 @@ public class Connect {
 		return null;
 	}
 
+	public Set<Alcohol> findAllAlcohol() {
+		return findActiveAlcoholForDateRange(LocalDate.MIN, LocalDate.MAX);
+	}
+
+	/** Pulls all custom types from database. */
 	public Set<CustomAlcoholType> findAllCustomAlcoholTypes() {
+		//TODO: find custom types
 		return ConnectMock.findAllCustomAlcoholTypes();
 	}
 

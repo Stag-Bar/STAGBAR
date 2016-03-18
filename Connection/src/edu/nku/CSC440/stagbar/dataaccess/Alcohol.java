@@ -13,15 +13,17 @@ public class Alcohol {
 	 * Ex. Bud Light on tap & in bottle or a liquor whose bottle size changes.
 	 */
 	private int alcoholId;
+	private LocalDate creationDate;
 	private String name;
 	private LocalDate retireDate;
-	private CustomAlcoholType type; //TODO: Update to use custom types
+	private CustomAlcoholType type;
 
 
-	public Alcohol(int alcoholId, String name, CustomAlcoholType type, LocalDate retireDate) {
+	public Alcohol(int alcoholId, String name, CustomAlcoholType type, LocalDate creationDate, LocalDate retireDate) {
 		this.alcoholId = alcoholId;
 		this.name = name;
 		this.type = type;
+		this.creationDate = creationDate;
 		this.retireDate = retireDate;
 	}
 
@@ -43,12 +45,12 @@ public class Alcohol {
 		this.alcoholId = alcoholId;
 	}
 
-	public String getName() {
-		return name;
+	public LocalDate getCreationDate() {
+		return creationDate;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getName() {
+		return name;
 	}
 
 	public LocalDate getRetireDate() {
@@ -61,10 +63,6 @@ public class Alcohol {
 
 	public CustomAlcoholType getType() {
 		return type;
-	}
-
-	public void setType(CustomAlcoholType type) {
-		this.type = type;
 	}
 
 	@Override

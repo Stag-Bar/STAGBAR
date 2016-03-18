@@ -27,7 +27,7 @@ public class NewAlcoholUI {
 	private JLabel nameLabel;
 	private JTextField nameTextField;
 	private JButton okButton;
-	private JComboBox<CustomAlcoholType> typeComboBox; //TODO: Update to use custom types
+	private JComboBox<CustomAlcoholType> typeComboBox;
 	private JLabel typeLabel;
 
 	public NewAlcoholUI() {
@@ -36,14 +36,14 @@ public class NewAlcoholUI {
 		okButton.addActionListener(e -> onOK());
 		typeComboBox.addItemListener(e -> {
 			if(e.getStateChange() == ItemEvent.SELECTED) {
-				toggleFields((AlcoholType)e.getItem());
+				toggleFields(((CustomAlcoholType)e.getItem()).getKind());
 			}
 		});
 	}
 
 	private void createUIComponents() {
 		Set<CustomAlcoholType> allCustomAlcoholTypes = TypeService.getInstance().getAllCustomAlcoholTypes();
-		typeComboBox = new JComboBox<>((CustomAlcoholType[])allCustomAlcoholTypes.toArray());
+		typeComboBox = new JComboBox<>(allCustomAlcoholTypes.toArray(new CustomAlcoholType[allCustomAlcoholTypes.size()]));
 		typeComboBox.setSelectedIndex(-1);
 
 		NumberFormat integerNumberInstance = NumberFormat.getIntegerInstance();
