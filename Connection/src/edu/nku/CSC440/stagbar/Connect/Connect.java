@@ -1,6 +1,7 @@
 package edu.nku.CSC440.stagbar.Connect;
 
 import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
+import edu.nku.CSC440.stagbar.dataaccess.Entry;
 
 import java.sql.*;
 
@@ -233,7 +234,7 @@ public class Connect {
 	/**
 	 * Connect to database as master user.
 	 */
-	private Connection makeNewMasterConnection(String database){
+	private Connection makeNewMasterConnection(String database) {
 		return makeNewConnection("stagbar", "Nkucsc440", database);
 	}
 
@@ -248,16 +249,78 @@ public class Connect {
 		return true;
 	}
 
+	/** Creates a new row on the Delivery table with the given entry. */
+	public boolean saveDeliveryEntry(Entry entry) {
+		return saveEntry(EntryTable.DELIVERY, entry);
+	}
+
+	private boolean saveEntry(EntryTable table, Entry entry) {
+		//TODO: Save to database. We should be able to use a single query to update all 3 tables.
+		// Use the toString method on 'table' to get the table name
+		// then add each of the values from 'entry' to the appropriate column.
+
+		return true;
+	}
+
+	/** Creates a new row on the Inventory table with the given entry. */
+	public boolean saveInventoryEntry(Entry entry) {
+		return saveEntry(EntryTable.INVENTORY, entry);
+	}
+
+	/** Creates a new row on the Sales table with the given entry. */
+	public boolean saveSalesEntry(Entry entry) {
+		return saveEntry(EntryTable.SALES, entry);
+	}
+
 	/**
 	 * Updates an existing Alcohol record.
 	 * Should be written in a way that can be called effectively once or in a loop.
 	 *
 	 * @return <code>true</code> if successful, <code>false</code> otherwise.
+	 * @deprecated This method may be obsolete. All a user would be able to update here is the type of alcohol.
+	 * Retire date would be set in retireAlcohol.
+	 * If the user is interested in changing the type, they may as well retire this one and make a new one.
 	 */
 	public boolean updateAlcohol(Alcohol alcohol) {
-		//TODO: Update in database
+		//TODO: Update in database. Obsolete? See comment above.
 		return true;
 	}
 
+	public boolean updateDeliveryEntry(Entry entry) {
+		return updateEntry(EntryTable.DELIVERY, entry);
+	}
+
+	// NOTE: Not certain if we should allow updates based on our current workflow.
+	// For now I feel we are safe assuming that entries are being made in chronological order, for today's date
+	// and the user got all the numbers right the first time.
+	@Deprecated
+	private boolean updateEntry(EntryTable table, Entry entry) {
+		//TODO: Update in database. We should be able to use a single query to update all 3 tables. Obsolete? See comment above.
+		// Use the toString method on 'table' to get the table name
+		// then add each of the values from 'entry' to the appropriate column.
+
+		return true;
+	}
+
+	public boolean updateInventoryEntry(Entry entry) {
+		return updateEntry(EntryTable.INVENTORY, entry);
+	}
+
+	public boolean updateSalesEntry(Entry entry) {
+		return updateEntry(EntryTable.SALES, entry);
+	}
+
+	private enum EntryTable {
+		INVENTORY("Inventory"), DELIVERY("Delivery"), SALES("Sales");
+		private String tableName;
+
+		EntryTable(String tableName) {
+			this.tableName = tableName;
+		}
+
+		public String toString() {
+			return tableName;
+		}
+	}
 }
 

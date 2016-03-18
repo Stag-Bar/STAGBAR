@@ -1,6 +1,6 @@
 package edu.nku.CSC440.stagbar.dataaccess;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * This class is used to store one row of the Inventory, Delivery or Sales tables.
@@ -13,9 +13,9 @@ public class Entry {
 	private double amount;
 	private int bottles;
 	/** Date of this entry. */
-	private Date date; // See http://stackoverflow.com/questions/2400955/how-to-store-java-date-to-mysql-datetime
+	private LocalDate date;
 
-	public Entry(int alcoholId, double amount, int bottles, Date date) {
+	public Entry(int alcoholId, double amount, int bottles, LocalDate date) {
 		this.alcoholId = alcoholId;
 		this.amount = amount;
 		this.bottles = bottles;
@@ -31,7 +31,6 @@ public class Entry {
 
 		if(alcoholId != entry.alcoholId) return false;
 		return date.equals(entry.date);
-
 	}
 
 	public int getAlcoholId() {
@@ -58,11 +57,11 @@ public class Entry {
 		this.bottles = bottles;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 

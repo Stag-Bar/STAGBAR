@@ -1,20 +1,21 @@
 package edu.nku.CSC440.stagbar.dataaccess;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Alcohol {
 
 	/**
 	 * Unique identifier for each alcohol.
+	 * Auto-incremented by database.
 	 * There may be multiple entries with the same name or name/type combination.
 	 * Ex. Bud Light on tap & in bottle or a liquor whose bottle size changes.
 	 */
 	private int alcoholId;
 	private String name;
 	private AlcoholType type;
-	private Date retireDate;
+	private LocalDate retireDate;
 
-	public Alcohol(int alcoholId, String name, AlcoholType type, Date retireDate) {
+	public Alcohol(int alcoholId, String name, AlcoholType type, LocalDate retireDate) {
 		this.alcoholId = alcoholId;
 		this.name = name;
 		this.type = type;
@@ -60,11 +61,12 @@ public class Alcohol {
 		this.type = type;
 	}
 
-	public Date getRetireDate() {
+	public LocalDate getRetireDate() {
 		return retireDate;
 	}
 
-	public void setRetireDate(Date retireDate) {
+	public void setRetireDate(LocalDate retireDate) {
 		this.retireDate = retireDate;
 	}
+
 }
