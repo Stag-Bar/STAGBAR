@@ -18,7 +18,7 @@ import java.util.Set;
 public class DeliveryUI {
 
 	Map<CustomAlcoholType, TypePaneUI> typePaneUIMap;
-	private ItemListener checkboxListener;
+	private final ItemListener checkboxListener = e -> onCheck(e);
 	private JPanel contentPane;
 	private JLabel errorMessage;
 	private JButton okButton;
@@ -33,9 +33,6 @@ public class DeliveryUI {
 		populateScrollPaneByType();
 		tabbedPane.removeTabAt(0); // Remove default tab
 		populateTabPaneByType();
-
-
-		checkboxListener = e -> onCheck(e);
 
 		okButton.addActionListener(e -> onOK());
 	}
@@ -68,16 +65,18 @@ public class DeliveryUI {
 		return results;
 	}
 
-	private void onCheck(ItemEvent event) {
-		System.out.println(event.getItemSelectable().getClass() + " " + (event.getStateChange() == ItemEvent.SELECTED ? "Selected" : "Deselected"));
+	public void onCheck(ItemEvent event) {
+		if(AlcoholCheckBox.class.equals(event.getItemSelectable().getClass())) {
+			AlcoholCheckBox alcoholCheckBox = (AlcoholCheckBox)event.getItemSelectable();
+			TypePaneUI typePaneUI = typePaneUIMap.get(alcoholCheckBox.getAlcohol().getType());
 
-//		if(event.getStateChange() == ItemEvent.SELECTED){
-//			switch(event.getItemSelectable().getClass())
-//		}
-//		else {
-//
-//		}
-
+			if(event.getStateChange() == ItemEvent.SELECTED) { // Add to scrollPane
+				typePaneUI.addEntryRow(alcoholCheckBox.getAlcohol());
+			}
+			else { // Remove from scrollPane
+				typePaneUI.removeEntryRow(alcoholCheckBox.getAlcohol().getAlcoholId());
+			}
+		}
 	}
 
 	private void onOK() {
@@ -92,10 +91,6 @@ public class DeliveryUI {
 	private void populateScrollPaneByType() {
 		for(CustomAlcoholType type : TypeService.getInstance().getAllCustomAlcoholTypes()) {
 			TypePaneUI typePaneUI = new TypePaneUI(type);
-
-//			for(Alcohol alcohol : AlcoholService.getInstance().getAlcoholByType(type, LocalDate.now(), LocalDate.now())) {
-//				typePaneUI.addEntryRow(alcohol);
-//			}
 
 			if(!typePaneUIMap.isEmpty()) scrollPane.add(new JSeparator(JSeparator.HORIZONTAL));
 
