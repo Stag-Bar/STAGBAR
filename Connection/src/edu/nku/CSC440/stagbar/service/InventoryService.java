@@ -9,7 +9,6 @@ import java.time.LocalDate;
 public class InventoryService {
 
 	private static final InventoryService inventoryService = new InventoryService();
-	public static final int NEW_ALCOHOL_ID = -1;
 
 	private InventoryService() {}
 
@@ -24,7 +23,7 @@ public class InventoryService {
 
 	//TODO: Should we allow initial amounts to be set for alcohol or wait until inventory is done?
 	public boolean saveNewAlcohol(String name, AlcoholType type, int bottles, double amount) {
-		Alcohol newAlcohol = new Alcohol(NEW_ALCOHOL_ID, name, type, LocalDate.now());
+		Alcohol newAlcohol = new Alcohol(Alcohol.NEW_ALCOHOL_ID, name, type, LocalDate.now());
 
 		return Connect.getInstance().saveAlcohol(newAlcohol);
 	}

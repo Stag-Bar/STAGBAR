@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 public class Alcohol {
 
+	public static final int NEW_ALCOHOL_ID = -1;
+
 	/**
 	 * Unique identifier for each alcohol.
 	 * Auto-incremented by database.
@@ -12,8 +14,9 @@ public class Alcohol {
 	 */
 	private int alcoholId;
 	private String name;
-	private AlcoholType type;
 	private LocalDate retireDate;
+	private AlcoholType type;
+
 
 	public Alcohol(int alcoholId, String name, AlcoholType type, LocalDate retireDate) {
 		this.alcoholId = alcoholId;
@@ -32,11 +35,6 @@ public class Alcohol {
 		return getAlcoholId() == alcohol.getAlcoholId();
 	}
 
-	@Override
-	public int hashCode() {
-		return getAlcoholId();
-	}
-
 	public int getAlcoholId() {
 		return alcoholId;
 	}
@@ -53,6 +51,14 @@ public class Alcohol {
 		this.name = name;
 	}
 
+	public LocalDate getRetireDate() {
+		return retireDate;
+	}
+
+	public void setRetireDate(LocalDate retireDate) {
+		this.retireDate = retireDate;
+	}
+
 	public AlcoholType getType() {
 		return type;
 	}
@@ -61,12 +67,9 @@ public class Alcohol {
 		this.type = type;
 	}
 
-	public LocalDate getRetireDate() {
-		return retireDate;
-	}
-
-	public void setRetireDate(LocalDate retireDate) {
-		this.retireDate = retireDate;
+	@Override
+	public int hashCode() {
+		return getAlcoholId();
 	}
 
 }
