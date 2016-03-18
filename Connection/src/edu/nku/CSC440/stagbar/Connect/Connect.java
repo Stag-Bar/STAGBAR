@@ -1,11 +1,10 @@
 package edu.nku.CSC440.stagbar.Connect;
 
-import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
-import edu.nku.CSC440.stagbar.dataaccess.Entry;
-import edu.nku.CSC440.stagbar.dataaccess.MixedDrink;
+import edu.nku.CSC440.stagbar.dataaccess.*;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Connect {
@@ -154,7 +153,7 @@ public class Connect {
 	 * @param username User to delete.
 	 * @return <code>true</code> if successful, <code>false</code> otherwise.
 	 */
-	protected boolean deleteUser(String username) {
+	public boolean deleteUser(String username) {
 		boolean succesful = false;
 		try {
 			Connection conn = makeNewMasterConnection(null);//have to connect as admin.
@@ -221,6 +220,12 @@ public class Connect {
 		//TODO: Find ingredients for each mixed drink
 		//TODO: Create and return mixed drink set
 		return null;
+	}
+
+	/** Retrieves all users from database. */
+	public Set<User> findAllUsers() {
+		//TODO: Find users
+		return new HashSet<>();
 	}
 
 	private Connection getActiveConnection() {
@@ -367,6 +372,18 @@ public class Connect {
 
 	public boolean updateSalesEntry(Entry entry) {
 		return updateEntry(EntryTable.SALES, entry);
+	}
+
+	/** Updates password for given user to given value. */
+	public boolean updateUserPassword(String username, String password) {
+		// TODO: Update password
+		return true;
+	}
+
+	/** Updates permissions for given user to given value. */
+	public boolean updateUserPermissions(String username, PermissionLevel permissionLevel) {
+		//TODO: Update permissions
+		return true;
 	}
 
 	private enum EntryTable {

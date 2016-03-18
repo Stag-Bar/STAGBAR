@@ -11,6 +11,7 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Set;
 
 /**
  * Intermediary between UI and DataAccess layers.
@@ -67,12 +68,13 @@ public class UserService {
 	 * @return <code>true</code> if update is successful, <code>false</code> otherwise.
 	 */
 	public boolean changePassword(String username, char[] password) {
-		//TODO: Update password in database
+//		Connect.getInstance().updateUserPassword(username, toHash(password));
+		boolean result = Connect.getInstance().updateUserPassword(username, new String(password)); //FIXME: Hash password before storage.
 
 		//Zero out the possible password, for security.
 		Arrays.fill(password, '0');
 
-		return true;
+		return result;
 	}
 
 	/**
@@ -84,7 +86,7 @@ public class UserService {
 	 */
 	public boolean changePermissions(String username, PermissionLevel permissionLevel) {
 		//TODO: Update permission level in database
-		return true;
+		return Connect.getInstance().updateUserPermissions(username, permissionLevel);
 	}
 
 	/**
@@ -108,6 +110,19 @@ public class UserService {
 		return successful;
 	}
 
+	public boolean deleteUser(String username) {
+		return Connect.getInstance().deleteUser(username);
+	}
+
+	public boolean deleteUsers(Set<String> usernames) {
+		boolean deleteFailed = false;
+		for(String username : usernames) {
+			deleteFailed |= !deleteUser(username);
+		}
+
+		return !deleteFailed;
+	}
+
 	/**
 	 * Checks database for given username.
 	 *
@@ -117,6 +132,10 @@ public class UserService {
 	 */
 	public boolean doesUserExist(String username) {
 		return Connect.getInstance().doesUserExist(username);
+	}
+
+	public Set<User> getAllUsers() {
+		return Connect.getInstance().findAllUsers();
 	}
 
 	/**
