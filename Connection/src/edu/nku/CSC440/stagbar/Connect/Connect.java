@@ -338,6 +338,8 @@ public class Connect {
 		// Use the toString method on 'table' to get the table name
 		// then add each of the values from 'entry' to the appropriate column.
 
+		System.out.println("Saving to " + table + ": " + entry);
+
 		return true;
 	}
 

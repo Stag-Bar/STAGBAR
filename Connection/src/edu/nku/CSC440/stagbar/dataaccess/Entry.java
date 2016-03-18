@@ -71,4 +71,14 @@ public class Entry {
 		result = 31 * result + date.hashCode();
 		return result;
 	}
+
+	@Override
+	public String toString() {
+		return "Entry{" +
+				"alcoholId=" + alcoholId +
+				", amount=" + amount +
+				", bottles=" + bottles +
+				", date=" + date +
+				'}';
+	}
 }
