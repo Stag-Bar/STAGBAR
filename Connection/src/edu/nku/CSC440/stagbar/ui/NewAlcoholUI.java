@@ -114,7 +114,7 @@ public class NewAlcoholUI {
 	/** Disable bottles/amount fields based on AlcoholType selected. */
 	private void toggleFields(AlcoholType type) {
 		switch(type) {
-			case SINGLE_SERVE:
+			case BOTTLED:
 				bottlesFormattedTextField.setEnabled(true);
 				bottlesFormattedTextField.requestFocusInWindow();
 

@@ -15,7 +15,7 @@ public class Entry {
 	/** Date of this entry. */
 	private LocalDate date;
 
-	public Entry(int alcoholId, double amount, int bottles, LocalDate date) {
+	public Entry(int alcoholId, int bottles, double amount, LocalDate date) {
 		this.alcoholId = alcoholId;
 		this.amount = amount;
 		this.bottles = bottles;
