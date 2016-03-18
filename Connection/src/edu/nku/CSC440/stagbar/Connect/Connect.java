@@ -279,6 +279,12 @@ public class Connect {
 		return makeNewConnection("stagbar", "Nkucsc440", database);
 	}
 
+	/** Sets retire date for given alcohol. */
+	public boolean retireAlcohol(int alcoholId, LocalDate date) {
+		//TODO: Retire alcohol
+		return true;
+	}
+
 	/** Sets retire date for given mixed drink. */
 	public boolean retireMixedDrink(String mixedDrink, LocalDate date) {
 		//TODO: Set retire date.
