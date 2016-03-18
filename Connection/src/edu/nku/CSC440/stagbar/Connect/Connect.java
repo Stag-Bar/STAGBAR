@@ -2,8 +2,11 @@ package edu.nku.CSC440.stagbar.Connect;
 
 import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
 import edu.nku.CSC440.stagbar.dataaccess.Entry;
+import edu.nku.CSC440.stagbar.dataaccess.MixedDrink;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.Set;
 
 public class Connect {
 
@@ -116,6 +119,17 @@ public class Connect {
 		return false;
 	}
 
+	/** Creates a new mixed drink with given name and no retire date. */
+	public boolean createMixedDrink(String name) {
+		//TODO: Create new mixed drink.
+		return true;
+	}
+
+	/** Creates a new mixed drink ingredient for drink with given name. */
+	public boolean createMixedDrinkIngredient(String mixedDrinkName, int alcoholId, Double amount) {
+		return true;
+	}
+
 	/**
 	 * @return <code>true</code> if given username & password can connect to database
 	 * @deprecated Temporary method. Unsecure.
@@ -126,6 +140,12 @@ public class Connect {
 //		activeConnection = makeNewConnection(username, password, getDatabaseName());
 		activeConnection = makeNewMasterConnection(getDatabaseName()); // TODO: Delete line after testing.
 		return activeConnection != null;
+	}
+
+	/** Deletes given ingredient for given drink. */
+	public boolean deleteMixedDrinkIngredient(String mixedDrinkName, int alcoholId) {
+		//TODO: Delete removed ingredients
+		return true;
 	}
 
 	/**
@@ -149,6 +169,19 @@ public class Connect {
 			System.out.println(e);
 		}
 		return succesful;
+	}
+
+	/**
+	 * Checks database for given drink.
+	 *
+	 * @param drinkName Drink to check database for.
+	 * @return <code>true</code> if given drink is in the database,
+	 * <code>false</code> otherwise.
+	 * @throws RuntimeException If user's database connection is closed.
+	 */
+	public boolean doesDrinkExist(String drinkName) {
+		//TODO: Search database for given drink.
+		return false;
 	}
 
 	/**
@@ -179,6 +212,14 @@ public class Connect {
 	 */
 	public Alcohol findAlcoholByName(String name) {
 		//TODO: Search database for alcohol with given name
+		return null;
+	}
+
+	/** Searches database for all mixed drinks and their corresponding ingredients. */
+	public Set<MixedDrink> findAllMixedDrinksAndIngredients() {
+		//TODO: Find all mixed drinks
+		//TODO: Find ingredients for each mixed drink
+		//TODO: Create and return mixed drink set
 		return null;
 	}
 
@@ -236,6 +277,12 @@ public class Connect {
 	 */
 	private Connection makeNewMasterConnection(String database) {
 		return makeNewConnection("stagbar", "Nkucsc440", database);
+	}
+
+	/** Sets retire date for given mixed drink. */
+	public boolean retireMixedDrink(String mixedDrink, LocalDate date) {
+		//TODO: Set retire date.
+		return true;
 	}
 
 	/**
@@ -304,6 +351,12 @@ public class Connect {
 
 	public boolean updateInventoryEntry(Entry entry) {
 		return updateEntry(EntryTable.INVENTORY, entry);
+	}
+
+	/** Updates given ingredient for given drink with given value. */
+	public boolean updateMixedDrinkIngredient(String mixedDrinkName, int alcoholId, Double amount) {
+		//TODO: Update mixed drink
+		return true;
 	}
 
 	public boolean updateSalesEntry(Entry entry) {
