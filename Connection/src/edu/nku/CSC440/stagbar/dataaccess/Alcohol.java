@@ -15,7 +15,7 @@ public class Alcohol {
 	private int alcoholId;
 	private String name;
 	private LocalDate retireDate;
-	private AlcoholType type;
+	private AlcoholType type; //TODO: Update to use custom types
 
 
 	public Alcohol(int alcoholId, String name, AlcoholType type, LocalDate retireDate) {

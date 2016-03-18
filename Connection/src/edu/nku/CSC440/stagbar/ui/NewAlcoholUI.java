@@ -24,7 +24,7 @@ public class NewAlcoholUI {
 	private JLabel nameLabel;
 	private JTextField nameTextField;
 	private JButton okButton;
-	private JComboBox<AlcoholType> typeComboBox;
+	private JComboBox<AlcoholType> typeComboBox; //TODO: Update to use custom types
 	private JLabel typeLabel;
 
 	public NewAlcoholUI() {
