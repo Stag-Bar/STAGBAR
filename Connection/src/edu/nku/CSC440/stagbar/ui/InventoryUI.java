@@ -40,19 +40,30 @@ public class InventoryUI {
 	}
 
 	public Set<Entry> getEntries() {
+		boolean failure = false;
 		Set<Entry> results = new HashSet<>();
-		for(TypePaneUI typePaneUI : typePaneUIMap.values())
-			results.addAll(typePaneUI.getEntries());
+		for(TypePaneUI typePaneUI : typePaneUIMap.values()) {
+			try {
+				results.addAll(typePaneUI.getEntries());
+			} catch(IllegalStateException e) {
+				failure = true;
+			}
+		}
+
+		if(failure) {
+			errorMessage.setText("Inventory entry incomplete.");
+			results = null;
+		}
+
 		return results;
 	}
 
 	private void onOK() {
-		try {
-			AlcoholService.getInstance().saveInventory(getEntries());
+		Set<Entry> entries = getEntries();
+		if(null != entries) {
+			AlcoholService.getInstance().saveInventory(entries);
 			okButton.setEnabled(false);
 			uiHacks.killMeThenGoToLastPage(contentPane);
-		} catch(IllegalStateException e) {
-			errorMessage.setText("Inventory entry incomplete.");
 		}
 	}
 

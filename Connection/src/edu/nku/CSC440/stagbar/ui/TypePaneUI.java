@@ -39,10 +39,16 @@ public class TypePaneUI {
 	}
 
 	public Set<Entry> getEntries() {
+		boolean failure = false;
 		Set<Entry> entries = new HashSet<>();
 		for(EntryRowUI entryRow : rowUIMap.values()) {
-			entries.add(entryRow.getEntry());
+			try {
+				entries.add(entryRow.getEntry());
+			} catch(IllegalStateException e) {
+				failure = true;
+			}
 		}
+		if(failure) throw new IllegalStateException(type.toString());
 
 		return entries;
 	}
