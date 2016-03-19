@@ -31,7 +31,6 @@ public class DeliveryUI {
 		typePaneUIMap = new HashMap<>();
 
 		populateScrollPaneByType();
-		tabbedPane.removeTabAt(0); // Remove default tab
 		populateTabPaneByType();
 
 		okButton.addActionListener(e -> onOK());
@@ -76,6 +75,8 @@ public class DeliveryUI {
 			else { // Remove from scrollPane
 				typePaneUI.removeEntryRow(alcoholCheckBox.getAlcohol().getAlcoholId());
 			}
+
+			typePaneUI.getContentPane().revalidate();
 		}
 	}
 
