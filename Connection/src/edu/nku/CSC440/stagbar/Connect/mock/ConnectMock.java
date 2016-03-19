@@ -2,8 +2,10 @@ package edu.nku.CSC440.stagbar.Connect.mock;
 
 import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
 import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
+import edu.nku.CSC440.stagbar.dataaccess.MixedDrink;
 import edu.nku.CSC440.stagbar.dataaccess.mock.AlcoholMock;
 import edu.nku.CSC440.stagbar.dataaccess.mock.CustomAlcoholTypeMock;
+import edu.nku.CSC440.stagbar.dataaccess.mock.MixedDrinkMock;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -64,6 +66,13 @@ public class ConnectMock {
 		results.add(CustomAlcoholTypeMock.WHISKEY);
 		results.add(CustomAlcoholTypeMock.VODKA);
 
+		return results;
+	}
+
+	public static Set<MixedDrink> findAllMixedDrinksAndIngredients() {
+		Set<MixedDrink> results = new HashSet<>();
+		results.add(MixedDrinkMock.FIREBULL);
+		results.add(MixedDrinkMock.LONG_ISLAND);
 		return results;
 	}
 }

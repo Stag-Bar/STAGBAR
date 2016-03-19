@@ -73,6 +73,7 @@ public class MainMenuUI {
 	}
 
 	private void onSales() {
-
+		SalesUI salesUI = new SalesUI();
+		uiHacks.goToPanel(contentPane, salesUI.getContentPane());
 	}
 }

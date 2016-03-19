@@ -1,23 +1,30 @@
 package edu.nku.CSC440.stagbar.ui;
 
 import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
+import edu.nku.CSC440.stagbar.dataaccess.MixedDrink;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemListener;
 
-public class TypeTabUI {
+public class TabUI {
 	private ItemListener checkBoxListener;
 	private JPanel contentPane;
 
-	public TypeTabUI(ItemListener checkBoxListener) {
+	public TabUI(ItemListener checkBoxListener) {
 		this.checkBoxListener = checkBoxListener;
 	}
 
-	public void addAlcoholCheckbox(Alcohol alcohol) {
+	public void addCheckbox(Alcohol alcohol) {
 		AlcoholCheckBox alcoholCheckBox = new AlcoholCheckBox(alcohol);
 		alcoholCheckBox.addItemListener(checkBoxListener);
 		contentPane.add(alcoholCheckBox);
+	}
+
+	public void addCheckbox(MixedDrink mixedDrink) {
+		MixedDrinkCheckBox mixedDrinkCheckBox = new MixedDrinkCheckBox(mixedDrink);
+		mixedDrinkCheckBox.addItemListener(checkBoxListener);
+		contentPane.add(mixedDrinkCheckBox);
 	}
 
 	private void createUIComponents() {

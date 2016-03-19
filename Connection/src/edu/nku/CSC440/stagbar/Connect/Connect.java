@@ -240,7 +240,7 @@ public class Connect {
 		//TODO: Find all mixed drinks
 		//TODO: Find ingredients for each mixed drink
 		//TODO: Create and return mixed drink set
-		return null;
+		return ConnectMock.findAllMixedDrinksAndIngredients();
 	}
 
 	/** Retrieves all users from database. */
