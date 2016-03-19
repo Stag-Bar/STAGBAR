@@ -56,4 +56,5 @@ public class TabUI {
 // DO NOT EDIT OR ADD ANY CODE HERE!
 		$$$setupUI$$$();
 	}
+
 }

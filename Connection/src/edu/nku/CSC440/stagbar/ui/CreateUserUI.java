@@ -18,6 +18,7 @@ public class CreateUserUI {
 	private static final String MESSAGE_NEW_USER = "New user %s has been created.";
 	private static final String TITLE_CANNOT_SAVE = "User Creation Failed";
 	private static final String TITLE_NEW_USER = "User Created";
+	private JButton cancelButton;
 	private JLabel confirmPasswordLabel;
 	private JPasswordField confirmPasswordPasswordField;
 	private JPanel contentPane;
@@ -38,6 +39,7 @@ public class CreateUserUI {
 		contentPane.setName("Create User");
 
 		okButton.addActionListener(e -> onOK());
+		cancelButton.addActionListener(e -> onCancel());
 	}
 
 	/** @noinspection ALL */
@@ -92,15 +94,18 @@ public class CreateUserUI {
 		panel2.add(permissionLevelLabel, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		panel2.add(permissionLevelComboBox, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		final JPanel panel3 = new JPanel();
-		panel3.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+		panel3.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
 		contentPane.add(panel3, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
 		okButton = new JButton();
 		okButton.setText("OK");
 		okButton.setMnemonic('O');
 		okButton.setDisplayedMnemonicIndex(0);
-		panel3.add(okButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		panel3.add(okButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		final Spacer spacer1 = new Spacer();
 		panel3.add(spacer1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+		cancelButton = new JButton();
+		cancelButton.setText("Cancel");
+		panel3.add(cancelButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		usernameLabel.setLabelFor(usernameTextField);
 		passwordLabel.setLabelFor(passwordPasswordField);
 		confirmPasswordLabel.setLabelFor(confirmPasswordPasswordField);
@@ -129,6 +134,10 @@ public class CreateUserUI {
 
 		permissionLevelLabel.setForeground(null == permissionLevelComboBox.getSelectedItem() ?
 																			 Color.RED : Color.BLACK);
+	}
+
+	private void onCancel() {
+		uiHacks.killMeThenGoToLastPage(contentPane);
 	}
 
 	private void onOK() {

@@ -21,7 +21,6 @@ public class CustomAlcoholType {
 		CustomAlcoholType that = (CustomAlcoholType)o;
 
 		return getTypeId() == that.getTypeId();
-
 	}
 
 	public AlcoholType getKind() {

@@ -24,6 +24,7 @@ import java.util.Set;
 public class SalesUI {
 	Map<CustomAlcoholType, TypePaneUI> typePaneUIMap;
 	private final ItemListener checkboxListener = e -> onCheck(e);
+	private JButton cancelButton;
 	private JPanel contentPane;
 	private JLabel errorMessage;
 	private JButton okButton;
@@ -42,6 +43,7 @@ public class SalesUI {
 
 
 		okButton.addActionListener(e -> onOK());
+		cancelButton.addActionListener(e -> onCancel());
 	}
 
 	/** @noinspection ALL */
@@ -70,7 +72,7 @@ public class SalesUI {
 		panel1.add(errorMessage, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(-1, 16), null, 0, false));
 		final JSplitPane splitPane1 = new JSplitPane();
 		splitPane1.setDividerLocation(300);
-		splitPane1.setLastDividerLocation(325);
+		splitPane1.setLastDividerLocation(-1);
 		splitPane1.setOrientation(0);
 		contentPane.add(splitPane1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
 		final JPanel panel2 = new JPanel();
@@ -88,13 +90,16 @@ public class SalesUI {
 		tabbedPane = new JTabbedPane();
 		panel3.add(tabbedPane, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
 		final JPanel panel4 = new JPanel();
-		panel4.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+		panel4.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
 		contentPane.add(panel4, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(-1, 30), 0, false));
 		okButton = new JButton();
 		okButton.setText("OK");
-		panel4.add(okButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		panel4.add(okButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		final Spacer spacer1 = new Spacer();
 		panel4.add(spacer1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+		cancelButton = new JButton();
+		cancelButton.setText("Cancel");
+		panel4.add(cancelButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 	}
 
 	private void createUIComponents() {
@@ -125,7 +130,11 @@ public class SalesUI {
 		return results;
 	}
 
-	public void onCheck(ItemEvent event) {
+	private void onCancel() {
+		uiHacks.killMeThenGoToLastPage(contentPane);
+	}
+
+	private void onCheck(ItemEvent event) {
 		if(AlcoholCheckBox.class.equals(event.getItemSelectable().getClass())) {
 			AlcoholCheckBox alcoholCheckBox = (AlcoholCheckBox)event.getItemSelectable();
 			TypePaneUI typePaneUI = typePaneUIMap.get(alcoholCheckBox.getAlcohol().getType());

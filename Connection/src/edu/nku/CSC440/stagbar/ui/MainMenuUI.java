@@ -126,4 +126,5 @@ public class MainMenuUI {
 // DO NOT EDIT OR ADD ANY CODE HERE!
 		$$$setupUI$$$();
 	}
+
 }

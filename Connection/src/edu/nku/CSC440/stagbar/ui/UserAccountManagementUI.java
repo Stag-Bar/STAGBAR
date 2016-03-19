@@ -7,17 +7,21 @@ import javax.swing.*;
 import java.awt.*;
 
 public class UserAccountManagementUI {
+	private JButton changePasswordButton;
 	private JPanel contentPane;
 	private JButton createUserButton;
 	private JButton deleteUserButton;
 	private JButton editUserPermissionsButton;
+	private JButton goBackButton;
 
 	public UserAccountManagementUI() {
 		contentPane.setName("Manage Users");
 
+		changePasswordButton.addItemListener(e -> onChangePassword());
 		createUserButton.addActionListener(e -> onCreateUser());
 		deleteUserButton.addActionListener(e -> onDeleteUser());
 		editUserPermissionsButton.addActionListener(e -> onEditPermissionsUser());
+		goBackButton.addActionListener(e -> onGoBack());
 	}
 
 	/** @noinspection ALL */
@@ -32,20 +36,30 @@ public class UserAccountManagementUI {
 	 */
 	private void $$$setupUI$$$() {
 		contentPane = new JPanel();
-		contentPane.setLayout(new GridLayoutManager(1, 3, new Insets(10, 10, 10, 10), -1, -1));
+		contentPane.setLayout(new GridLayoutManager(2, 4, new Insets(10, 10, 10, 10), -1, -1));
 		createUserButton = new JButton();
 		createUserButton.setText("Create User");
-		contentPane.add(createUserButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		contentPane.add(createUserButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		deleteUserButton = new JButton();
 		deleteUserButton.setText("Delete User");
-		contentPane.add(deleteUserButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		contentPane.add(deleteUserButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		editUserPermissionsButton = new JButton();
 		editUserPermissionsButton.setText("Edit User Permissions");
-		contentPane.add(editUserPermissionsButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		contentPane.add(editUserPermissionsButton, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		changePasswordButton = new JButton();
+		changePasswordButton.setText("Change Password");
+		contentPane.add(changePasswordButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		goBackButton = new JButton();
+		goBackButton.setText("Go Back");
+		contentPane.add(goBackButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 	}
 
 	public JPanel getContentPane() {
 		return contentPane;
+	}
+
+	private void onChangePassword() {
+		//TODO: Navigate to password change ui
 	}
 
 	private void onCreateUser() {
@@ -54,11 +68,15 @@ public class UserAccountManagementUI {
 	}
 
 	private void onDeleteUser() {
-
+		//TODO: Navigate to delete user ui
 	}
 
 	private void onEditPermissionsUser() {
+		//TODO: Navigate to edit permissions
+	}
 
+	private void onGoBack() {
+		uiHacks.killMeThenGoToLastPage(contentPane);
 	}
 
 	{
@@ -67,6 +85,5 @@ public class UserAccountManagementUI {
 // DO NOT EDIT OR ADD ANY CODE HERE!
 		$$$setupUI$$$();
 	}
-
 
 }
