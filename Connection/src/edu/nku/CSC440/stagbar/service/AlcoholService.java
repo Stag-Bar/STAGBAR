@@ -18,12 +18,12 @@ public class AlcoholService {
 		return ALCOHOL_SERVICE;
 	}
 
-	public static boolean isNameUnique(String name) {
-		return null == Connect.getInstance().findAlcoholByName(name);
-	}
-
 	public Set<Alcohol> getAlcoholByType(CustomAlcoholType type, LocalDate startDate, LocalDate endDate) {
 		return Connect.getInstance().findActiveAlcoholByType(type, startDate, endDate);
+	}
+
+	public boolean isAlcoholNameUnique(String name) {
+		return null == Connect.getInstance().findAlcoholByName(name);
 	}
 
 	public boolean retireAlcohol(Alcohol alcohol) {
