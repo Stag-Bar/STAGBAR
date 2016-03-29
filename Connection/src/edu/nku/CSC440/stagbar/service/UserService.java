@@ -101,7 +101,7 @@ public class UserService {
 		byte[] passwordHash = toHash(password);
 
 		//This method below will create a new user (with all permissions) in the database
-		boolean successful = Connect.getInstance().createMasterUser(username, new String(password), "test");
+		boolean successful = Connect.getInstance().createUser(username, new String(password), permissionLevel);
 		if(successful) System.out.format("New user %s has been created\n", username);
 
 		//Zero out the possible password, for security.
