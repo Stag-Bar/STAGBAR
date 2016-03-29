@@ -2,6 +2,7 @@ package edu.nku.CSC440.stagbar.Connect;
 
 import edu.nku.CSC440.stagbar.Connect.mock.ConnectMock;
 import edu.nku.CSC440.stagbar.dataaccess.*;
+import edu.nku.CSC440.stagbar.dataaccess.mock.CustomAlcoholTypeMock;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -9,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 public class Connect {
 
-	private static final String DATABASE_URL = "jdbc:mysql://stagbar.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306";
+	private static final String DATABASE_URL = "jdbc:mysql://stagbar2.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306";
 	private static Connect connect = new Connect();
 	private Connection activeConnection;
 	private String databaseName;
@@ -19,190 +20,12 @@ public class Connect {
 	public static Connect getInstance() {
 		return connect;
 	}
-	//first time setup will create set up the user and neccssary tables.
-	public void firstTimeSetup(String database, String userName, String password){
-		if(createDatabase(database)){
-			try {
-				//creating user table and adding the first user
-				Statement sta = getActiveConnection().createStatement();
-				String statement = "CREATE TABLE user (username varchar(50), password varchar(128), permission varchar(5), primary key(username);";
-				sta.execute(statement);
-				statement = "INSERT INTO users (name, password, permission) VALUES (?, ?, \'Administrator\');";
-				PreparedStatement pSta = activeConnection.prepareStatement(statement);
-				pSta.setString(1, userName);
-				pSta.setString(2, password);
-				pSta.execute();
-				//creating the type other tables
-				statement = "CREATE TABE type (typeid int NOT NULL AUTO_INCREMENT, name varchar(40), kind varchar(10), primary key(typeid));";
-				sta.execute(statement);
-				statement = "CREATE TABLE alcohol (alcoholid int NOT NULL AUTO_INCREMENT, name varchar(40), typeid int, creationDate date, retireDate date, primary key(alcoholid), foreign key(typeid) REFERENCES type(typeid));";
-				sta.execute(statement);
-				statement = "CREATE TABLE inventory (entryid int NOT NULL AUTO_INCREMENT, alcohol int, amount double, bottles int, date date, primary key(entryid), foreign key (alcohol) REFERENCES alcohol(alcoholid));";
-				sta.execute(statement);
-				statement = "CREATE TABLE sales (entryid int NOT NULL AUTO_INCREMENT, alcohol int, amount double, bottles int, date date, primary key(entryid), foreign key(alcoholid) REFERENCES alcohol(alcohol));";
-				sta.execute(statement);
-				statement = "CREATE TABLE delivery (entryid int NOT NULL AUTO_INCREMENT, alcohol int, amount double, bottles int, date date, primary key(entryid), foreign key(alcohol) REFERENCES alcohol(alcoholid));";
-				sta.execute(statement);
-				statement = "CREATE TABLE mixeddrink (name varchar(40), retiredate date, primary key(name));";
-				sta.execute(statement);
-				statement = "CREATE TABLE mixeddrinkingredients (drink varchar(40), ingredientid int, amount double, foreign key(drink) REFERENCES mixeddrink(name), foreign key(ingredientid) REFERENCES alcohol(alcoholid));";
-				sta.execute(statement);
-				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
+
+	public static void main(String[] args) {
+		getInstance().saveCustomAlcoholType(CustomAlcoholTypeMock.CRAFT_BEER); // Sample test insert
+//		getInstance().firstTimeSetup("test11", "user", "password");
 	}
-	/*
-	public static Connection makeNewConnection(String username, String password) throws ClassNotFoundException{
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection conn = null;
-		try{
-			String url = "jdbc:mysql://stagbar.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306";
-			conn = DriverManager.getConnection(url, username, password);
-		}
-		catch(Exception e){
-			conn = null;
-			System.out.println(e);
-			return conn;
-		}
-		return conn;
-	}
-	public static Connection makeNewConnection(String username, String password, String dataBaseName) throws ClassNotFoundException{
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection conn = null;
-		try{
-			String url = "jdbc:mysql://stagbar.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306/" + dataBaseName;
-			conn = DriverManager.getConnection(url, username, password);
-		}
-		catch(Exception e){
-			conn = null;
-			System.out.println(e);
-			return conn;
-		}
-		return conn;
-	}*/
-	//method to create a new user that has full privileges.  IE the inventory manager 
-	private boolean createDatabase(String name){
-		
-		boolean success = false;
-		try {
-			String statement = "CREATE DATABASE ?;";
-			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
-			pSta.setString(1, name);
-			success =  pSta.execute();
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return success;
-	}
-	public boolean createMasterUser(String username, String password) throws ClassNotFoundException{
-		String statement = "INSERT INTO users (name, password, permission) VALUES (?, ?, \'Administrator\');";
-		PreparedStatement pSta;
-		try {
-			pSta = getActiveConnection().prepareStatement(statement);
-			pSta.setString(1, username);
-			pSta.setString(2, password);
-			if(pSta.execute())
-				return true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
-		
-		/*
-		try{
-			
-			Connection conn = makeNewConnection("stagbar", "Nkucsc440", company);
-			
-			String statement = "SELECT * FROM mysql.user WHERE user = ?;";
-			PreparedStatement pSta = conn.prepareStatement(statement);
-			pSta.setString(1, username);
-			ResultSet checkResults = pSta.executeQuery();
-			boolean exists;
-			if(checkResults.next()){
-				exists = true;
-			}
-			else {
-				exists = false;
-			}
-			System.out.println(exists);
-			if(exists == false){
-				String createUserStatement = "CREATE USER ? @'%' IDENTIFIED BY ?;";
-				pSta = conn.prepareStatement(createUserStatement);
-				pSta.setString(1, username);
-				pSta.setString(2, password);
-				pSta.execute();
-				
-				String grantPrivStatement = "GRANT ALL PRIVILEGES ON *.* TO ? @'%' IDENTIFIED BY ?;";
-				pSta = conn.prepareStatement(grantPrivStatement);
-				pSta.setString(1, username);
-				pSta.setString(2, password);
-				pSta.execute();
-				
-				conn.close();
-				return true;
-			}
-			conn.close();
-		}
-		catch(SQLException e){
-			System.out.println(e);
-		}
-		return false;
-	*/
-	}
-	public boolean createGuestUser(String username, String password) throws ClassNotFoundException{
-		String statement = "INSERT INTO users (name, password, permission) VALUES (?, ?, \'Guest\');";
-		PreparedStatement pSta;
-		try {
-			pSta = getActiveConnection().prepareStatement(statement);
-			pSta.setString(1, username);
-			pSta.setString(2, password);
-			if(pSta.execute())
-				return true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
-	}
-	//method to delete a user from the database
-	protected boolean deleteUser(String username){
-		String statement = "DELETE FROM users WHERE username = ?;";
-		try {
-			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
-			pSta.setString(1, username);
-			if(pSta.execute()){
-				return true;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
-		/*
-		boolean succesful = false;
-		try{
-			
-			Connection conn = makeNewConnection("stagbar", "Nkucsc440");
-			String statement = "DROP USER ?;";
-			PreparedStatement pSta = conn.prepareStatement(statement);
-			pSta.setString(1, username);
-			succesful = pSta.execute();
-			
-			conn.close();
-		}
-		catch(SQLException e){
-			System.out.println(e);
-		}
-		return succesful;*/
-	}
-	
+
 	/** Create a table to store the different kinds of alcohol */
 	protected boolean addNewGroup(Connection conn, String groupName, int code) {
 		boolean successful = false;
@@ -252,7 +75,27 @@ public class Connect {
 		return successful;
 	}
 
-	
+	//method to create a new user that has full privileges.  IE the inventory manager
+	private boolean createDatabase(String name) {
+
+		boolean success = false;
+		try {
+			String statement = "CREATE DATABASE " + name + ";";
+			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
+			System.out.println(pSta.toString());
+			pSta.execute();
+			success = true;
+
+		} catch(Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		databaseName = name;
+		activeConnection = null;
+
+		return success;
+	}
+
 	/** Creates a new mixed drink with given name and no retire date. */
 	public boolean createMixedDrink(String name) {
 		//TODO: Create new mixed drink.
@@ -262,6 +105,24 @@ public class Connect {
 	/** Creates a new mixed drink ingredient for drink with given name. */
 	public boolean createMixedDrinkIngredient(String mixedDrinkName, int alcoholId, Double amount) {
 		return true;
+	}
+
+	public boolean createUser(String username, String password, PermissionLevel permissionLevel) {
+		String statement = "INSERT INTO user (username, password, permission) VALUES (?, ?, ?);";
+		PreparedStatement pSta;
+		try {
+			pSta = getActiveConnection().prepareStatement(statement);
+			pSta.setString(1, username);
+			pSta.setString(2, password);
+			pSta.setString(3, permissionLevel.name());
+			System.out.println(pSta);
+			pSta.execute();
+				return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/**
@@ -282,7 +143,38 @@ public class Connect {
 		return true;
 	}
 
-	
+	//method to delete a user from the database
+	public boolean deleteUser(String username) {
+		String statement = "DELETE FROM user WHERE username = ?;";
+		try {
+			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
+			pSta.setString(1, username);
+			if(pSta.execute()) {
+				return true;
+			}
+		} catch(SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+		/*
+		boolean succesful = false;
+		try{
+
+			Connection conn = makeNewConnection("stagbar", "Nkucsc440");
+			String statement = "DROP USER ?;";
+			PreparedStatement pSta = conn.prepareStatement(statement);
+			pSta.setString(1, username);
+			succesful = pSta.execute();
+
+			conn.close();
+		}
+		catch(SQLException e){
+			System.out.println(e);
+		}
+		return succesful;*/
+	}
+
 	/**
 	 * Checks database for given drink.
 	 *
@@ -292,7 +184,7 @@ public class Connect {
 	 * @throws RuntimeException If user's database connection is closed.
 	 */
 	public boolean doesDrinkExist(String drinkName) {
-		
+
 		return false;
 	}
 
@@ -305,7 +197,7 @@ public class Connect {
 	 * @throws RuntimeException If user's database connection is closed.
 	 */
 	public boolean doesUserExist(String username) {
-		String statement = "SELECT * FROM users WHERE username = ?;";
+		String statement = "SELECT * FROM user WHERE username = ?;";
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
 			pSta.setString(1, username);
@@ -336,7 +228,7 @@ public class Connect {
 		String statement = "SELECT * FROM alcohol WHERE NAME = ?;";
 		ResultSet result;
 		ResultSet result2;
-		
+
 		Alcohol a;
 		//might need changed
 		try {
@@ -354,10 +246,10 @@ public class Connect {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
-	
+
 	public Set<Alcohol> findAllAlcohol() {
 		String statement = "SELECT * FROM alcohol;";
 		ResultSet result;
@@ -371,30 +263,30 @@ public class Connect {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-				
+
+
 		return null;
 	}
 
 	/** Pulls all custom types from database. */
 	public Set<CustomAlcoholType> findAllCustomAlcoholTypes() {
 		String statement = "SELECT * FROM type";
-		Set<CustomAlcoholType> set = null;
+		Set<CustomAlcoholType> set = new HashSet<>();
 		ResultSet result;
 		try {
 			Statement s = activeConnection.createStatement();
 			result = s.executeQuery(statement);
-			while(result.next()){
-				set.add(new CustomAlcoholType(result.getInt("typeId"), result.getString("name"), AlcoholType.valueOf(result.getString("kind"))));
+			while(result.next()) {
+				set.add(new CustomAlcoholType(result.getInt(1), result.getString(2), AlcoholType.valueOf(result.getString(3))));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return set;
 	}
-
+	
 	/** Searches database for all mixed drinks and their corresponding ingredients. */
 	public Set<MixedDrink> findAllMixedDrinksAndIngredients() {
 		//TODO: Find all mixed drinks
@@ -405,7 +297,7 @@ public class Connect {
 
 	/** Retrieves all users from database. */
 	public Set<User> findAllUsers() {
-		String sql = "Select * from users;";
+		String sql = "Select * from user;";
 		ResultSet results;
 		Set<User> set = null;
 		try {
@@ -414,11 +306,48 @@ public class Connect {
 			while(results.next()){
 				set.add(new User(results.getString(1), PermissionLevel.valueOf(results.getString(3))));
 			}
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return set;
+	}
+
+	//first time setup will create set up the user and neccssary tables.
+	public void firstTimeSetup(String database, String userName, String password) {
+		if(createDatabase(database)) {
+			try {
+				//creating user table and adding the first user
+				Statement sta = getActiveConnection().createStatement();
+				String statement = "CREATE TABLE user (username VARCHAR(50), password VARCHAR(128), permission VARCHAR(15), PRIMARY KEY(username));";
+				sta.execute(statement);
+				statement = "INSERT INTO user (username, password, permission) VALUES (?, ?, \'Administrator\');";
+				PreparedStatement pSta = activeConnection.prepareStatement(statement);
+				pSta.setString(1, userName);
+				pSta.setString(2, password);
+				pSta.execute();
+				//creating the type other tables
+				statement = "CREATE TABLE type (typeid INT NOT NULL AUTO_INCREMENT, name VARCHAR(40), kind VARCHAR(10), PRIMARY KEY(typeid));";
+				sta.execute(statement);
+				statement = "CREATE TABLE alcohol (alcoholid int NOT NULL AUTO_INCREMENT, name varchar(40), typeid int, creationDate date, retireDate date, primary key(alcoholid), foreign key(typeid) REFERENCES type(typeid));";
+				sta.execute(statement);
+				statement = "CREATE TABLE inventory (entryid INT NOT NULL AUTO_INCREMENT, alcohol INT, amount DOUBLE, bottles INT, date DATE, PRIMARY KEY(entryid), FOREIGN KEY (alcohol) REFERENCES alcohol(alcoholid));";
+				sta.execute(statement);
+				statement = "CREATE TABLE sales (entryid int NOT NULL AUTO_INCREMENT, alcohol int, amount double, bottles int, date date, primary key(entryid), foreign key(alcohol) REFERENCES alcohol(alcoholid));";
+				sta.execute(statement);
+				statement = "CREATE TABLE delivery (entryid INT NOT NULL AUTO_INCREMENT, alcohol INT, amount DOUBLE, bottles INT, date DATE, PRIMARY KEY(entryid), FOREIGN KEY(alcohol) REFERENCES alcohol(alcoholid));";
+				sta.execute(statement);
+				statement = "CREATE TABLE mixeddrink (name VARCHAR(40), retiredate DATE, PRIMARY KEY(name));";
+				sta.execute(statement);
+				statement = "CREATE TABLE mixeddrinkingredients (drink VARCHAR(40), ingredientid INT, amount DOUBLE, FOREIGN KEY(drink) REFERENCES mixeddrink(name), FOREIGN KEY(ingredientid) REFERENCES alcohol(alcoholid));";
+				sta.execute(statement);
+
+			} catch(SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
 	}
 
 	private Connection getActiveConnection() {
@@ -436,7 +365,8 @@ public class Connect {
 
 	/** Gets database name from file. */
 	private String getDatabaseNameFromFile() {
-		return "test";
+//		return null; // For creating new database
+		return "test11"; // For testing current working database
 	}
 
 	private boolean isConnectionValid() {
@@ -461,6 +391,7 @@ public class Connect {
 		try {
 			Class.forName("com.mysql.jdbc.Driver"); // Register MySQL Driver. Needed?
 			String url = DATABASE_URL + (null == dataBaseName ? "" : "/" + dataBaseName);
+			System.out.println(url);
 			conn = DriverManager.getConnection(url, username, password);
 		} catch(SQLException e) {
 			conn = null;
@@ -491,7 +422,7 @@ public class Connect {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return false;
 	}
 
@@ -520,8 +451,13 @@ public class Connect {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
+
+		return false;
+	}
+
+	private boolean saveCustomAlcoholType(CustomAlcoholType type) {
+		//TODO: Save custom alcohol type to database
 		return false;
 	}
 
@@ -605,6 +541,7 @@ public class Connect {
 		//TODO: Update permissions
 		return true;
 	}
+
 
 	private enum EntryTable {
 		INVENTORY("Inventory"), DELIVERY("Delivery"), SALES("Sales");
