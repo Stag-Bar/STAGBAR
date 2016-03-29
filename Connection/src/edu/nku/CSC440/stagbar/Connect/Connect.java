@@ -164,22 +164,20 @@ public class Connect {
 	 * @return Alcohol with given name if found, otherwise returns <code>null</code>.
 	 */
 	public Alcohol findAlcoholByName(String name) {
-		String statement = "SELECT * FROM alcohol WHERE NAME = ?;";
+		String statement = "SELECT a.alcoholId, a.name, a.creationdate, a.retiredate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE a.alcoholId = t.typeid;";
 		ResultSet result;
 		ResultSet result2;
 
 		Alcohol a;
 		//might need changed
 		try {
+			
 			PreparedStatement pSta = activeConnection.prepareStatement(statement);
 			pSta.setString(1, name);
 			result = pSta.executeQuery();
 			statement = "SELECT * FROM type WHERE typeId = " + result.getInt("alcoholId") + ";";
-			pSta = activeConnection.prepareStatement(statement);
-			result2 = pSta.executeQuery();
 			if(result != null){
-				a = new Alcohol(result.getInt("alcoholId"), result.getString("name"), new CustomAlcoholType(result2.getInt("typeId"), result2.getString("name"), AlcoholType.valueOf(result2.getString("kind"))), result.getDate("creationDate").toLocalDate(), result.getDate("retireDate").toLocalDate());
-				return a;
+				return new Alcohol(result.getInt("a.alcoholId"), result.getString("a.name"), new CustomAlcoholType(result.getInt("t.typeId"), result.getString("t.name"), AlcoholType.valueOf(result.getString("t.kind"))), result.getDate("a.creationDate").toLocalDate(), result.getDate("a.retireDate").toLocalDate());
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -190,7 +188,7 @@ public class Connect {
 	}
 
 	public Set<Alcohol> findAllAlcohol() {
-		String statement = "SELECT * FROM alcohol;";
+		String statement = "SELECT a.alcoholid, a.name, a.type, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE a.alcoholid = t.typeid;";
 		ResultSet result;
 		Set<Alcohol> set = new HashSet<>();
 		
@@ -202,7 +200,7 @@ public class Connect {
 			ResultSet result2 = s.executeQuery(statement);
 			
 			while(result.next()){
-				set.add(new Alcohol(result.getInt(1), result.getString(2), new CustomAlcoholType(result2.getInt(1), result2.getString(2), AlcoholType.valueOf(result2.getString(3))), result.getDate(4).toLocalDate(), result.getDate(5).toLocalDate()));
+				set.add(new Alcohol(result.getInt("a.alcoholid"), result.getString("a.name"), new CustomAlcoholType(result.getInt("t.typeid"), result.getString("t.name"), AlcoholType.valueOf(result.getString("t.kind"))), result.getDate(4).toLocalDate(), result.getDate(5).toLocalDate()));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
