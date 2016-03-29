@@ -99,7 +99,8 @@ public class MainMenuUI {
 	}
 
 	private void onMixedDrinks() {
-
+		MixedDrinkMenuUI mixedDrinkMenuUI = new MixedDrinkMenuUI();
+		uiHacks.goToPanel(contentPane, mixedDrinkMenuUI.getContentPane());
 	}
 
 	private void onNewAlcohol() {
@@ -108,11 +109,11 @@ public class MainMenuUI {
 	}
 
 	private void onReports() {
-
+		//TODO: Navigate to Reports panel
 	}
 
 	private void onRetireBeverage() {
-
+		//TODO: Naviagte to retire beverages panel
 	}
 
 	private void onSales() {
