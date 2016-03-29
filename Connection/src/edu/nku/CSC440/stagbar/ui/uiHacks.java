@@ -51,10 +51,10 @@ public class uiHacks {
 
 	public static void setTitle(JPanel panel) {
 		String title = panel.getName();
-		if(null == title || "Master".equals(titl
-			{ getContainingFrame(panel).setTitle(String.format("%s", ApplicationUI.APPLICATION_TITLE)); }));
-		e
-			{ getContainingFrame(panel).setTitle(String.format("%s - %s", ApplicationUI.APPLICATION_TITLE, title)); }));
+		if(null == title || "Master".equals(title))
+			getContainingFrame(panel).setTitle(String.format("%s", ApplicationUI.APPLICATION_TITLE));
+		else
+			getContainingFrame(panel).setTitle(String.format("%s - %s", ApplicationUI.APPLICATION_TITLE, title));
 	}
 
 }
