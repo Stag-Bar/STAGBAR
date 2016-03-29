@@ -26,54 +26,7 @@ public class Connect {
 //		getInstance().firstTimeSetup("test11", "user", "password");
 	}
 
-	/** Create a table to store the different kinds of alcohol */
-	protected boolean addNewGroup(Connection conn, String groupName, int code) {
-		boolean successful = false;
-		/* code will indicate the type
-		 * 1 = bottled beer
-		 * 2 = draft beer
-		 * 3 = liqour
-		 */
-		try {
-			Statement sta = conn.createStatement();
-			String statement = "";
-			//PreparedStatement pSta;
-
-			//TODO: Modify tables
-			// Instead of creating 3 different tables here for storing the drinks, we can just use 1.
-			// We will have to write code to check that the input is an integer for previous/current on bottled beer anyway,
-			// we shouldn't need to verify it at the database level as well.
-			// It won't cause any problems to have empty fields for some of the drinks
-
-			// The combined table would have previous double, current double, name &
-			// another 2 columns:
-			// new column 1: ID - a unique primary key, this integer can be auto-incremented by the database on entries
-			// new column 2: type - a foreign key to a new table that has 2 columns:
-			// Table ALCOHOL_TYPE, Columns ID, type
-			// Where ID is the primary key, numbers 1-3
-			// & type is the associated string
-
-
-			switch(code) {
-				case 1:
-					statement = "CREATE TABLE " + groupName + " (name varchar(50), previous integer, current integer, primary key(name));";
-					break;
-				case 2:
-					statement = "CREATE TABLE " + groupName + " (name varchar(50), previous double, current double, primary key(name));";
-					break;
-				case 3:
-					statement = "CREATE TABLE " + groupName + " (name varchar(50), previous double, current double, fullBottles integer, primary key (name));";
-					break;
-			}
-			//pSta = conn.prepareStatement(statement);
-			//pSta.setString(1, groupName);
-			successful = sta.execute(statement);
-			//successful = pSta.execute();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return successful;
-	}
+	
 
 	//method to create a new user that has full privileges.  IE the inventory manager
 	private boolean createDatabase(String name) {
@@ -117,7 +70,7 @@ public class Connect {
 			pSta.setString(3, permissionLevel.name());
 			System.out.println(pSta);
 			pSta.execute();
-				return true;
+			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -149,32 +102,18 @@ public class Connect {
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
 			pSta.setString(1, username);
-			if(pSta.execute()) {
-				return true;
-			}
+			pSta.execute();
+			return true;
+			
 		} catch(SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
-		/*
-		boolean succesful = false;
-		try{
-
-			Connection conn = makeNewConnection("stagbar", "Nkucsc440");
-			String statement = "DROP USER ?;";
-			PreparedStatement pSta = conn.prepareStatement(statement);
-			pSta.setString(1, username);
-			succesful = pSta.execute();
-
-			conn.close();
-		}
-		catch(SQLException e){
-			System.out.println(e);
-		}
-		return succesful;*/
 	}
-
+		
+	
+		
 	/**
 	 * Checks database for given drink.
 	 *
@@ -253,11 +192,17 @@ public class Connect {
 	public Set<Alcohol> findAllAlcohol() {
 		String statement = "SELECT * FROM alcohol;";
 		ResultSet result;
+		Set<Alcohol> set = new HashSet<>();
+		
 		try {
 			Statement s = activeConnection.createStatement();
 			result = s.executeQuery(statement);
-			if(result != null){
-				return (Set<Alcohol>) result;
+			statement = "SELECT * FROM type WHERE typeid = " + result.getInt(3) + ";";
+			s = activeConnection.createStatement();
+			ResultSet result2 = s.executeQuery(statement);
+			
+			while(result.next()){
+				set.add(new Alcohol(result.getInt(1), result.getString(2), new CustomAlcoholType(result2.getInt(1), result2.getString(2), AlcoholType.valueOf(result2.getString(3))), result.getDate(4).toLocalDate(), result.getDate(5).toLocalDate()));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -265,7 +210,7 @@ public class Connect {
 		}
 
 
-		return null;
+		return set;
 	}
 
 	/** Pulls all custom types from database. */
@@ -299,7 +244,7 @@ public class Connect {
 	public Set<User> findAllUsers() {
 		String sql = "Select * from user;";
 		ResultSet results;
-		Set<User> set = null;
+		Set<User> set = new HashSet<>();
 		try {
 			Statement s = getActiveConnection().createStatement();
 			results = s.executeQuery(sql);
@@ -417,7 +362,8 @@ public class Connect {
 			PreparedStatement pSta = activeConnection.prepareStatement(statement);
 			pSta.setDate(1, Date.valueOf(date));
 			pSta.setInt(2, alcoholId);
-			return pSta.execute();
+			pSta.execute();
+			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -446,7 +392,9 @@ public class Connect {
 			pSta.setInt(2, alcohol.getType().getTypeId());
 			pSta.setDate(3, Date.valueOf(alcohol.getCreationDate()));
 			pSta.setDate(4, Date.valueOf(alcohol.getRetireDate()));
-			return pSta.execute();
+			pSta.execute();
+			return true;
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -457,7 +405,17 @@ public class Connect {
 	}
 
 	private boolean saveCustomAlcoholType(CustomAlcoholType type) {
-		//TODO: Save custom alcohol type to database
+		String sql = "INSERT INTO type (name, kind) VALUES (?, ?);";
+		try {
+			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			pSta.setString(1, type.getName());
+			pSta.setString(2, type.getKind().name());
+			pSta.execute();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
@@ -532,16 +490,37 @@ public class Connect {
 
 	/** Updates password for given user to given value. */
 	public boolean updateUserPassword(String username, String password) {
-		// TODO: Update password
-		return true;
+		String sql = "UPDATE user SET password = ? WHERE username = ?;";
+		
+		try {
+			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			pSta.setString(1, password);
+			pSta.setString(2, username);
+			pSta.execute();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+		
 	}
 
 	/** Updates permissions for given user to given value. */
 	public boolean updateUserPermissions(String username, PermissionLevel permissionLevel) {
-		//TODO: Update permissions
-		return true;
+		String sql = "UPDATE user SET permission = ? WHERE userName = ?;";
+		try {
+			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			pSta.setString(1, permissionLevel.name());
+			pSta.setString(2, username);
+			pSta.execute();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
-
 
 	private enum EntryTable {
 		INVENTORY("Inventory"), DELIVERY("Delivery"), SALES("Sales");
