@@ -7,8 +7,8 @@ import java.awt.*;
 
 public class ApplicationUI {
 
+	public static final String APPLICATION_TITLE = "STAGBAR";
 	private JFrame frame;
-	private static final String APPLICATION_TITLE = "STAGBAR";
 	private JPanel masterPanel;
 
 	public ApplicationUI(){

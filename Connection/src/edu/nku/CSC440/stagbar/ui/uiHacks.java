@@ -30,12 +30,19 @@ public class uiHacks {
 		return (JPanel)component;
 	}
 
+	public static void goToPanel(JPanel currentPanel, JPanel newPanel) {
+		uiHacks.addNewPanel(currentPanel, newPanel);
+		uiHacks.setTitle(newPanel);
+		uiHacks.repack(newPanel);
+	}
+
 	public static void killMeThenGoToLastPage(JPanel panel) {
 		JFrame containingFrame = getContainingFrame(panel);
 		JPanel masterPanel = getMasterPanel(panel);
 		masterPanel.remove(panel);
 		((CardLayout)masterPanel.getLayout()).last(masterPanel);
 		containingFrame.pack();
+		setTitle(masterPanel);
 	}
 
 	public static void repack(JPanel panel) {
@@ -43,13 +50,11 @@ public class uiHacks {
 	}
 
 	public static void setTitle(JPanel panel) {
-		getContainingFrame(panel).setTitle(String.format("STAGBAR - %s", panel.getName()));
-	}
-
-	public static void goToPanel(JPanel currentPanel, JPanel newPanel){
-		uiHacks.addNewPanel(currentPanel, newPanel);
-		uiHacks.setTitle(newPanel);
-		uiHacks.repack(newPanel);
+		String title = panel.getName();
+		if(null == title || "Master".equals(title))
+			getContainingFrame(panel).setTitle(String.format("%s", ApplicationUI.APPLICATION_TITLE));
+		else
+			getContainingFrame(panel).setTitle(String.format("%s - %s", ApplicationUI.APPLICATION_TITLE, title));
 	}
 
 }
