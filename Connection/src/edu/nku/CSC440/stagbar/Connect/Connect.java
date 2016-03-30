@@ -79,18 +79,6 @@ public class Connect {
 		return false;
 	}
 
-	/**
-	 * @return <code>true</code> if given username & password can connect to database
-	 * @deprecated Temporary method. Unsecure.
-	 * User does not need connection if we use a single login from system to database.
-	 * TODO: Replace with method to check against custom user table.
-	 */
-	public boolean createUserConnection(String username, String password) {
-//		activeConnection = makeNewConnection(username, password, getDatabaseName());
-		activeConnection = makeNewMasterConnection(getDatabaseName()); // TODO: Delete line after testing.
-		return activeConnection != null;
-	}
-
 	/** Deletes given ingredient for given drink. */
 	public boolean deleteMixedDrinkIngredient(String mixedDrinkName, int alcoholId) {
 		//TODO: Delete removed ingredients
@@ -319,6 +307,11 @@ public class Connect {
 		} catch(SQLException e) {
 			return false;
 		}
+	}
+
+	public boolean loginUser(String username, String password) {
+		// TODO: Check that given username & password match what is in database.
+		return true;
 	}
 
 	/**
