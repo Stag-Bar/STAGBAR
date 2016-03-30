@@ -1,12 +1,11 @@
 package edu.nku.CSC440.stagbar.service;
 
 import edu.nku.CSC440.stagbar.Connect.Connect;
-import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
 import edu.nku.CSC440.stagbar.dataaccess.MixedDrink;
+import edu.nku.CSC440.stagbar.dataaccess.MixedDrinkIngredient;
 
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class MixedDrinkService {
@@ -43,16 +42,21 @@ public class MixedDrinkService {
 		return Connect.getInstance().findAllMixedDrinksAndIngredients();
 	}
 
-	public boolean retireMixedDrink(MixedDrink mixedDrink) {
-		return Connect.getInstance().retireMixedDrink(mixedDrink.getName(), LocalDate.now());
+	public boolean isDrinkNameUnique(String name) {
+		return !getAllMixedDrinkNames().contains(name);
 	}
 
+	public boolean retireMixedDrink(MixedDrink mixedDrink, boolean isRetired) {
+		return Connect.getInstance().retireMixedDrink(mixedDrink.getName(), isRetired ? LocalDate.now() : null);
+	}
+
+	/** Saves a new Mixed Drink to the database. */
 	public boolean saveMixedDrink(MixedDrink mixedDrink) {
 		// Save drink.
 		if(Connect.getInstance().createMixedDrink(mixedDrink.getName())) {
 			// Save all ingredients.
-			for(Map.Entry<Alcohol, Double> ingredientEntry : mixedDrink.getIngredients().entrySet()) {
-				Connect.getInstance().createMixedDrinkIngredient(mixedDrink.getName(), ingredientEntry.getKey().getAlcoholId(), ingredientEntry.getValue());
+			for(MixedDrinkIngredient ingredient : mixedDrink.getIngredients()) {
+				Connect.getInstance().createMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol().getAlcoholId(), ingredient.getAmount());
 			}
 		}
 		else { return false; }
@@ -62,18 +66,18 @@ public class MixedDrinkService {
 
 	public boolean updateMixedDrink(MixedDrink mixedDrink) {
 		// Save all NEW ingredients.
-		for(Map.Entry<Alcohol, Double> ingredientEntry : mixedDrink.getNewIngredients().entrySet()) {
-			Connect.getInstance().createMixedDrinkIngredient(mixedDrink.getName(), ingredientEntry.getKey().getAlcoholId(), ingredientEntry.getValue());
+		for(MixedDrinkIngredient ingredient : mixedDrink.getIngredients()) {
+			Connect.getInstance().createMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol().getAlcoholId(), ingredient.getAmount());
 		}
 
 		// Update ingredients whose amount has been changed.
-		for(Map.Entry<Alcohol, Double> ingredientEntry : mixedDrink.getUpdatedIngredients().entrySet()) {
-			Connect.getInstance().updateMixedDrinkIngredient(mixedDrink.getName(), ingredientEntry.getKey().getAlcoholId(), ingredientEntry.getValue());
+		for(MixedDrinkIngredient ingredient : mixedDrink.getUpdatedIngredients()) {
+			Connect.getInstance().updateMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol().getAlcoholId(), ingredient.getAmount());
 		}
 
 		// Delete removed ingredients.
-		for(Map.Entry<Alcohol, Double> ingredientEntry : mixedDrink.getRemovedIngredients().entrySet()) {
-			Connect.getInstance().deleteMixedDrinkIngredient(mixedDrink.getName(), ingredientEntry.getKey().getAlcoholId());
+		for(MixedDrinkIngredient ingredient : mixedDrink.getUpdatedIngredients()) {
+			Connect.getInstance().deleteMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol().getAlcoholId());
 		}
 
 		return true;

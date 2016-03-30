@@ -15,9 +15,9 @@ import java.util.Map;
 import java.util.Set;
 
 public class TypePaneUI {
-	Map<Integer, EntryRowUI> rowUIMap;
 	private JPanel contentPane;
 	private JPanel rowPane;
+	private Map<Integer, EntryRowUI> rowUIMap;
 	private CustomAlcoholType type;
 	private JLabel typeLabel;
 
@@ -78,7 +78,7 @@ public class TypePaneUI {
 		label3.setHorizontalTextPosition(11);
 		label3.setText("Amount(oz)");
 		panel4.add(label3, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-		panel3.add(rowPane, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+		panel3.add(rowPane, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
 	}
 
 	public void addEntryRow(Alcohol alcohol) {

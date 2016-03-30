@@ -23,7 +23,7 @@ public class TypeService {
 	}
 
 	public boolean saveCustomAlcoholType(String name, AlcoholType kind) {
-		return true;
+		return Connect.getInstance().saveCustomAlcoholType(new CustomAlcoholType(CustomAlcoholType.NEW_CUSTOM_TYPE_ID, name, kind));
 	}
 
 }

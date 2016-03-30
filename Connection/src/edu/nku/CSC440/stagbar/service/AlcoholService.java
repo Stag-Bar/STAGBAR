@@ -22,7 +22,8 @@ public class AlcoholService {
 		return Connect.getInstance().findActiveAlcoholByType(type, startDate, endDate);
 	}
 
-	public boolean isAlcoholNameUnique(String name) {
+	public boolean isAlcoholNameUnique(String name, CustomAlcoholType selectedItem) {
+		//FIXME: Alcohol should be unique by name AND type.
 		return null == Connect.getInstance().findAlcoholByName(name);
 	}
 

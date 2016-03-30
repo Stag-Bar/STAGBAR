@@ -2,32 +2,37 @@ package edu.nku.CSC440.stagbar.dataaccess;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Set;
 
 public class MixedDrink {
-	private Map<Alcohol, Double> ingredients;
+	private Map<MixedDrinkIngredient, MixedDrinkIngredient> ingredients;
 	private String name;
-	private Map<Alcohol, Double> previousIngredients;
+	private Map<MixedDrinkIngredient, MixedDrinkIngredient> previousIngredients;
 	private LocalDate retireDate;
 
 	/** Used when creating new drink. */
-	public MixedDrink(String name) {
+	public MixedDrink(String name, Set<MixedDrinkIngredient> ingredients) {
 		this.name = name;
-		ingredients = new HashMap<>();
+		this.ingredients = mapFromSet(ingredients);
 		previousIngredients = null;
+		retireDate = null;
 	}
 
 	/** Used when loading drink. */
-	public MixedDrink(String name, Map<Alcohol, Double> ingredientsStoredInDatabase, LocalDate retireDate) {
-		this.name = name;
+	public MixedDrink(String name, Set<MixedDrinkIngredient> ingredientsStoredInDatabase, LocalDate retireDate) {
+		this(name, ingredientsStoredInDatabase);
 		this.retireDate = retireDate;
-		previousIngredients = ingredientsStoredInDatabase;
-		ingredients = new HashMap<>(ingredientsStoredInDatabase);
+		previousIngredients = mapFromSet(ingredientsStoredInDatabase);
 	}
 
-	public void addIngredient(Alcohol alcohol, double amount) {
-		ingredients.put(alcohol, amount);
+	private static Map<MixedDrinkIngredient, MixedDrinkIngredient> mapFromSet(Set<MixedDrinkIngredient> set) {
+		Map<MixedDrinkIngredient, MixedDrinkIngredient> map = new HashMap<>(set.size());
+		for(MixedDrinkIngredient ingredient : set) {
+			map.put(ingredient, ingredient);
+		}
+		return map;
 	}
 
 	@Override
@@ -40,35 +45,35 @@ public class MixedDrink {
 		return getName().equals(that.getName());
 	}
 
-	public Map<Alcohol, Double> getIngredients() {
-		return ingredients;
+	public Set<MixedDrinkIngredient> getIngredients() {
+		return ingredients.keySet();
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public Map<Alcohol, Double> getNewIngredients() {
-		if(null == previousIngredients) return ingredients;
+	public Set<MixedDrinkIngredient> getNewIngredients() {
+		if(null == previousIngredients) return ingredients.keySet();
 
-		Map<Alcohol, Double> newIngredients = new HashMap<>();
+		Set<MixedDrinkIngredient> newIngredients = new HashSet<>();
 
-		for(Alcohol alcohol : ingredients.keySet()) {
-			if(!previousIngredients.containsKey(alcohol)) {
-				newIngredients.put(alcohol, ingredients.get(alcohol));
+		for(MixedDrinkIngredient ingredient : ingredients.keySet()) {
+			if(!previousIngredients.containsKey(ingredient)) {
+				newIngredients.add(ingredient);
 			}
 		}
 
 		return newIngredients;
 	}
 
-	public Map<Alcohol, Double> getRemovedIngredients() {
-		Map<Alcohol, Double> removedIngredients = new HashMap<>();
+	public Set<MixedDrinkIngredient> getRemovedIngredients() {
+		Set<MixedDrinkIngredient> removedIngredients = new HashSet<>();
 
 		if(null != previousIngredients) {
-			for(Alcohol alcohol : previousIngredients.keySet()) {
-				if(!ingredients.containsKey(alcohol)) {
-					removedIngredients.put(alcohol, previousIngredients.get(alcohol));
+			for(MixedDrinkIngredient ingredient : previousIngredients.keySet()) {
+				if(!ingredients.containsKey(ingredient)) {
+					removedIngredients.add(ingredient);
 				}
 			}
 		}
@@ -84,13 +89,13 @@ public class MixedDrink {
 		this.retireDate = retireDate;
 	}
 
-	public Map<Alcohol, Double> getUpdatedIngredients() {
-		Map<Alcohol, Double> updatedIngredients = new HashMap<>();
+	public Set<MixedDrinkIngredient> getUpdatedIngredients() {
+		Set<MixedDrinkIngredient> updatedIngredients = new HashSet<>();
 
 		if(null != previousIngredients) {
-			for(Alcohol alcohol : ingredients.keySet()) {
-				if(previousIngredients.containsKey(alcohol) && !Objects.equals(previousIngredients.get(alcohol), ingredients.get(alcohol))) {
-					updatedIngredients.put(alcohol, ingredients.get(alcohol));
+			for(MixedDrinkIngredient ingredient : ingredients.keySet()) {
+				if(previousIngredients.containsKey(ingredient) && previousIngredients.get(ingredient).getAmount() != ingredients.get(ingredient).getAmount()) {
+					updatedIngredients.add(ingredient);
 				}
 			}
 		}
@@ -101,14 +106,6 @@ public class MixedDrink {
 	@Override
 	public int hashCode() {
 		return getName().hashCode();
-	}
-
-	public void removeIngredient(Alcohol alcohol) {
-		ingredients.remove(alcohol);
-	}
-
-	public void updateIngredient(Alcohol alcohol, double amount) {
-		ingredients.put(alcohol, amount);
 	}
 
 }

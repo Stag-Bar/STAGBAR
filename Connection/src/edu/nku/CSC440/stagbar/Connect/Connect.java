@@ -2,8 +2,6 @@ package edu.nku.CSC440.stagbar.Connect;
 
 import edu.nku.CSC440.stagbar.Connect.mock.ConnectMock;
 import edu.nku.CSC440.stagbar.dataaccess.*;
-import edu.nku.CSC440.stagbar.dataaccess.mock.AlcoholMock;
-import edu.nku.CSC440.stagbar.dataaccess.mock.CustomAlcoholTypeMock;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -81,18 +79,6 @@ public class Connect {
 		return false;
 	}
 
-	/**
-	 * @return <code>true</code> if given username & password can connect to database
-	 * @deprecated Temporary method. Unsecure.
-	 * User does not need connection if we use a single login from system to database.
-	 * TODO: Replace with method to check against custom user table.
-	 */
-	public boolean createUserConnection(String username, String password) {
-//		activeConnection = makeNewConnection(username, password, getDatabaseName());
-		activeConnection = makeNewMasterConnection(getDatabaseName()); // TODO: Delete line after testing.
-		return activeConnection != null;
-	}
-
 	/** Deletes given ingredient for given drink. */
 	public boolean deleteMixedDrinkIngredient(String mixedDrinkName, int alcoholId) {
 		//TODO: Delete removed ingredients
@@ -114,8 +100,6 @@ public class Connect {
 		}
 		return false;
 	}
-		
-	
 		
 	/**
 	 * Checks database for given drink.
@@ -151,24 +135,25 @@ public class Connect {
 	}
 
 	public Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type, LocalDate startDate, LocalDate endDate) {
-		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE typeid = ? AND a.typeid = t.typeid BETWEEN ? AND ?;";
-		Set<Alcohol> set = new HashSet<>();
-		try{
-			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
-			ResultSet results;
-			pSta.setInt(1, type.getTypeId());
-			pSta.setDate(2, Date.valueOf(startDate));
-			pSta.setDate(3, Date.valueOf(endDate));
-			results = pSta.executeQuery();
-			while(results.next()){
-				set.add(new Alcohol(results.getInt("1"), results.getString("2"), new CustomAlcoholType(results.getInt(3), results.getString(7), AlcoholType.valueOf(results.getString(8))), results.getDate(4).toLocalDate(), results.getDate(5).toLocalDate()));
-			}
-			
-		}
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//FIXME: Method throwing database exception
+//		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE typeid = ? AND a.typeid = t.typeid BETWEEN ? AND ?;";
+//		Set<Alcohol> set = new HashSet<>();
+//		try{
+//			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+//			ResultSet results;
+//			pSta.setInt(1, type.getTypeId());
+//			pSta.setDate(2, Date.valueOf(startDate));
+//			pSta.setDate(3, Date.valueOf(endDate));
+//			results = pSta.executeQuery();
+//			while(results.next()){
+//				set.add(new Alcohol(results.getInt("1"), results.getString("2"), new CustomAlcoholType(results.getInt(3), results.getString(7), AlcoholType.valueOf(results.getString(8))), results.getDate(4).toLocalDate(), results.getDate(5).toLocalDate()));
+//			}
+//
+//		}
+//		catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return ConnectMock.findActiveAlcoholByType(type, startDate, endDate);
 	}
 
@@ -190,8 +175,8 @@ public class Connect {
 		
 		//might need changed
 		try {
-			
-			PreparedStatement pSta = activeConnection.prepareStatement(statement);
+
+			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
 			pSta.setString(1, name);
 			result = pSta.executeQuery();
 			
@@ -212,7 +197,7 @@ public class Connect {
 		Set<Alcohol> set = new HashSet<>();
 		
 		try {
-			Statement s = activeConnection.createStatement();
+			Statement s = getActiveConnection().createStatement();
 			result = s.executeQuery(statement);
 			
 			while(result.next()){
@@ -233,7 +218,7 @@ public class Connect {
 		Set<CustomAlcoholType> set = new HashSet<>();
 		ResultSet result;
 		try {
-			Statement s = activeConnection.createStatement();
+			Statement s = getActiveConnection().createStatement();
 			result = s.executeQuery(statement);
 			while(result.next()) {
 				set.add(new CustomAlcoholType(result.getInt(1), result.getString(2), AlcoholType.valueOf(result.getString(3))));
@@ -281,7 +266,7 @@ public class Connect {
 				String statement = "CREATE TABLE user (username VARCHAR(50), password VARCHAR(128), permission VARCHAR(15), PRIMARY KEY(username));";
 				sta.execute(statement);
 				statement = "INSERT INTO user (username, password, permission) VALUES (?, ?, \'Administrator\');";
-				PreparedStatement pSta = activeConnection.prepareStatement(statement);
+				PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
 				pSta.setString(1, userName);
 				pSta.setString(2, password);
 				pSta.execute();
@@ -334,6 +319,11 @@ public class Connect {
 		} catch(SQLException e) {
 			return false;
 		}
+	}
+
+	public boolean loginUser(String username, String password) {
+		// TODO: Check that given username & password match what is in database.
+		return true;
 	}
 
 	/**
@@ -415,6 +405,7 @@ public class Connect {
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			System.out.println("Erroneous alcohol: " + alcohol.print());
 			e.printStackTrace();
 		}
 
@@ -422,7 +413,7 @@ public class Connect {
 		return false;
 	}
 
-	private boolean saveCustomAlcoholType(CustomAlcoholType type) {
+	public boolean saveCustomAlcoholType(CustomAlcoholType type) {
 		String sql = "INSERT INTO type (name, kind) VALUES (?, ?);";
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);

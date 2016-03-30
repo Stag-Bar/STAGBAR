@@ -175,7 +175,7 @@ public class NewAlcoholUI {
 			errorMessage.setText(ERROR_INVALID_QUANTITIES);
 		}
 		// Check name is unique in database.
-		else if(!AlcoholService.getInstance().isAlcoholNameUnique(nameTextField.getText())) {
+		else if(!AlcoholService.getInstance().isAlcoholNameUnique(nameTextField.getText(), (CustomAlcoholType)typeComboBox.getSelectedItem())) {
 			nameLabel.setForeground(Color.RED);
 			errorMessage.setText(ERROR_NAME_NOT_UNIQUE);
 			nameTextField.selectAll();

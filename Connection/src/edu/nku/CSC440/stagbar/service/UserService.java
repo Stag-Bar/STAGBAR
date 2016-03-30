@@ -172,7 +172,7 @@ public class UserService {
 //		byte[] passwordHashFromDatabase = getPasswordForUser(username);
 
 //		if(null != passwordHashFromDatabase && Arrays.equals(passwordHashFromDatabase, passwordHashFromUser)) {
-		if(Connect.getInstance().createUserConnection(username, new String(password))) {
+		if(Connect.getInstance().loginUser(username, new String(password))) {
 			User currentUser = new User(username, getPermissionsForUser(username));
 			Application.getInstance().setUser(currentUser);
 			System.out.format("Login as %s Successful\n", username);
