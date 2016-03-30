@@ -33,10 +33,9 @@ public class ChangePasswordUI {
     private UserService userService;
 
     public ChangePasswordUI() {
+        $$$setupUI$$$();
         userService = UserService.getInstance();
-
         contentPane.setName("Change Password");
-
         okButton.addActionListener(e -> onOK());
         cancelButton.addActionListener(e -> onCancel());
     }
