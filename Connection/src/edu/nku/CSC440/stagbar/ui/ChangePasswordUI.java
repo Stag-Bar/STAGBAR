@@ -86,7 +86,7 @@ public class ChangePasswordUI {
             usernameTextField.selectAll();
             usernameTextField.requestFocusInWindow();
         }
-// Check username is unique in database.
+// Check if old password entered actually matches user's real password
         else if (!userService.getPasswordForUser(usernameTextField.getText()).equals(oldPasswordField.getPassword())) {
             errorMessage.setText(ERROR_PASSWORD_IS_WRONG);
             usernameLabel.setForeground(Color.RED);
