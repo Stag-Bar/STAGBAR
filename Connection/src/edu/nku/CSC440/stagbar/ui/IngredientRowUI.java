@@ -16,17 +16,15 @@ public class IngredientRowUI {
 	private JLabel alcoholLabel;
 	private JFormattedTextField amountFormattedTextField;
 	private JPanel contentPane;
-	private JButton removeButton;
 
-	public IngredientRowUI(Alcohol ingredient) {
+	public IngredientRowUI(Alcohol alcohol) {
 		if(null == alcohol) throw new IllegalArgumentException("Alcohol cannot be null.");
 
-		this.alcohol = ingredient;
+		this.alcohol = alcohol;
 		$$$setupUI$$$();
-		alcoholLabel.setText(ingredient.getName());
+		alcoholLabel.setText(alcohol.getName());
 
 		amountFormattedTextField.setText(String.valueOf(0));
-		removeButton.addActionListener(e -> onRemove());
 	}
 
 	public IngredientRowUI(Alcohol ingredient, double amount) {
@@ -47,15 +45,12 @@ public class IngredientRowUI {
 	private void $$$setupUI$$$() {
 		createUIComponents();
 		contentPane = new JPanel();
-		contentPane.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
+		contentPane.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
 		alcoholLabel = new JLabel();
 		alcoholLabel.setText("Label");
 		contentPane.add(alcoholLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
 		amountFormattedTextField.setText("0");
 		contentPane.add(amountFormattedTextField, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-		removeButton = new JButton();
-		removeButton.setText("Remove");
-		contentPane.add(removeButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		alcoholLabel.setLabelFor(amountFormattedTextField);
 	}
 
@@ -82,10 +77,6 @@ public class IngredientRowUI {
 		}
 
 		return new MixedDrinkIngredient(alcohol, amount);
-	}
-
-	private void onRemove() {
-		//TODO: Remove this ingredient
 	}
 
 }
