@@ -23,11 +23,23 @@ public class uiHacks {
 	}
 
 	public static JPanel getMasterPanel(JPanel panel) {
+		if("Master".equals(panel.getName())) return panel;
+
 		Component component = panel.getParent();
 		while(null != component && !"Master".equals(component.getName())) {
 			component = component.getParent();
 		}
 		return (JPanel)component;
+	}
+
+	private static JPanel getTopPanel(JPanel panel){
+		JPanel card = null;
+		for (Component comp : panel.getComponents()) {
+			if (comp.isVisible()) {
+				card = (JPanel) comp;
+			}
+		}
+		return card;
 	}
 
 	public static void goToPanel(JPanel currentPanel, JPanel newPanel) {
@@ -45,12 +57,20 @@ public class uiHacks {
 		setTitle(masterPanel);
 	}
 
+//	public static void setTitle(JPanel panel) {
+//		String title = panel.getName();
+//		if(null == title || "Master".equals(title))
+//			getContainingFrame(panel).setTitle(String.format("%s", ApplicationUI.APPLICATION_TITLE));
+//		else
+//			getContainingFrame(panel).setTitle(String.format("%s - %s", ApplicationUI.APPLICATION_TITLE, title));
+//	}
+
 	public static void repack(JPanel panel) {
 		getContainingFrame(panel).pack();
 	}
 
 	public static void setTitle(JPanel panel) {
-		String title = panel.getName();
+		String title = getTopPanel(getMasterPanel(panel)).getName();
 		if(null == title || "Master".equals(title))
 			getContainingFrame(panel).setTitle(String.format("%s", ApplicationUI.APPLICATION_TITLE));
 		else

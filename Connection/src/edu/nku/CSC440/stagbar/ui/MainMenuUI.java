@@ -14,7 +14,7 @@ public class MainMenuUI {
 	private JButton mixedDrinksButton;
 	private JButton newAlcoholButton;
 	private JButton reportsButton;
-	private JButton retireBeverageButton;
+	private JButton retireAlcoholButton;
 	private JButton salesButton;
 
 	public MainMenuUI() {
@@ -26,7 +26,7 @@ public class MainMenuUI {
 		mixedDrinksButton.addActionListener(e -> onMixedDrinks());
 		newAlcoholButton.addActionListener(e -> onNewAlcohol());
 		reportsButton.addActionListener(e -> onReports());
-		retireBeverageButton.addActionListener(e -> onRetireBeverage());
+		retireAlcoholButton.addActionListener(e -> onRetireAlcohol());
 		salesButton.addActionListener(e -> onSales());
 		deliveriesButton.addActionListener(e -> onDeliveries());
 	}
@@ -56,9 +56,9 @@ public class MainMenuUI {
 		mixedDrinksButton = new JButton();
 		mixedDrinksButton.setText("Mixed Drinks");
 		contentPane.add(mixedDrinksButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
-		retireBeverageButton = new JButton();
-		retireBeverageButton.setText("Retire Beverage");
-		contentPane.add(retireBeverageButton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		retireAlcoholButton = new JButton();
+		retireAlcoholButton.setText("Retire Alcohol");
+		contentPane.add(retireAlcoholButton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		reportsButton = new JButton();
 		reportsButton.setText("Reports");
 		contentPane.add(reportsButton, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -74,7 +74,7 @@ public class MainMenuUI {
 		newAlcoholButton.setEnabled(false);
 		inventoryButton.setEnabled(false);
 		salesButton.setEnabled(false);
-		retireBeverageButton.setEnabled(false);
+		retireAlcoholButton.setEnabled(false);
 		manageUsersButton.setEnabled(false);
 
 	}
@@ -112,7 +112,7 @@ public class MainMenuUI {
 		//TODO: Navigate to Reports panel
 	}
 
-	private void onRetireBeverage() {
+	private void onRetireAlcohol() {
 		//TODO: Naviagte to retire beverages panel
 	}
 

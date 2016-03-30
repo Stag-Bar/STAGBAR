@@ -13,6 +13,8 @@ public class MixedDrinkMenuUI {
 	private JButton retireReinstateDrinkButton;
 
 	public MixedDrinkMenuUI() {
+		contentPane.setName("Mixed Drink Menu");
+
 		newDrinkButton.addActionListener(e -> onNewDrink());
 		retireReinstateDrinkButton.addActionListener(e -> onRetireReinstateDrink());
 		goBackButton.addActionListener(e -> onGoBack());
