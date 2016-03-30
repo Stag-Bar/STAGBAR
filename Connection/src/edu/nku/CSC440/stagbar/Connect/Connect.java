@@ -2,8 +2,6 @@ package edu.nku.CSC440.stagbar.Connect;
 
 import edu.nku.CSC440.stagbar.Connect.mock.ConnectMock;
 import edu.nku.CSC440.stagbar.dataaccess.*;
-import edu.nku.CSC440.stagbar.dataaccess.mock.AlcoholMock;
-import edu.nku.CSC440.stagbar.dataaccess.mock.CustomAlcoholTypeMock;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -139,24 +137,24 @@ public class Connect {
 	}
 
 	public Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type, LocalDate startDate, LocalDate endDate) {
-		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE typeid = ? AND a.typeid = t.typeid BETWEEN ? AND ?;";
-		Set<Alcohol> set = new HashSet<>();
-		try{
-			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
-			ResultSet results;
-			pSta.setInt(1, type.getTypeId());
-			pSta.setDate(2, Date.valueOf(startDate));
-			pSta.setDate(3, Date.valueOf(endDate));
-			results = pSta.executeQuery();
-			while(results.next()){
-				set.add(new Alcohol(results.getInt("1"), results.getString("2"), new CustomAlcoholType(results.getInt(3), results.getString(7), AlcoholType.valueOf(results.getString(8))), results.getDate(4).toLocalDate(), results.getDate(5).toLocalDate()));
-			}
-			
-		}
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE typeid = ? AND a.typeid = t.typeid BETWEEN ? AND ?;";
+//		Set<Alcohol> set = new HashSet<>();
+//		try{
+//			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+//			ResultSet results;
+//			pSta.setInt(1, type.getTypeId());
+//			pSta.setDate(2, Date.valueOf(startDate));
+//			pSta.setDate(3, Date.valueOf(endDate));
+//			results = pSta.executeQuery();
+//			while(results.next()){
+//				set.add(new Alcohol(results.getInt("1"), results.getString("2"), new CustomAlcoholType(results.getInt(3), results.getString(7), AlcoholType.valueOf(results.getString(8))), results.getDate(4).toLocalDate(), results.getDate(5).toLocalDate()));
+//			}
+//
+//		}
+//		catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return ConnectMock.findActiveAlcoholByType(type, startDate, endDate);
 	}
 
@@ -415,7 +413,7 @@ public class Connect {
 		return false;
 	}
 
-	private boolean saveCustomAlcoholType(CustomAlcoholType type) {
+	public boolean saveCustomAlcoholType(CustomAlcoholType type) {
 		String sql = "INSERT INTO type (name, kind) VALUES (?, ?);";
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);

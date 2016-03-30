@@ -2,7 +2,9 @@
 <component inherit-compiler-output="true" inheritJdk="true">
 	<output-test url="file://$MODULE_DIR$/../out/test/Connection"/>
 	<exclude-output/>
-	<contentEntry url="file://$MODULE_DIR$"/>
+	<contentEntry url="file://$MODULE_DIR$">
+		<testFolder url="file://$MODULE_DIR$/test"/>
+	</contentEntry>
 	<lib name="forms_rt.jar" scope="COMPILE">
 		<relative-module-cls project-related="jar://$PROJECT_DIR$/Connection/lib/forms_rt.jar!/"/>
 	</lib>
