@@ -54,6 +54,7 @@ public class ConnectMock {
 		results.add(AlcoholMock.JAMESON);
 		results.add(AlcoholMock.WOODFORD_RESERVE);
 		results.add(AlcoholMock.GROG);
+		results.add(AlcoholMock.SWILL);
 
 		return results;
 	}
