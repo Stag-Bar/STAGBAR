@@ -40,12 +40,12 @@
           <text value="Mixed Drinks"/>
         </properties>
       </component>
-      <component id="6bd2c" class="javax.swing.JButton" binding="retireBeverageButton" default-binding="true">
+      <component id="6bd2c" class="javax.swing.JButton" binding="retireAlcoholButton">
         <constraints>
           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Retire Beverage"/>
+          <text value="Retire Alcohol"/>
         </properties>
       </component>
       <component id="d5c95" class="javax.swing.JButton" binding="reportsButton" default-binding="true">

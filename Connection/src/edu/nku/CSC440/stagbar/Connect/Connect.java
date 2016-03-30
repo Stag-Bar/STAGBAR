@@ -22,6 +22,7 @@ public class Connect {
 		return connect;
 	}
 
+	/** @deprecated For testing only. */
 	public static void main(String[] args) {
 		//getInstance().saveCustomAlcoholType(CustomAlcoholTypeMock.CRAFT_BEER); // Sample test insert
 		
