@@ -19,21 +19,14 @@ public class ConnectTest {
 	}
 
 	@Test
-	public void testSaveCustomAlcoholType() {
-		for(CustomAlcoholType type : ConnectMock.findAllCustomAlcoholTypes()) {
-			Connect.getInstance().saveCustomAlcoholType(type);
-		}
-	}
-
-	@Test
-	public void testSaveCustomAlcoholType() {
-		for(CustomAlcoholType type : ConnectMock.findAllCustomAlcoholTypes()) {
-			Connect.getInstance().saveCustomAlcoholType(type);
-		}
-	}
-
-	@Test
 	public void testSaveAlcohol() {
+		for(CustomAlcoholType type : ConnectMock.findAllCustomAlcoholTypes()) {
+			Connect.getInstance().saveCustomAlcoholType(type);
+		}
+	}
+
+	@Test
+	public void testSaveCustomAlcoholType() {
 		for(CustomAlcoholType type : ConnectMock.findAllCustomAlcoholTypes()) {
 			Connect.getInstance().saveCustomAlcoholType(type);
 		}
