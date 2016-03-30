@@ -182,4 +182,17 @@ public class UserService {
 		return false;
 	}
 
+	/**
+	 * Checks that given password matches the stored password for the given username.
+	 *
+	 * @return <code>true</code> if the passwords match, <code>false</code> otherwise.
+	 */
+	public boolean verifyUserPassword(String username, char[] password) {
+		//TODO: Search database for user's password.
+		//TODO: Compare given password to database password.
+		//TODO: Return result
+
+		return true;
+	}
+
 }
