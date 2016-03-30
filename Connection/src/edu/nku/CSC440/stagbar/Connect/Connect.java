@@ -135,6 +135,7 @@ public class Connect {
 	}
 
 	public Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type, LocalDate startDate, LocalDate endDate) {
+		//FIXME: Method throwing database exception
 //		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE typeid = ? AND a.typeid = t.typeid BETWEEN ? AND ?;";
 //		Set<Alcohol> set = new HashSet<>();
 //		try{
