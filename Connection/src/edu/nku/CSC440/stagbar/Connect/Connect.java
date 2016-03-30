@@ -160,8 +160,8 @@ public class Connect {
 		Alcohol a;
 		//might need changed
 		try {
-			
-			PreparedStatement pSta = activeConnection.prepareStatement(statement);
+
+			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
 			pSta.setString(1, name);
 			result = pSta.executeQuery();
 			statement = "SELECT * FROM type WHERE typeId = " + result.getInt("alcoholId") + ";";
@@ -182,10 +182,10 @@ public class Connect {
 		Set<Alcohol> set = new HashSet<>();
 		
 		try {
-			Statement s = activeConnection.createStatement();
+			Statement s = getActiveConnection().createStatement();
 			result = s.executeQuery(statement);
 			statement = "SELECT * FROM type WHERE typeid = " + result.getInt(3) + ";";
-			s = activeConnection.createStatement();
+			s = getActiveConnection().createStatement();
 			ResultSet result2 = s.executeQuery(statement);
 			
 			while(result.next()){
@@ -206,7 +206,7 @@ public class Connect {
 		Set<CustomAlcoholType> set = new HashSet<>();
 		ResultSet result;
 		try {
-			Statement s = activeConnection.createStatement();
+			Statement s = getActiveConnection().createStatement();
 			result = s.executeQuery(statement);
 			while(result.next()) {
 				set.add(new CustomAlcoholType(result.getInt(1), result.getString(2), AlcoholType.valueOf(result.getString(3))));
@@ -254,7 +254,7 @@ public class Connect {
 				String statement = "CREATE TABLE user (username VARCHAR(50), password VARCHAR(128), permission VARCHAR(15), PRIMARY KEY(username));";
 				sta.execute(statement);
 				statement = "INSERT INTO user (username, password, permission) VALUES (?, ?, \'Administrator\');";
-				PreparedStatement pSta = activeConnection.prepareStatement(statement);
+				PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
 				pSta.setString(1, userName);
 				pSta.setString(2, password);
 				pSta.execute();
@@ -351,7 +351,7 @@ public class Connect {
 	public boolean retireAlcohol(int alcoholId, LocalDate date) {
 		String statement = "UPDATE alcohol SET retiredate = ? WHERE alcoholId = ?;";
 		try {
-			PreparedStatement pSta = activeConnection.prepareStatement(statement);
+			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
 			pSta.setDate(1, Date.valueOf(date));
 			pSta.setInt(2, alcoholId);
 			pSta.execute();
@@ -379,7 +379,7 @@ public class Connect {
 	public boolean saveAlcohol(Alcohol alcohol) {
 		String statement = "INSERT INTO alcohol(name, type, creationDate, retireDate) VALUES (?, ?, ?, ?);";
 		try {
-			PreparedStatement pSta = activeConnection.prepareStatement(statement);
+			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
 			pSta.setString(1, alcohol.getName());
 			pSta.setInt(2, alcohol.getType().getTypeId());
 			pSta.setDate(3, Date.valueOf(alcohol.getCreationDate()));
