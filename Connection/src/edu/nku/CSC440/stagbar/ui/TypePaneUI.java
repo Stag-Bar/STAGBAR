@@ -15,9 +15,9 @@ import java.util.Map;
 import java.util.Set;
 
 public class TypePaneUI {
-	Map<Integer, EntryRowUI> rowUIMap;
 	private JPanel contentPane;
 	private JPanel rowPane;
+	private Map<Integer, EntryRowUI> rowUIMap;
 	private CustomAlcoholType type;
 	private JLabel typeLabel;
 
