@@ -5,6 +5,7 @@ import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
 import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -21,7 +22,9 @@ public class ConnectTest {
 
 	}
 
+	/** FOR FRESH DATABASE ONLY. Add alcohol mocks to database. */
 	@Test
+	@Ignore
 	public void testSaveAlcohol() {
 		for(Alcohol alcohol : ConnectMock.findAllAlcohol()) {
 			assertTrue(alcohol.print(), Connect.getInstance().saveAlcohol(alcohol));
@@ -29,7 +32,9 @@ public class ConnectTest {
 		}
 	}
 
+	/** FOR FRESH DATABASE ONLY. Add custom type mocks to database. */
 	@Test
+	@Ignore
 	public void testSaveCustomAlcoholType() {
 		for(CustomAlcoholType type : ConnectMock.findAllCustomAlcoholTypes()) {
 			Connect.getInstance().saveCustomAlcoholType(type);

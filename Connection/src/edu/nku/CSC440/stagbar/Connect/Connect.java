@@ -101,8 +101,6 @@ public class Connect {
 		return false;
 	}
 		
-	
-		
 	/**
 	 * Checks database for given drink.
 	 *
