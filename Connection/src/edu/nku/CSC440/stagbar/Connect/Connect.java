@@ -24,8 +24,8 @@ public class Connect {
 
 	/** @deprecated For testing only. */
 	public static void main(String[] args) {
-		//getInstance().saveCustomAlcoholType(CustomAlcoholTypeMock.CRAFT_BEER); // Sample test insert
-		
+		getInstance().saveCustomAlcoholType(CustomAlcoholTypeMock.DOMESTIC_BEER); // Sample test insert
+		getInstance().saveCustomAlcoholType(CustomAlcoholTypeMock.DRAFT_BEER);
 		//getInstance().firstTimeSetup("test11", "user", "password");
 	}
 
