@@ -70,6 +70,16 @@ public class Alcohol {
 		return getAlcoholId();
 	}
 
+	public String print() {
+		return "Alcohol{" +
+				"alcoholId=" + alcoholId +
+				", creationDate=" + creationDate +
+				", name='" + name + '\'' +
+				", retireDate=" + retireDate +
+				", type=" + type +
+				'}';
+	}
+
 	@Override
 	public String toString(){
 		return name;

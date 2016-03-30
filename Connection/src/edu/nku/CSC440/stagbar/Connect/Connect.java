@@ -406,6 +406,7 @@ public class Connect {
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			System.out.println("Erroneous alcohol: " + alcohol.print());
 			e.printStackTrace();
 		}
 
