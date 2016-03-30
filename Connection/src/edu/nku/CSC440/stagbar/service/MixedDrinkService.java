@@ -53,10 +53,10 @@ public class MixedDrinkService {
 	/** Saves a new Mixed Drink to the database. */
 	public boolean saveMixedDrink(MixedDrink mixedDrink) {
 		// Save drink.
-		if(Connect.getInstance().createMixedDrink(mixedDrink.getName())) {
+		if(Connect.getInstance().saveMixedDrink(mixedDrink.getName())) {
 			// Save all ingredients.
 			for(MixedDrinkIngredient ingredient : mixedDrink.getIngredients()) {
-				Connect.getInstance().createMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol().getAlcoholId(), ingredient.getAmount());
+				Connect.getInstance().saveMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol(), ingredient.getAmount());
 			}
 		}
 		else { return false; }
@@ -67,17 +67,17 @@ public class MixedDrinkService {
 	public boolean updateMixedDrink(MixedDrink mixedDrink) {
 		// Save all NEW ingredients.
 		for(MixedDrinkIngredient ingredient : mixedDrink.getIngredients()) {
-			Connect.getInstance().createMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol().getAlcoholId(), ingredient.getAmount());
+			Connect.getInstance().saveMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol(), ingredient.getAmount());
 		}
 
 		// Update ingredients whose amount has been changed.
 		for(MixedDrinkIngredient ingredient : mixedDrink.getUpdatedIngredients()) {
-			Connect.getInstance().updateMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol().getAlcoholId(), ingredient.getAmount());
+			Connect.getInstance().updateMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol(), ingredient.getAmount());
 		}
 
 		// Delete removed ingredients.
 		for(MixedDrinkIngredient ingredient : mixedDrink.getUpdatedIngredients()) {
-			Connect.getInstance().deleteMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol().getAlcoholId());
+			Connect.getInstance().deleteMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol());
 		}
 
 		return true;

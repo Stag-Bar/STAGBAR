@@ -108,4 +108,13 @@ public class MixedDrink {
 		return getName().hashCode();
 	}
 
+	@Override
+	public String toString() {
+		return "MixedDrink{" +
+				"name='" + name + '\'' +
+				", ingredients=" + getIngredients() +
+				", retireDate=" + retireDate +
+				'}';
+	}
+
 }

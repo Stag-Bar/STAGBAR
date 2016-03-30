@@ -48,37 +48,8 @@ public class Connect {
 		return success;
 	}
 
-	/** Creates a new mixed drink with given name and no retire date. */
-	public boolean createMixedDrink(String name) {
-		//TODO: Create new mixed drink.
-		return true;
-	}
-
-	/** Creates a new mixed drink ingredient for drink with given name. */
-	public boolean createMixedDrinkIngredient(String mixedDrinkName, int alcoholId, Double amount) {
-		return true;
-	}
-
-	public boolean createUser(String username, String password, PermissionLevel permissionLevel) {
-		String statement = "INSERT INTO user (username, password, permission) VALUES (?, ?, ?);";
-		PreparedStatement pSta;
-		try {
-			pSta = getActiveConnection().prepareStatement(statement);
-			pSta.setString(1, username);
-			pSta.setString(2, password);
-			pSta.setString(3, permissionLevel.name());
-			System.out.println(pSta);
-			pSta.execute();
-			return true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
-	}
-
 	/** Deletes given ingredient for given drink. */
-	public boolean deleteMixedDrinkIngredient(String mixedDrinkName, int alcoholId) {
+	public boolean deleteMixedDrinkIngredient(String mixedDrinkName, Alcohol alcohol) {
 		//TODO: Delete removed ingredients
 		return true;
 	}
@@ -91,14 +62,14 @@ public class Connect {
 			pSta.setString(1, username);
 			pSta.execute();
 			return true;
-			
+
 		} catch(SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
 	}
-		
+
 	/**
 	 * Checks database for given drink.
 	 *
@@ -171,14 +142,14 @@ public class Connect {
 	public Alcohol findAlcoholByName(String name) {
 		String statement = "SELECT a.alcoholId, a.name, a.typeid, a.creationdate, a.retiredate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE a.alcoholId = t.typeid AND a.name = ?;";
 		ResultSet result;
-		
+
 		//might need changed
 		try {
 
 			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
 			pSta.setString(1, name);
 			result = pSta.executeQuery();
-			
+
 			if(result != null){
 				return new Alcohol(result.getInt(1), result.getString(2), new CustomAlcoholType(result.getInt(3), result.getString(7), AlcoholType.valueOf(result.getString(8))), result.getDate(4).toLocalDate(), result.getDate(5).toLocalDate());
 			}
@@ -194,11 +165,11 @@ public class Connect {
 		String statement = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE a.typeid = t.typeid;";
 		ResultSet result;
 		Set<Alcohol> set = new HashSet<>();
-		
+
 		try {
 			Statement s = getActiveConnection().createStatement();
 			result = s.executeQuery(statement);
-			
+
 			while(result.next()){
 				set.add(new Alcohol(result.getInt(1), result.getString(2), new CustomAlcoholType(result.getInt(6), result.getString(7), AlcoholType.valueOf(result.getString(8))), result.getDate(4).toLocalDate(), result.getDate(5).toLocalDate()));
 			}
@@ -229,7 +200,7 @@ public class Connect {
 
 		return set;
 	}
-	
+
 	/** Searches database for all mixed drinks and their corresponding ingredients. */
 	public Set<MixedDrink> findAllMixedDrinksAndIngredients() {
 		//TODO: Find all mixed drinks
@@ -399,9 +370,9 @@ public class Connect {
 			else
 				pSta.setDate(4, null);
 			pSta.execute();
-			
+
 			return true;
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Erroneous alcohol: " + alcohol.print());
@@ -447,9 +418,40 @@ public class Connect {
 		return saveEntry(EntryTable.INVENTORY, entry);
 	}
 
+	/** Creates a new mixed drink with given name and no retire date. */
+	public boolean saveMixedDrink(String name) {
+		//TODO: Create new mixed drink.
+		System.out.println("Mixed Drink " + name + " saved.");
+		return true;
+	}
+
+	/** Creates a new mixed drink ingredient for drink with given name. */
+	public boolean saveMixedDrinkIngredient(String mixedDrinkName, Alcohol alcohol, Double amount) {
+		System.out.println("Ingredient for " + mixedDrinkName + ": " + alcohol + ", " + amount + "oz saved.");
+		return true;
+	}
+
 	/** Creates a new row on the Sales table with the given entry. */
 	public boolean saveSalesEntry(Entry entry) {
 		return saveEntry(EntryTable.SALES, entry);
+	}
+
+	public boolean saveUser(String username, String password, PermissionLevel permissionLevel) {
+		String statement = "INSERT INTO user (username, password, permission) VALUES (?, ?, ?);";
+		PreparedStatement pSta;
+		try {
+			pSta = getActiveConnection().prepareStatement(statement);
+			pSta.setString(1, username);
+			pSta.setString(2, password);
+			pSta.setString(3, permissionLevel.name());
+			System.out.println(pSta);
+			pSta.execute();
+			return true;
+		} catch(SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/**
@@ -487,7 +489,7 @@ public class Connect {
 	}
 
 	/** Updates given ingredient for given drink with given value. */
-	public boolean updateMixedDrinkIngredient(String mixedDrinkName, int alcoholId, Double amount) {
+	public boolean updateMixedDrinkIngredient(String mixedDrinkName, Alcohol alcohol, Double amount) {
 		//TODO: Update mixed drink
 		return true;
 	}

@@ -3,6 +3,7 @@ package edu.nku.CSC440.stagbar.Connect;
 import edu.nku.CSC440.stagbar.Connect.mock.ConnectMock;
 import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
 import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
+import edu.nku.CSC440.stagbar.dataaccess.mock.MixedDrinkMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -11,6 +12,11 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 public class ConnectTest {
+
+	@Test
+	public void playground() {
+		System.out.println(MixedDrinkMock.FIREBULL);
+	}
 
 	@Before
 	public void setUp() {
