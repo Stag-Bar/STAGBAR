@@ -2,6 +2,7 @@ package edu.nku.CSC440.stagbar.Connect;
 
 import edu.nku.CSC440.stagbar.Connect.mock.ConnectMock;
 import edu.nku.CSC440.stagbar.dataaccess.*;
+import edu.nku.CSC440.stagbar.dataaccess.mock.AlcoholMock;
 import edu.nku.CSC440.stagbar.dataaccess.mock.CustomAlcoholTypeMock;
 
 import java.sql.*;
@@ -22,8 +23,9 @@ public class Connect {
 	}
 
 	public static void main(String[] args) {
-		getInstance().saveCustomAlcoholType(CustomAlcoholTypeMock.CRAFT_BEER); // Sample test insert
-//		getInstance().firstTimeSetup("test11", "user", "password");
+		//getInstance().saveCustomAlcoholType(CustomAlcoholTypeMock.CRAFT_BEER); // Sample test insert
+		
+		//getInstance().firstTimeSetup("test11", "user", "password");
 	}
 
 	
@@ -148,6 +150,24 @@ public class Connect {
 	}
 
 	public Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type, LocalDate startDate, LocalDate endDate) {
+		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE typeid = ? AND a.typeid = t.typeid BETWEEN ? AND ?;";
+		Set<Alcohol> set = new HashSet<>();
+		try{
+			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			ResultSet results;
+			pSta.setInt(1, type.getTypeId());
+			pSta.setDate(2, Date.valueOf(startDate));
+			pSta.setDate(3, Date.valueOf(endDate));
+			results = pSta.executeQuery();
+			while(results.next()){
+				set.add(new Alcohol(results.getInt("1"), results.getString("2"), new CustomAlcoholType(results.getInt(3), results.getString(7), AlcoholType.valueOf(results.getString(8))), results.getDate(4).toLocalDate(), results.getDate(5).toLocalDate()));
+			}
+			
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return ConnectMock.findActiveAlcoholByType(type, startDate, endDate);
 	}
 
@@ -164,20 +184,18 @@ public class Connect {
 	 * @return Alcohol with given name if found, otherwise returns <code>null</code>.
 	 */
 	public Alcohol findAlcoholByName(String name) {
-		String statement = "SELECT a.alcoholId, a.name, a.creationdate, a.retiredate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE a.alcoholId = t.typeid;";
+		String statement = "SELECT a.alcoholId, a.name, a.typeid, a.creationdate, a.retiredate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE a.alcoholId = t.typeid AND a.name = ?;";
 		ResultSet result;
-		ResultSet result2;
-
-		Alcohol a;
+		
 		//might need changed
 		try {
 			
 			PreparedStatement pSta = activeConnection.prepareStatement(statement);
 			pSta.setString(1, name);
 			result = pSta.executeQuery();
-			statement = "SELECT * FROM type WHERE typeId = " + result.getInt("alcoholId") + ";";
+			
 			if(result != null){
-				return new Alcohol(result.getInt("a.alcoholId"), result.getString("a.name"), new CustomAlcoholType(result.getInt("t.typeId"), result.getString("t.name"), AlcoholType.valueOf(result.getString("t.kind"))), result.getDate("a.creationDate").toLocalDate(), result.getDate("a.retireDate").toLocalDate());
+				return new Alcohol(result.getInt(1), result.getString(2), new CustomAlcoholType(result.getInt(3), result.getString(7), AlcoholType.valueOf(result.getString(8))), result.getDate(4).toLocalDate(), result.getDate(5).toLocalDate());
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -188,19 +206,16 @@ public class Connect {
 	}
 
 	public Set<Alcohol> findAllAlcohol() {
-		String statement = "SELECT a.alcoholid, a.name, a.type, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE a.alcoholid = t.typeid;";
+		String statement = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE a.typeid = t.typeid;";
 		ResultSet result;
 		Set<Alcohol> set = new HashSet<>();
 		
 		try {
 			Statement s = activeConnection.createStatement();
 			result = s.executeQuery(statement);
-			statement = "SELECT * FROM type WHERE typeid = " + result.getInt(3) + ";";
-			s = activeConnection.createStatement();
-			ResultSet result2 = s.executeQuery(statement);
 			
 			while(result.next()){
-				set.add(new Alcohol(result.getInt("a.alcoholid"), result.getString("a.name"), new CustomAlcoholType(result.getInt("t.typeid"), result.getString("t.name"), AlcoholType.valueOf(result.getString("t.kind"))), result.getDate(4).toLocalDate(), result.getDate(5).toLocalDate()));
+				set.add(new Alcohol(result.getInt(1), result.getString(2), new CustomAlcoholType(result.getInt(6), result.getString(7), AlcoholType.valueOf(result.getString(8))), result.getDate(4).toLocalDate(), result.getDate(5).toLocalDate()));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -213,7 +228,7 @@ public class Connect {
 
 	/** Pulls all custom types from database. */
 	public Set<CustomAlcoholType> findAllCustomAlcoholTypes() {
-		String statement = "SELECT * FROM type";
+		String statement = "SELECT * FROM type;";
 		Set<CustomAlcoholType> set = new HashSet<>();
 		ResultSet result;
 		try {
@@ -240,14 +255,14 @@ public class Connect {
 
 	/** Retrieves all users from database. */
 	public Set<User> findAllUsers() {
-		String sql = "Select * from user;";
+		String sql = "Select username, permission from user;";
 		ResultSet results;
 		Set<User> set = new HashSet<>();
 		try {
 			Statement s = getActiveConnection().createStatement();
 			results = s.executeQuery(sql);
 			while(results.next()){
-				set.add(new User(results.getString(1), PermissionLevel.valueOf(results.getString(3))));
+				set.add(new User(results.getString(1), PermissionLevel.valueOf(results.getString(2))));
 			}
 		} catch(SQLException e) {
 			// TODO Auto-generated catch block
@@ -357,7 +372,7 @@ public class Connect {
 	public boolean retireAlcohol(int alcoholId, LocalDate date) {
 		String statement = "UPDATE alcohol SET retiredate = ? WHERE alcoholId = ?;";
 		try {
-			PreparedStatement pSta = activeConnection.prepareStatement(statement);
+			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
 			pSta.setDate(1, Date.valueOf(date));
 			pSta.setInt(2, alcoholId);
 			pSta.execute();
@@ -383,14 +398,18 @@ public class Connect {
 	 * @return <code>true</code> if successful, <code>false</code> otherwise.
 	 */
 	public boolean saveAlcohol(Alcohol alcohol) {
-		String statement = "INSERT INTO alcohol(name, type, creationDate, retireDate) VALUES (?, ?, ?, ?);";
+		String statement = "INSERT INTO alcohol(name, typeid, creationDate, retireDate) VALUES (?, ?, ?, ?);";
 		try {
-			PreparedStatement pSta = activeConnection.prepareStatement(statement);
+			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
 			pSta.setString(1, alcohol.getName());
 			pSta.setInt(2, alcohol.getType().getTypeId());
 			pSta.setDate(3, Date.valueOf(alcohol.getCreationDate()));
-			pSta.setDate(4, Date.valueOf(alcohol.getRetireDate()));
+			if(alcohol.getRetireDate() != null)
+				pSta.setDate(4, Date.valueOf(alcohol.getRetireDate()));
+			else
+				pSta.setDate(4, null);
 			pSta.execute();
+			
 			return true;
 			
 		} catch (SQLException e) {
