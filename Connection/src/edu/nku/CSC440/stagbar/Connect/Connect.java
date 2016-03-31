@@ -124,7 +124,7 @@ public class Connect {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return ConnectMock.findActiveAlcoholByType(type, startDate, endDate);
+		return set;
 	}
 
 	/** Searches database for alcohol whose retire date is null or after the start date & whose creation date is before the end date. */
