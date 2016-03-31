@@ -25,7 +25,23 @@ public class Connect {
 		
 	}
 
-	
+	public boolean authenticateUser(String username, String password) {
+		String sql = "SELECT * FROM user WHERE username = ? AND password = ?;";
+		ResultSet results;
+		try {
+			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			pSta.setString(1, username);
+			pSta.setString(2, password);
+			results = pSta.executeQuery();
+			if(results.next()) {
+				return true;
+			}
+		} catch(SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 	//method to create a new user that has full privileges.  IE the inventory manager
 	private boolean createDatabase(String name) {
@@ -106,7 +122,7 @@ public class Connect {
 	public Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type, LocalDate startDate, LocalDate endDate) {
 		//Should be fixed now.  I accidentally used strings instead of ints to retrive data.
 		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE t.typeid = ? AND a.typeid = t.typeid AND a.creationDate >= ? AND (a.retireDate IS null OR a.retireDate <= ?);";
-		
+
 		Set<Alcohol> set = new HashSet<>();
 		try{
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
@@ -130,7 +146,7 @@ public class Connect {
 	/** Searches database for alcohol whose retire date is null or after the start date & whose creation date is before the end date. */
 	public Set<Alcohol> findActiveAlcoholForDateRange(LocalDate startDate, LocalDate endDate) {
 		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE a.typeid = t.typeid AND a.creationDate >= ? AND (a.retireDate IS null OR a.retireDate <= ?);";
-		
+
 		Set<Alcohol> set = new HashSet<>();
 		try{
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
@@ -149,7 +165,7 @@ public class Connect {
 		}
 		return set;
 	}
-	
+
 	/**
 	 * Searches database for an Alcohol with given name.
 	 *
@@ -306,24 +322,6 @@ public class Connect {
 		} catch(SQLException e) {
 			return false;
 		}
-	}
-
-	public boolean loginUser(String username, String password) {
-		String sql = "SELECT * FROM user WHERE username = ? AND password = ?;";
-		ResultSet results;
-		try {
-			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
-			pSta.setString(1, username);
-			pSta.setString(2, password);
-			results = pSta.executeQuery();
-			if(results.next()){
-				return true;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
 	}
 
 	/**

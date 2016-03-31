@@ -61,6 +61,15 @@ public class UserService {
 	}
 
 	/**
+	 * Checks that given password matches the stored password for the given username.
+	 *
+	 * @return <code>true</code> if the passwords match, <code>false</code> otherwise.
+	 */
+	public boolean authenticateUser(String username, char[] password) {
+		return Connect.getInstance().authenticateUser(username, new String(password));
+	}
+
+	/**
 	 * Searches for existing user in database and updates password.
 	 *
 	 * @param username User to update.
@@ -172,7 +181,7 @@ public class UserService {
 //		byte[] passwordHashFromDatabase = getPasswordForUser(username);
 
 //		if(null != passwordHashFromDatabase && Arrays.equals(passwordHashFromDatabase, passwordHashFromUser)) {
-		if(Connect.getInstance().loginUser(username, new String(password))) {
+		if(authenticateUser(username, password)) {
 			User currentUser = new User(username, getPermissionsForUser(username));
 			Application.getInstance().setUser(currentUser);
 			System.out.format("Login as %s Successful\n", username);
@@ -180,19 +189,6 @@ public class UserService {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Checks that given password matches the stored password for the given username.
-	 *
-	 * @return <code>true</code> if the passwords match, <code>false</code> otherwise.
-	 */
-	public boolean verifyUserPassword(String username, char[] password) {
-		//TODO: Search database for user's password.
-		//TODO: Compare given password to database password.
-		//TODO: Return result
-
-		return true;
 	}
 
 }
