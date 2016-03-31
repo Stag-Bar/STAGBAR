@@ -4,7 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import edu.nku.CSC440.stagbar.Application;
-import edu.nku.CSC440.stagbar.dataaccess.User;
+import edu.nku.CSC440.stagbar.dataaccess.PermissionLevel;
 import edu.nku.CSC440.stagbar.service.UserService;
 
 import javax.swing.*;
@@ -20,7 +20,6 @@ public class ChangePasswordUI {
 	private static final String MESSAGE_NEW_USER = "Password for %s has been changed.";
 	private static final String TITLE_CANNOT_SAVE = "Change of password failed.";
 	private static final String TITLE_NEW_USER = "Congratulations! Your password is changed.";
-	private Application application;
 	private JButton cancelButton;
 	private JPasswordField confirmPasswordField;
 	private JLabel confirmPasswordLabel;
@@ -31,7 +30,6 @@ public class ChangePasswordUI {
 	private JButton okButton;
 	private JPasswordField oldPasswordField;
 	private JLabel oldPasswordLabel;
-	private User user;
 	private UserService userService;
 	private JLabel usernameLabel;
 	private JTextField usernameTextField;
@@ -42,6 +40,11 @@ public class ChangePasswordUI {
 		contentPane.setName("Change Password");
 		okButton.addActionListener(e -> onOK());
 		cancelButton.addActionListener(e -> onCancel());
+
+		if(Application.getInstance().getUser().getPermissionLevel().equals(PermissionLevel.GUEST)) {
+			usernameTextField.setText(Application.getInstance().getUser().getUsername());
+			usernameTextField.setEditable(false);
+		}
 	}
 
 	/** @noinspection ALL */
@@ -142,11 +145,7 @@ public class ChangePasswordUI {
 		highlightEmptyFields();
 
 // Check all fields are filled.
-		if(application.getUser().getPermissionLevel().toString().equals("Guest")) {
-			usernameTextField.setText(application.getUser().getUsername());
-			usernameTextField.setEditable(false);
-		}
-		if(usernameTextField.getText().isEmpty() || 0 == oldPasswordField.getPassword().length || 0 == oldPasswordField.getPassword().length || 0 == confirmPasswordField.getPassword().length) {
+		if(usernameTextField.getText().isEmpty() || 0 == oldPasswordField.getPassword().length || 0 == newPasswordField.getPassword().length || 0 == confirmPasswordField.getPassword().length) {
 			errorMessage.setText(ERROR_REQUIRED_FIELDS);
 		}
 // Check if new passwords match.
@@ -177,7 +176,6 @@ public class ChangePasswordUI {
 			// Display confirmation to user
 			JOptionPane.showMessageDialog(contentPane, String.format(MESSAGE_NEW_USER, usernameTextField.getText()), TITLE_NEW_USER, JOptionPane.INFORMATION_MESSAGE);
 
-			//TODO: Navigate user away from page.
 			okButton.setEnabled(false);
 			uiHacks.killMeThenGoToLastPage(contentPane);
 		}
