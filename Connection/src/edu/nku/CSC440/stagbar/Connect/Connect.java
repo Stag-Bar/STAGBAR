@@ -105,7 +105,7 @@ public class Connect {
 
 	public Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type, LocalDate startDate, LocalDate endDate) {
 		//Should be fixed now.  I accidentally used strings instead of ints to retrive data.
-		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE typeid = ? AND a.typeid = t.typeid AND a.retireDate != null BETWEEN ? AND ?;";
+		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE t.typeid = ? AND a.typeid = t.typeid AND a.creationDate >= ? AND ( a.retireDate <= ? OR a.retireDate IS null);";
 		
 		Set<Alcohol> set = new HashSet<>();
 		try{
