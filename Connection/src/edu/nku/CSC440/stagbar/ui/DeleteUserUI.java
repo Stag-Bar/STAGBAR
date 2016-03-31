@@ -17,6 +17,7 @@ import java.util.Set;
 public class DeleteUserUI {
 	private static final String MESSAGE_SUCCESS = "The deletion of user(s) is successful.";
 	private static final String PLEASE_CHECK_BOX = "Please delete at least one user, or hit Cancel button.";
+	private static final String TITLE_PLEASE_CHECK = "Deletion failed";
 	private final LinkedList<JCheckBox> checkBoxes;
 	private Set<User> allUsers;
 	private Application application;
@@ -29,10 +30,8 @@ public class DeleteUserUI {
 	private JCheckBox userCheckBox;
 	private UserService userService;
 
-	public DeleteUserUI(User user) {
-		//if(null == user) throw new IllegalArgumentException("User cannot be null.");
-		this.user = user;
-		checkBoxes = new LinkedList<JCheckBox>();
+	public DeleteUserUI() {
+		checkBoxes = new LinkedList<>();
 		for(User user1 : userService.getAllUsers()) {
 			allUsers.add(user1);
 		}
@@ -87,9 +86,10 @@ public class DeleteUserUI {
 	}
 
 	public void addUserRows() {
-		for(User user : allUsers) {
-//			scrollPanel.add(userCheckBox.getText(user.getUsername()));
-		}
+		//TODO: Exclude the current user from the list of users to be deleted.
+		//for(User user : allUsers) {
+		//	scrollPanel.add(userCheckBox.getText(user.getUsername()));
+		//}
 	}
 
 	public JPanel getContentPane() {
@@ -108,7 +108,7 @@ public class DeleteUserUI {
 		if(checkBoxes != null) {
 			StringBuilder sb = new StringBuilder();
 			sb.append("Deleted Users: ");
-			Set<String> usernames = new HashSet<String>();
+			Set<String> usernames = new HashSet<>();
 
 			for(JCheckBox userCheckBox : checkBoxes) {
 				usernames.add(userCheckBox.getText());
@@ -128,7 +128,7 @@ public class DeleteUserUI {
 			uiHacks.killMeThenGoToLastPage(contentPane);
 		}
 		else {
-//			JOptionPane.showMessageDialog(contentPane, PLEASE_CHECK_BOX, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(contentPane, PLEASE_CHECK_BOX, TITLE_PLEASE_CHECK, JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
