@@ -78,8 +78,8 @@ public class UserAccountManagementUI {
 	}
 
 	private void onDeleteUser() {
-		//DeleteUserUI deleteUserUI = new DeleteUserUI();
-		//uiHacks.goToPanel(contentPane, deleteUserUI.getContentPane());
+		DeleteUserUI deleteUserUI = new DeleteUserUI();
+		uiHacks.goToPanel(contentPane, deleteUserUI.getContentPane());
 	}
 
 	private void onEditPermissionsUser() {

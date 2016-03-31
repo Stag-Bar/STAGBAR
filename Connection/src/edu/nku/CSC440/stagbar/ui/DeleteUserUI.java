@@ -4,6 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import edu.nku.CSC440.stagbar.Application;
+import edu.nku.CSC440.stagbar.Connect.Connect;
 import edu.nku.CSC440.stagbar.dataaccess.User;
 import edu.nku.CSC440.stagbar.service.UserService;
 
@@ -20,8 +21,8 @@ public class DeleteUserUI {
 	private static final String TITLE_DELETE_SUCCESS = "The deletion of user(s) is successful.";
 	private static final String TITLE_PLEASE_CHECK = "Deletion failed";
 	private final LinkedList<JCheckBox> checkBoxes;
-	private Set<User> allUsers;
-	private Application application;
+	private LinkedList<User> allUsers;
+	//private Application application;
 	private JButton cancelButton;
 	private JPanel contentPane;
 	private User currentUser;
@@ -30,20 +31,20 @@ public class DeleteUserUI {
 	private JPanel scrollPanel;
 	private User user;
 	private JCheckBox userCheckBox;
-	private UserService userService;
+	private JLabel usernameLabel;
 	private ArrayList<String> usersToBeDeleted;
 
 	public DeleteUserUI() {
 		$$$setupUI$$$();
 		usersToBeDeleted = new ArrayList<>();
 		checkBoxes = new LinkedList<>();
-		for(User user : userService.getAllUsers()) {
+		allUsers = new LinkedList<>();
+		for(User user : Connect.getInstance().findAllUsers()) {
 			allUsers.add(user);
 		}
 
-		addUserRows();
+		//addUserRows();
 
-		userService = UserService.getInstance();
 		contentPane.setName("Delete User(s)");
 		okButton.addActionListener(e -> onOK());
 		cancelButton.addActionListener(e -> onCancel());
@@ -102,17 +103,32 @@ public class DeleteUserUI {
 		return user.getUsername() == that.getUsername();
 	}*/
 
-	public void addUserRows() {
+	/*public void addUserRows() {
 		//TODO: Exclude the current user from the list of users to be deleted.
 		//currentUser = Application.getUser();
 		for(User currentUser : allUsers) {
-			if(!application.getUser().getUsername().equals(currentUser.getUsername())) {
+			//Application.getInstance().getUser()
+			if(!Application.getInstance().getUser().getUsername().equals(currentUser.getUsername())) {
 				String userToBeShown = currentUser.getUsername();
 				//currentUser.getUsername();
 				userCheckBox.setText(userToBeShown);
 				scrollPanel.add(userCheckBox);
 			}
 		}
+	}*/
+
+	private void createUIComponents() {
+		for(User currentUser : allUsers) {
+			//ensure that current user is not added to list of users to be deleted
+			if(!Application.getInstance().getUser().getUsername().equals(currentUser.getUsername())) {
+				String userToBeShown = currentUser.getUsername();
+				userCheckBox = new JCheckBox(userToBeShown, false);
+			}
+		}
+	}
+
+	public boolean getSelection(JCheckBox thisCheckBox) {
+		return thisCheckBox.getVerifyInputWhenFocusTarget();
 	}
 
 	public JPanel getContentPane() {
@@ -143,7 +159,7 @@ public class DeleteUserUI {
 				}
 			}*/
 			for(String user : usersToBeDeleted) {
-				userService.deleteUser(user);
+				UserService.getInstance().deleteUser(user);
 			}
 			// Display confirmation to user
 			JOptionPane.showMessageDialog(contentPane, String.format(DELETE_SUCCESS), TITLE_DELETE_SUCCESS, JOptionPane.INFORMATION_MESSAGE);
