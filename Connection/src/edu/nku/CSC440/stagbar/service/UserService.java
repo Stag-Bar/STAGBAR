@@ -98,7 +98,7 @@ public class UserService {
 	 * @return <code>true</code> if save is successful, <code>false</code> otherwise.
 	 */
 	public boolean createNewUser(String username, char[] password, PermissionLevel permissionLevel) {
-		byte[] passwordHash = toHash(password);
+//		byte[] passwordHash = toHash(password); // Disable until we do security.
 
 		//This method below will create a new user (with all permissions) in the database
 		boolean successful = Connect.getInstance().saveUser(username, new String(password), permissionLevel);
