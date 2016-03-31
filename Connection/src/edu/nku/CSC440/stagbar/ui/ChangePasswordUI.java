@@ -4,6 +4,8 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import edu.nku.CSC440.stagbar.service.UserService;
+import edu.nku.CSC440.stagbar.dataaccess.User;
+import edu.nku.CSC440.stagbar.Application;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,17 +22,19 @@ public class ChangePasswordUI {
     private static final String TITLE_NEW_USER = "Congratulations! Your password is changed.";
     private JPanel contentPane;
     private JLabel errorMessage;
-    private JTextField usernameTextField;
-    private JPasswordField oldPasswordField;
-    private JPasswordField newPasswordField;
     private JLabel usernameLabel;
     private JLabel oldPasswordLabel;
     private JLabel newPasswordLabel;
     private JLabel confirmPasswordLabel;
+    private JTextField usernameTextField;
+    private JPasswordField oldPasswordField;
+    private JPasswordField newPasswordField;
     private JPasswordField confirmPasswordField;
     private JButton cancelButton;
     private JButton okButton;
     private UserService userService;
+    private Application application;
+    private User user;
 
     public ChangePasswordUI() {
         $$$setupUI$$$();
@@ -65,7 +69,10 @@ public class ChangePasswordUI {
 
     private void onOK() {
         highlightEmptyFields();
-
+    if (application.getUser().getPermissionLevel().toString().equals("Guest")){
+        usernameTextField.setText(application.getUser().getUsername());
+        usernameTextField.setEditable(false);
+    }
 // Check all fields are filled.
         if (usernameTextField.getText().isEmpty() || 0 == oldPasswordField.getPassword().length || 0 == oldPasswordField.getPassword().length || 0 == confirmPasswordField.getPassword().length) {
             errorMessage.setText(ERROR_REQUIRED_FIELDS);
@@ -88,17 +95,15 @@ public class ChangePasswordUI {
 // Check if old password entered actually matches user's real password
         else if (!userService.verifyUserPassword(usernameTextField.getText(), oldPasswordField.getPassword())) {
             errorMessage.setText(ERROR_PASSWORD_IS_WRONG);
-            usernameLabel.setForeground(Color.RED);
-            usernameTextField.selectAll();
-            usernameTextField.requestFocusInWindow();
+            oldPasswordLabel.setForeground(Color.RED);
+            oldPasswordField.selectAll();
+            oldPasswordField.requestFocusInWindow();
         }
 // Save user's new password to database.
         else if (userService.changePassword(usernameTextField.getText(), newPasswordField.getPassword())) {
             userService.changePassword(usernameTextField.getText(), newPasswordField.getPassword());
             // Display confirmation to user
             JOptionPane.showMessageDialog(contentPane, String.format(MESSAGE_NEW_USER, usernameTextField.getText()), TITLE_NEW_USER, JOptionPane.INFORMATION_MESSAGE);
-
-            //TODO: Navigate user away from page.
             okButton.setEnabled(false);
             uiHacks.killMeThenGoToLastPage(contentPane);
         } else {
