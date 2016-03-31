@@ -61,6 +61,16 @@ public class UserService {
 	}
 
 	/**
+	 * Checks that given password matches the stored password for the given username.
+	 *
+	 * @return <code>true</code> if the passwords match, <code>false</code> otherwise.
+	 */
+	public boolean authenticateUser(String username, char[] password) {
+		//FIXME: hash password
+		return Connect.getInstance().authenticateUser(username, new String(password));
+	}
+
+	/**
 	 * Searches for existing user in database and updates password.
 	 *
 	 * @param username User to update.
@@ -85,7 +95,6 @@ public class UserService {
 	 * @return <code>true</code> if update is successful, <code>false</code> otherwise.
 	 */
 	public boolean changePermissions(String username, PermissionLevel permissionLevel) {
-		//TODO: Update permission level in database
 		return Connect.getInstance().updateUserPermissions(username, permissionLevel);
 	}
 
@@ -98,7 +107,7 @@ public class UserService {
 	 * @return <code>true</code> if save is successful, <code>false</code> otherwise.
 	 */
 	public boolean createNewUser(String username, char[] password, PermissionLevel permissionLevel) {
-//		byte[] passwordHash = toHash(password); // Disable until we do security.
+//		byte[] passwordHash = toHash(password); // FIXME: Disable until we do security.
 
 		//This method below will create a new user (with all permissions) in the database
 		boolean successful = Connect.getInstance().saveUser(username, new String(password), permissionLevel);
@@ -138,41 +147,14 @@ public class UserService {
 		return Connect.getInstance().findAllUsers();
 	}
 
-	/**
-	 * Searches database for given username.
-	 * If user is found, returns password for user.
-	 * Otherwise returns null.
-	 * In future, may return password hash for security.
-	 *
-	 * @param username Username to search database for.
-	 * @return Password for user if found; otherwise returns null.
-	 */
-	private byte[] getPasswordForUser(String username) {
-		//TODO: Search database for user's password.
-
-		// TODO: Delete hardcoded test data.
-		if("stagbar".equalsIgnoreCase(username)) {
-			return toHash("Nkucsc440".toCharArray());
-		}
-
-		return null;
-	}
-
 	private PermissionLevel getPermissionsForUser(String username) {
-		//TODO: Search database for user's permisison level.
-
-		//TODO: Delete test data
-		return PermissionLevel.ADMIN;
+		return Connect.getInstance().findPermissionsForUser(username);
 	}
 
 	public boolean login(String username, char[] password) {
 		if(null == username) return false;
 
-//		byte[] passwordHashFromUser = toHash(password);
-//		byte[] passwordHashFromDatabase = getPasswordForUser(username);
-
-//		if(null != passwordHashFromDatabase && Arrays.equals(passwordHashFromDatabase, passwordHashFromUser)) {
-		if(Connect.getInstance().loginUser(username, new String(password))) {
+		if(authenticateUser(username, password)) {
 			User currentUser = new User(username, getPermissionsForUser(username));
 			Application.getInstance().setUser(currentUser);
 			System.out.format("Login as %s Successful\n", username);
@@ -180,19 +162,6 @@ public class UserService {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Checks that given password matches the stored password for the given username.
-	 *
-	 * @return <code>true</code> if the passwords match, <code>false</code> otherwise.
-	 */
-	public boolean verifyUserPassword(String username, char[] password) {
-		//TODO: Search database for user's password.
-		//TODO: Compare given password to database password.
-		//TODO: Return result
-
-		return true;
 	}
 
 }
