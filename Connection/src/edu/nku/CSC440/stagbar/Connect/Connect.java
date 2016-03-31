@@ -105,7 +105,7 @@ public class Connect {
 
 	public Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type, LocalDate startDate, LocalDate endDate) {
 		//Should be fixed now.  I accidentally used strings instead of ints to retrive data.
-		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE t.typeid = ? AND a.typeid = t.typeid AND a.creationDate >= ? AND ( a.retireDate <= ? OR a.retireDate IS null);";
+		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE t.typeid = ? AND a.typeid = t.typeid AND a.creationDate >= ? AND (a.retireDate IS null OR a.retireDate <= ?);";
 		
 		Set<Alcohol> set = new HashSet<>();
 		try{
@@ -129,7 +129,7 @@ public class Connect {
 
 	/** Searches database for alcohol whose retire date is null or after the start date & whose creation date is before the end date. */
 	public Set<Alcohol> findActiveAlcoholForDateRange(LocalDate startDate, LocalDate endDate) {
-		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE a.typeid = t.typeid AND a.creationDate >= ? AND ( a.retireDate <= ? OR a.retireDate IS null);";
+		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE a.typeid = t.typeid AND a.creationDate >= ? AND (a.retireDate IS null OR a.retireDate <= ?);";
 		
 		Set<Alcohol> set = new HashSet<>();
 		try{
