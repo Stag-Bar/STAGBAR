@@ -167,9 +167,9 @@ public class ChangePasswordUI {
 // Check if old password entered actually matches user's real password
 		else if(!userService.authenticateUser(usernameTextField.getText(), oldPasswordField.getPassword())) {
 			errorMessage.setText(ERROR_PASSWORD_IS_WRONG);
-			usernameLabel.setForeground(Color.RED);
-			usernameTextField.selectAll();
-			usernameTextField.requestFocusInWindow();
+			oldPasswordLabel.setForeground(Color.RED);
+			oldPasswordField.selectAll();
+			oldPasswordField.requestFocusInWindow();
 		}
 // Save user's new password to database.
 		else if(userService.changePassword(usernameTextField.getText(), newPasswordField.getPassword())) {
