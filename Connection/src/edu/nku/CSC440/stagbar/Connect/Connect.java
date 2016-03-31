@@ -129,10 +129,27 @@ public class Connect {
 
 	/** Searches database for alcohol whose retire date is null or after the start date & whose creation date is before the end date. */
 	public Set<Alcohol> findActiveAlcoholForDateRange(LocalDate startDate, LocalDate endDate) {
-		//TODO: Find active alcohol
-		return ConnectMock.findActiveAlcoholForDateRange(startDate, endDate);
-	}
+		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE a.typeid = t.typeid AND a.creationDate >= ? AND ( a.retireDate <= ? OR a.retireDate IS null);";
+		
+		Set<Alcohol> set = new HashSet<>();
+		try{
+			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			ResultSet results;
+			pSta.setDate(1, Date.valueOf(startDate));
+			pSta.setDate(2, Date.valueOf(endDate));
+			results = pSta.executeQuery();
+			while(results.next()){
+				set.add(new Alcohol(results.getInt(1), results.getString(2), new CustomAlcoholType(results.getInt(3), results.getString(7), AlcoholType.valueOf(results.getString(8))), results.getDate(4).toLocalDate(), results.getDate(5).toLocalDate()));
+			}
 
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return set;
+	}
+	
 	/**
 	 * Searches database for an Alcohol with given name.
 	 *
