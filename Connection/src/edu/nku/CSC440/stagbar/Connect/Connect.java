@@ -262,8 +262,22 @@ public class Connect {
 	}
 
 	public PermissionLevel findPermissionsForUser(String username) {
-		//TODO: Retrieve matching permissions for user
-		return PermissionLevel.ADMIN; //TODO: Delete test data.
+		String sql = "SELECT username, permission FROM user WHERE username = ?;";
+		ResultSet results;
+		
+		try {
+			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			pSta.setString(1, username);
+			results = pSta.executeQuery();
+			if(results.next()){
+				return PermissionLevel.valueOf(results.getString(2));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null; //TODO: Delete test data.
 	}
 
 	//first time setup will create set up the user and neccssary tables.
