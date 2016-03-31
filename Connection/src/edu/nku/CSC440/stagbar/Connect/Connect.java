@@ -156,7 +156,7 @@ public class Connect {
 			pSta.setDate(2, Date.valueOf(endDate));
 			results = pSta.executeQuery();
 			while(results.next()){
-				set.add(new Alcohol(results.getInt(1), results.getString(2), new CustomAlcoholType(results.getInt(3), results.getString(7), AlcoholType.valueOf(results.getString(8))), results.getDate(4).toLocalDate(), results.getDate(5).toLocalDate()));
+				set.add(new Alcohol(results.getInt(1), results.getString(2), new CustomAlcoholType(results.getInt(3), results.getString(7), AlcoholType.valueOf(results.getString(8))), results.getDate(4).toLocalDate(), results.getDate(5) == null?null:results.getDate(5).toLocalDate()));
 			}
 
 		}
@@ -185,7 +185,7 @@ public class Connect {
 			result = pSta.executeQuery();
 
 			if(result != null){
-				return new Alcohol(result.getInt(1), result.getString(2), new CustomAlcoholType(result.getInt(3), result.getString(7), AlcoholType.valueOf(result.getString(8))), result.getDate(4).toLocalDate(), result.getDate(5).toLocalDate());
+				return new Alcohol(result.getInt(1), result.getString(2), new CustomAlcoholType(result.getInt(3), result.getString(7), AlcoholType.valueOf(result.getString(8))), result.getDate(4).toLocalDate(), result.getDate(5) == null?null:result.getDate(5).toLocalDate());
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -205,7 +205,7 @@ public class Connect {
 			result = s.executeQuery(statement);
 
 			while(result.next()){
-				set.add(new Alcohol(result.getInt(1), result.getString(2), new CustomAlcoholType(result.getInt(6), result.getString(7), AlcoholType.valueOf(result.getString(8))), result.getDate(4).toLocalDate(), result.getDate(5).toLocalDate()));
+				set.add(new Alcohol(result.getInt(1), result.getString(2), new CustomAlcoholType(result.getInt(6), result.getString(7), AlcoholType.valueOf(result.getString(8))), result.getDate(4).toLocalDate(), result.getDate(5) == null?null:result.getDate(5).toLocalDate()));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
