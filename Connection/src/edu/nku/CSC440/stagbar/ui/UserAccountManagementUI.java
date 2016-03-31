@@ -17,7 +17,7 @@ public class UserAccountManagementUI {
 	public UserAccountManagementUI() {
 		contentPane.setName("Manage Users");
 
-		changePasswordButton.addItemListener(e -> onChangePassword());
+		changePasswordButton.addActionListener(e -> onChangePassword());
 		createUserButton.addActionListener(e -> onCreateUser());
 		deleteUserButton.addActionListener(e -> onDeleteUser());
 		editUserPermissionsButton.addActionListener(e -> onEditPermissionsUser());
