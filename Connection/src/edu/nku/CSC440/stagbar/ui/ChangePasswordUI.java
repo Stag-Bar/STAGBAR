@@ -44,6 +44,7 @@ public class ChangePasswordUI {
 		if(Application.getInstance().getUser().getPermissionLevel().equals(PermissionLevel.GUEST)) {
 			usernameTextField.setText(Application.getInstance().getUser().getUsername());
 			usernameTextField.setEditable(false);
+			usernameTextField.setBackground(new Color(238, 238, 238));
 		}
 	}
 
