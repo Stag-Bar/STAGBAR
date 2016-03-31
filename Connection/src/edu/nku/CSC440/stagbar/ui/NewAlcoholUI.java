@@ -41,7 +41,7 @@ public class NewAlcoholUI {
 		okButton.addActionListener(e -> onOK());
 		typeComboBox.addItemListener(e -> {
 			if(e.getStateChange() == ItemEvent.SELECTED) {
-				toggleFields(((CustomAlcoholType)e.getItem()).getKind());
+//				toggleFields(((CustomAlcoholType)e.getItem()).getKind()); //FIXME: Disable initial amount entry. Non-functional. May be removed.
 			}
 		});
 
@@ -186,7 +186,6 @@ public class NewAlcoholUI {
 			// Display confirmation to user
 			JOptionPane.showMessageDialog(contentPane, String.format(MESSAGE_NEW_ALCOHOL, nameTextField.getText()), TITLE_NEW_ALCOHOL, JOptionPane.INFORMATION_MESSAGE);
 
-			//TODO: Navigate user away from page.
 			okButton.setEnabled(false);
 			uiHacks.killMeThenGoToLastPage(contentPane);
 		}

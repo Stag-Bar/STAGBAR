@@ -168,7 +168,6 @@ public class CreateUserUI {
 			// Display confirmation to user
 			JOptionPane.showMessageDialog(contentPane, String.format(MESSAGE_NEW_USER, usernameTextField.getText()), TITLE_NEW_USER, JOptionPane.INFORMATION_MESSAGE);
 
-			//TODO: Navigate user away from page.
 			okButton.setEnabled(false);
 			uiHacks.killMeThenGoToLastPage(contentPane);
 		}
