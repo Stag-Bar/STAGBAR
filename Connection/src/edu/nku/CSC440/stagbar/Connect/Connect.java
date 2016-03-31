@@ -260,13 +260,18 @@ public class Connect {
 		return set;
 	}
 
+	public PermissionLevel findPermissionsForUser(String username) {
+		//TODO: Retrieve matching permissions for user
+		return PermissionLevel.ADMIN; //TODO: Delete test data.
+	}
+
 	//first time setup will create set up the user and neccssary tables.
 	public void firstTimeSetup(String database, String userName, String password) {
 		if(createDatabase(database)) {
 			try {
 				//creating user table and adding the first user
 				Statement sta = getActiveConnection().createStatement();
-				String statement = "CREATE TABLE user (username VARCHAR(50), password VARCHAR(128), permission VARCHAR(15), PRIMARY KEY(username));";
+				String statement = "CREATE TABLE user (username VARCHAR(50), password VARCHAR(128), permission VARCHAR(5), PRIMARY KEY(username));";
 				sta.execute(statement);
 				statement = "INSERT INTO user (username, password, permission) VALUES (?, ?, \'Administrator\');";
 				PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
