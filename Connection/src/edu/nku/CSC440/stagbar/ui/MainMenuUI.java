@@ -78,7 +78,8 @@ public class MainMenuUI {
 		inventoryButton.setEnabled(false);
 		salesButton.setEnabled(false);
 		retireAlcoholButton.setEnabled(false);
-		manageUsersButton.setEnabled(false);
+		deliveriesButton.setEnabled(false);
+		mixedDrinksButton.setEnabled(false);
 	}
 
 	public JPanel getContentPane() {
