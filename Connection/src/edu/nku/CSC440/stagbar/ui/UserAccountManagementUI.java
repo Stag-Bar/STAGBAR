@@ -59,7 +59,8 @@ public class UserAccountManagementUI {
 	}
 
 	private void onChangePassword() {
-		//TODO: Navigate to password change ui
+		ChangePasswordUI changePasswordUI = new ChangePasswordUI();
+		uiHacks.goToPanel(contentPane, changePasswordUI.getContentPane());
 	}
 
 	private void onCreateUser() {
