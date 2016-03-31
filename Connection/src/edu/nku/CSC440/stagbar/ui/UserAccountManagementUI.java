@@ -61,7 +61,6 @@ public class UserAccountManagementUI {
 	private void onChangePassword() {
 		ChangePasswordUI changePasswordUI = new ChangePasswordUI();
 		uiHacks.goToPanel(contentPane, changePasswordUI.getContentPane());
-		//
 	}
 
 	private void onCreateUser() {
@@ -70,7 +69,8 @@ public class UserAccountManagementUI {
 	}
 
 	private void onDeleteUser() {
-		//TODO: Navigate to delete user ui
+		DeleteUserUI deleteUserUI = new DeleteUserUI();
+		uiHacks.goToPanel(contentPane, deleteUserUI.getContentPane());
 	}
 
 	private void onEditPermissionsUser() {
