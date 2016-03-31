@@ -5,13 +5,13 @@ import edu.nku.CSC440.stagbar.ui.ApplicationUI;
 
 /**
  * Class used to keep track of information that applies to the entire application,
- * such as which user is logged in and the connection to the database.
+ * such as which user is logged in.
  */
 public class Application {
 
 	private static Application application = new Application();
-	private User user;
 	private ApplicationUI applicationUI;
+	private User user;
 
 	private Application(){}
 

@@ -7,6 +7,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+
 public class Connect {
 
 	private static final String DATABASE_URL = "jdbc:mysql://stagbar2.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306";
@@ -22,7 +23,7 @@ public class Connect {
 
 	/** @deprecated For testing only. */
 	public static void main(String[] args) {
-		
+
 	}
 
 	public boolean authenticateUser(String username, String password) {
@@ -121,23 +122,22 @@ public class Connect {
 
 	public Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type, LocalDate startDate, LocalDate endDate) {
 		//Should be fixed now.  I accidentally used strings instead of ints to retrive data.
-		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE t.typeid = ? AND a.typeid = t.typeid AND a.creationDate >= ? AND (a.retireDate IS null OR a.retireDate <= ?);";
-		
+		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE t.typeid = ? AND a.typeid = t.typeid AND a.creationDate >= ? AND (a.retireDate IS NULL OR a.retireDate <= ?);";
+
 		Set<Alcohol> set = new HashSet<>();
-		try{
+		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
 			ResultSet results;
 			pSta.setInt(1, type.getTypeId());
 			pSta.setDate(2, Date.valueOf(startDate));
-			
+
 			pSta.setDate(3, Date.valueOf(endDate));
 			results = pSta.executeQuery();
-			while(results.next()){
-				set.add(new Alcohol(results.getInt(1), results.getString(2), new CustomAlcoholType(results.getInt(3), results.getString(7), AlcoholType.valueOf(results.getString(8))), results.getDate(4).toLocalDate(), results.getDate(5) == null?null:results.getDate(5).toLocalDate()));
+			while(results.next()) {
+				set.add(new Alcohol(results.getInt(1), results.getString(2), new CustomAlcoholType(results.getInt(3), results.getString(7), AlcoholType.valueOf(results.getString(8))), results.getDate(4).toLocalDate(), results.getDate(5) == null ? null : results.getDate(5).toLocalDate()));
 			}
 
-		}
-		catch (SQLException e) {
+		} catch(SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -146,21 +146,20 @@ public class Connect {
 
 	/** Searches database for alcohol whose retire date is null or after the start date & whose creation date is before the end date. */
 	public Set<Alcohol> findActiveAlcoholForDateRange(LocalDate startDate, LocalDate endDate) {
-		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE a.typeid = t.typeid AND a.creationDate >= ? AND (a.retireDate IS null OR a.retireDate <= ?);";
+		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE a.typeid = t.typeid AND a.creationDate >= ? AND (a.retireDate IS NULL OR a.retireDate <= ?);";
 
 		Set<Alcohol> set = new HashSet<>();
-		try{
+		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
 			ResultSet results;
 			pSta.setDate(1, Date.valueOf(startDate));
 			pSta.setDate(2, Date.valueOf(endDate));
 			results = pSta.executeQuery();
-			while(results.next()){
-				set.add(new Alcohol(results.getInt(1), results.getString(2), new CustomAlcoholType(results.getInt(3), results.getString(7), AlcoholType.valueOf(results.getString(8))), results.getDate(4).toLocalDate(), results.getDate(5) == null?null:results.getDate(5).toLocalDate()));
+			while(results.next()) {
+				set.add(new Alcohol(results.getInt(1), results.getString(2), new CustomAlcoholType(results.getInt(3), results.getString(7), AlcoholType.valueOf(results.getString(8))), results.getDate(4).toLocalDate(), results.getDate(5) == null ? null : results.getDate(5).toLocalDate()));
 			}
 
-		}
-		catch (SQLException e) {
+		} catch(SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -184,10 +183,10 @@ public class Connect {
 			pSta.setString(1, name);
 			result = pSta.executeQuery();
 
-			if(result != null){
-				return new Alcohol(result.getInt(1), result.getString(2), new CustomAlcoholType(result.getInt(3), result.getString(7), AlcoholType.valueOf(result.getString(8))), result.getDate(4).toLocalDate(), result.getDate(5) == null?null:result.getDate(5).toLocalDate());
+			if(result != null) {
+				return new Alcohol(result.getInt(1), result.getString(2), new CustomAlcoholType(result.getInt(3), result.getString(7), AlcoholType.valueOf(result.getString(8))), result.getDate(4).toLocalDate(), result.getDate(5) == null ? null : result.getDate(5).toLocalDate());
 			}
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -204,10 +203,10 @@ public class Connect {
 			Statement s = getActiveConnection().createStatement();
 			result = s.executeQuery(statement);
 
-			while(result.next()){
-				set.add(new Alcohol(result.getInt(1), result.getString(2), new CustomAlcoholType(result.getInt(6), result.getString(7), AlcoholType.valueOf(result.getString(8))), result.getDate(4).toLocalDate(), result.getDate(5) == null?null:result.getDate(5).toLocalDate()));
+			while(result.next()) {
+				set.add(new Alcohol(result.getInt(1), result.getString(2), new CustomAlcoholType(result.getInt(6), result.getString(7), AlcoholType.valueOf(result.getString(8))), result.getDate(4).toLocalDate(), result.getDate(5) == null ? null : result.getDate(5).toLocalDate()));
 			}
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -227,7 +226,7 @@ public class Connect {
 			while(result.next()) {
 				set.add(new CustomAlcoholType(result.getInt(1), result.getString(2), AlcoholType.valueOf(result.getString(3))));
 			}
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -245,13 +244,13 @@ public class Connect {
 
 	/** Retrieves all users from database. */
 	public Set<User> findAllUsers() {
-		String sql = "Select username, permission from user;";
+		String sql = "SELECT username, permission FROM user;";
 		ResultSet results;
 		Set<User> set = new HashSet<>();
 		try {
 			Statement s = getActiveConnection().createStatement();
 			results = s.executeQuery(sql);
-			while(results.next()){
+			while(results.next()) {
 				set.add(new User(results.getString(1), PermissionLevel.valueOf(results.getString(2))));
 			}
 		} catch(SQLException e) {
@@ -264,19 +263,19 @@ public class Connect {
 	public PermissionLevel findPermissionsForUser(String username) {
 		String sql = "SELECT username, permission FROM user WHERE username = ?;";
 		ResultSet results;
-		
+
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
 			pSta.setString(1, username);
 			results = pSta.executeQuery();
-			if(results.next()){
+			if(results.next()) {
 				return PermissionLevel.valueOf(results.getString(2));
 			}
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return null; //TODO: Delete test data.
 	}
 
@@ -296,11 +295,11 @@ public class Connect {
 				//creating the type other tables
 				statement = "CREATE TABLE type (typeid INT NOT NULL AUTO_INCREMENT, name VARCHAR(40), kind VARCHAR(10), PRIMARY KEY(typeid));";
 				sta.execute(statement);
-				statement = "CREATE TABLE alcohol (alcoholid int NOT NULL AUTO_INCREMENT, name varchar(40), typeid int, creationDate date, retireDate date, primary key(alcoholid), foreign key(typeid) REFERENCES type(typeid));";
+				statement = "CREATE TABLE alcohol (alcoholid INT NOT NULL AUTO_INCREMENT, name VARCHAR(40), typeid INT, creationDate DATE, retireDate DATE, PRIMARY KEY(alcoholid), FOREIGN KEY(typeid) REFERENCES type(typeid));";
 				sta.execute(statement);
 				statement = "CREATE TABLE inventory (entryid INT NOT NULL AUTO_INCREMENT, alcohol INT, amount DOUBLE, bottles INT, date DATE, PRIMARY KEY(entryid), FOREIGN KEY (alcohol) REFERENCES alcohol(alcoholid));";
 				sta.execute(statement);
-				statement = "CREATE TABLE sales (entryid int NOT NULL AUTO_INCREMENT, alcohol int, amount double, bottles int, date date, primary key(entryid), foreign key(alcohol) REFERENCES alcohol(alcoholid));";
+				statement = "CREATE TABLE sales (entryid INT NOT NULL AUTO_INCREMENT, alcohol INT, amount DOUBLE, bottles INT, date DATE, PRIMARY KEY(entryid), FOREIGN KEY(alcohol) REFERENCES alcohol(alcoholid));";
 				sta.execute(statement);
 				statement = "CREATE TABLE delivery (entryid INT NOT NULL AUTO_INCREMENT, alcohol INT, amount DOUBLE, bottles INT, date DATE, PRIMARY KEY(entryid), FOREIGN KEY(alcohol) REFERENCES alcohol(alcoholid));";
 				sta.execute(statement);
@@ -372,9 +371,7 @@ public class Connect {
 	 * Connect to database as master user.
 	 */
 	private Connection makeNewMasterConnection(String database) {
-		Connection c = null;
-		c= makeNewConnection("stagbar", "Nkucsc440", database);
-		return c;
+		return makeNewConnection("stagbar", "Nkucsc440", database);
 	}
 
 	/** Sets retire date for given alcohol. */
@@ -386,7 +383,7 @@ public class Connect {
 			pSta.setInt(2, alcoholId);
 			pSta.execute();
 			return true;
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -413,15 +410,13 @@ public class Connect {
 			pSta.setString(1, alcohol.getName());
 			pSta.setInt(2, alcohol.getType().getTypeId());
 			pSta.setDate(3, Date.valueOf(alcohol.getCreationDate()));
-			if(alcohol.getRetireDate() != null)
-				pSta.setDate(4, Date.valueOf(alcohol.getRetireDate()));
-			else
-				pSta.setDate(4, null);
+			if(alcohol.getRetireDate() != null) { pSta.setDate(4, Date.valueOf(alcohol.getRetireDate())); }
+			else { pSta.setDate(4, null); }
 			pSta.execute();
 
 			return true;
 
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Erroneous alcohol: " + alcohol.print());
 			e.printStackTrace();
@@ -439,7 +434,7 @@ public class Connect {
 			pSta.setString(2, type.getKind().name());
 			pSta.execute();
 			return true;
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -549,19 +544,19 @@ public class Connect {
 	/** Updates password for given user to given value. */
 	public boolean updateUserPassword(String username, String password) {
 		String sql = "UPDATE user SET password = ? WHERE username = ?;";
-		
+
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
 			pSta.setString(1, password);
 			pSta.setString(2, username);
 			pSta.execute();
 			return true;
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
-		
+
 	}
 
 	/** Updates permissions for given user to given value. */
@@ -573,7 +568,7 @@ public class Connect {
 			pSta.setString(2, username);
 			pSta.execute();
 			return true;
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
