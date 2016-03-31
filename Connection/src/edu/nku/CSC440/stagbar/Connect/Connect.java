@@ -309,8 +309,21 @@ public class Connect {
 	}
 
 	public boolean loginUser(String username, String password) {
-		// TODO: Check that given username & password match what is in database.
-		return true;
+		String sql = "SELECT * FROM user WHERE username = ? AND password = ?;";
+		ResultSet results;
+		try {
+			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			pSta.setString(1, username);
+			pSta.setString(2, password);
+			results = pSta.executeQuery();
+			if(results.next()){
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/**
