@@ -2,6 +2,7 @@ package edu.nku.CSC440.stagbar.ui;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import edu.nku.CSC440.stagbar.Application;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +23,8 @@ public class UserAccountManagementUI {
 		deleteUserButton.addActionListener(e -> onDeleteUser());
 		editUserPermissionsButton.addActionListener(e -> onEditPermissionsUser());
 		goBackButton.addActionListener(e -> onGoBack());
+
+		if(!Application.getInstance().getUser().isAdmin()) { disableAdminOnlyButtons(); }
 	}
 
 	/** @noinspection ALL */
@@ -52,6 +55,12 @@ public class UserAccountManagementUI {
 		goBackButton = new JButton();
 		goBackButton.setText("Go Back");
 		contentPane.add(goBackButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+	}
+
+	private void disableAdminOnlyButtons() {
+		createUserButton.setEnabled(false);
+		deleteUserButton.setEnabled(false);
+		editUserPermissionsButton.setEnabled(false);
 	}
 
 	public JPanel getContentPane() {

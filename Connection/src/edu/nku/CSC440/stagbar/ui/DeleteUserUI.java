@@ -16,22 +16,22 @@ import java.util.Set;
 
 public class DeleteUserUI {
 	private static final String DELETE_SUCCESS = "The deletion of user(s) is successful.";
-	private static final String TITLE_DELETE_SUCCESS = "The deletion of user(s) is successful.";
 	private static final String PLEASE_CHECK_BOX = "Please delete at least one user, or hit Cancel button.";
+	private static final String TITLE_DELETE_SUCCESS = "The deletion of user(s) is successful.";
 	private static final String TITLE_PLEASE_CHECK = "Deletion failed";
 	private final LinkedList<JCheckBox> checkBoxes;
-	private ArrayList<String> usersToBeDeleted;
 	private Set<User> allUsers;
 	private Application application;
 	private JButton cancelButton;
 	private JPanel contentPane;
+	private User currentUser;
 	private JLabel deleteUser;
 	private JButton okButton;
 	private JPanel scrollPanel;
 	private User user;
-	private User currentUser;
 	private JCheckBox userCheckBox;
 	private UserService userService;
+	private ArrayList<String> usersToBeDeleted;
 
 	public DeleteUserUI() {
 		$$$setupUI$$$();
@@ -48,68 +48,6 @@ public class DeleteUserUI {
 		okButton.addActionListener(e -> onOK());
 		cancelButton.addActionListener(e -> onCancel());
 		userCheckBox.addActionListener(e -> onChecked());
-	}
-
-	/* In case it is needed
-	@Override
-	public boolean equals(Object o) {
-		if(this == o) return true;
-		if(o == null || getClass() != o.getClass()) return false;
-
-		User that = (User)o;
-
-		return user.getUsername() == that.getUsername();
-	}*/
-
-	public void addUserRows() {
-		//TODO: Exclude the current user from the list of users to be deleted.
-		//currentUser = Application.getUser();
-		for(User currentUser : allUsers) {
-			if(!application.getUser().getUsername().equals(currentUser.getUsername())) {
-			String userToBeShown = currentUser.getUsername();
-			//currentUser.getUsername();
-			userCheckBox.setText(userToBeShown);
-			scrollPanel.add(userCheckBox);
-			}
-		}
-	}
-
-	public JPanel getContentPane() {
-		return contentPane;
-	}
-
-	private void onCancel() {
-		uiHacks.killMeThenGoToLastPage(contentPane);
-	}
-
-	private void onChecked() {
-		usersToBeDeleted.add(userCheckBox.getText());
-	}
-
-	private void onOK() {
-		if(usersToBeDeleted.isEmpty()) {
-			JOptionPane.showMessageDialog(contentPane, PLEASE_CHECK_BOX, TITLE_PLEASE_CHECK, JOptionPane.ERROR_MESSAGE);
-		}
-		else {
-			//StringBuilder sb = new StringBuilder();
-			//sb.append("Deleted Users: ");
-			//Set<String> usernames = new HashSet<>();
-
-			/*for(JCheckBox userCheckBox : checkBoxes) {
-				usernames.add(userCheckBox.getText());
-				if(userCheckBox.isSelected()) {
-					sb.append(userCheckBox.getText()).append(' ');
-				}
-			}*/
-			for (String user : usersToBeDeleted) {
-				userService.deleteUser(user);
-			}
-			// Display confirmation to user
-			JOptionPane.showMessageDialog(contentPane, String.format(DELETE_SUCCESS), TITLE_DELETE_SUCCESS, JOptionPane.INFORMATION_MESSAGE);
-			okButton.setEnabled(false);
-			uiHacks.killMeThenGoToLastPage(contentPane);
-		}
-
 	}
 
 	/** @noinspection ALL */
@@ -151,6 +89,68 @@ public class DeleteUserUI {
 		okButton.setMnemonic('O');
 		okButton.setDisplayedMnemonicIndex(0);
 		panel1.add(okButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+	}
+
+	/* In case it is needed
+	@Override
+	public boolean equals(Object o) {
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+
+		User that = (User)o;
+
+		return user.getUsername() == that.getUsername();
+	}*/
+
+	public void addUserRows() {
+		//TODO: Exclude the current user from the list of users to be deleted.
+		//currentUser = Application.getUser();
+		for(User currentUser : allUsers) {
+			if(!application.getUser().getUsername().equals(currentUser.getUsername())) {
+				String userToBeShown = currentUser.getUsername();
+				//currentUser.getUsername();
+				userCheckBox.setText(userToBeShown);
+				scrollPanel.add(userCheckBox);
+			}
+		}
+	}
+
+	public JPanel getContentPane() {
+		return contentPane;
+	}
+
+	private void onCancel() {
+		uiHacks.killMeThenGoToLastPage(contentPane);
+	}
+
+	private void onChecked() {
+		usersToBeDeleted.add(userCheckBox.getText());
+	}
+
+	private void onOK() {
+		if(usersToBeDeleted.isEmpty()) {
+			JOptionPane.showMessageDialog(contentPane, PLEASE_CHECK_BOX, TITLE_PLEASE_CHECK, JOptionPane.ERROR_MESSAGE);
+		}
+		else {
+			//StringBuilder sb = new StringBuilder();
+			//sb.append("Deleted Users: ");
+			//Set<String> usernames = new HashSet<>();
+
+			/*for(JCheckBox userCheckBox : checkBoxes) {
+				usernames.add(userCheckBox.getText());
+				if(userCheckBox.isSelected()) {
+					sb.append(userCheckBox.getText()).append(' ');
+				}
+			}*/
+			for(String user : usersToBeDeleted) {
+				userService.deleteUser(user);
+			}
+			// Display confirmation to user
+			JOptionPane.showMessageDialog(contentPane, String.format(DELETE_SUCCESS), TITLE_DELETE_SUCCESS, JOptionPane.INFORMATION_MESSAGE);
+			okButton.setEnabled(false);
+			uiHacks.killMeThenGoToLastPage(contentPane);
+		}
+
 	}
 
 

@@ -2,6 +2,7 @@ package edu.nku.CSC440.stagbar.ui;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import edu.nku.CSC440.stagbar.Application;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +30,8 @@ public class MainMenuUI {
 		retireAlcoholButton.addActionListener(e -> onRetireAlcohol());
 		salesButton.addActionListener(e -> onSales());
 		deliveriesButton.addActionListener(e -> onDeliveries());
+
+		if(!Application.getInstance().getUser().isAdmin()) { disableAdminOnlyButtons(); }
 	}
 
 	/** @noinspection ALL */
@@ -70,13 +73,12 @@ public class MainMenuUI {
 		contentPane.add(manageUsersButton, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 	}
 
-	public void disableAdminOnlyButtons() {
+	private void disableAdminOnlyButtons() {
 		newAlcoholButton.setEnabled(false);
 		inventoryButton.setEnabled(false);
 		salesButton.setEnabled(false);
 		retireAlcoholButton.setEnabled(false);
 		manageUsersButton.setEnabled(false);
-
 	}
 
 	public JPanel getContentPane() {
