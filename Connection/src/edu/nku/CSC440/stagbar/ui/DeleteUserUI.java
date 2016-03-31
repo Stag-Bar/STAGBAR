@@ -9,16 +9,18 @@ import edu.nku.CSC440.stagbar.service.UserService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Set;
 
 
 public class DeleteUserUI {
-	private static final String MESSAGE_SUCCESS = "The deletion of user(s) is successful.";
+	private static final String DELETE_SUCCESS = "The deletion of user(s) is successful.";
+	private static final String TITLE_DELETE_SUCCESS = "The deletion of user(s) is successful.";
 	private static final String PLEASE_CHECK_BOX = "Please delete at least one user, or hit Cancel button.";
 	private static final String TITLE_PLEASE_CHECK = "Deletion failed";
 	private final LinkedList<JCheckBox> checkBoxes;
+	private ArrayList<String> usersToBeDeleted;
 	private Set<User> allUsers;
 	private Application application;
 	private JButton cancelButton;
@@ -27,21 +29,87 @@ public class DeleteUserUI {
 	private JButton okButton;
 	private JPanel scrollPanel;
 	private User user;
+	private User currentUser;
 	private JCheckBox userCheckBox;
 	private UserService userService;
 
 	public DeleteUserUI() {
+		$$$setupUI$$$();
+		usersToBeDeleted = new ArrayList<>();
 		checkBoxes = new LinkedList<>();
-		for(User user1 : userService.getAllUsers()) {
-			allUsers.add(user1);
+		for(User user : userService.getAllUsers()) {
+			allUsers.add(user);
 		}
+
 		addUserRows();
+
 		userService = UserService.getInstance();
 		contentPane.setName("Delete User(s)");
 		okButton.addActionListener(e -> onOK());
 		cancelButton.addActionListener(e -> onCancel());
-//		userCheckBox.addActionListener(e -> onChecked(JCheckBox));
-		$$$setupUI$$$();
+		userCheckBox.addActionListener(e -> onChecked());
+	}
+
+	/* In case it is needed
+	@Override
+	public boolean equals(Object o) {
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+
+		User that = (User)o;
+
+		return user.getUsername() == that.getUsername();
+	}*/
+
+	public void addUserRows() {
+		//TODO: Exclude the current user from the list of users to be deleted.
+		//currentUser = Application.getUser();
+		for(User currentUser : allUsers) {
+			if(!application.getUser().getUsername().equals(currentUser.getUsername())) {
+			String userToBeShown = currentUser.getUsername();
+			//currentUser.getUsername();
+			userCheckBox.setText(userToBeShown);
+			scrollPanel.add(userCheckBox);
+			}
+		}
+	}
+
+	public JPanel getContentPane() {
+		return contentPane;
+	}
+
+	private void onCancel() {
+		uiHacks.killMeThenGoToLastPage(contentPane);
+	}
+
+	private void onChecked() {
+		usersToBeDeleted.add(userCheckBox.getText());
+	}
+
+	private void onOK() {
+		if(usersToBeDeleted.isEmpty()) {
+			JOptionPane.showMessageDialog(contentPane, PLEASE_CHECK_BOX, TITLE_PLEASE_CHECK, JOptionPane.ERROR_MESSAGE);
+		}
+		else {
+			//StringBuilder sb = new StringBuilder();
+			//sb.append("Deleted Users: ");
+			//Set<String> usernames = new HashSet<>();
+
+			/*for(JCheckBox userCheckBox : checkBoxes) {
+				usernames.add(userCheckBox.getText());
+				if(userCheckBox.isSelected()) {
+					sb.append(userCheckBox.getText()).append(' ');
+				}
+			}*/
+			for (String user : usersToBeDeleted) {
+				userService.deleteUser(user);
+			}
+			// Display confirmation to user
+			JOptionPane.showMessageDialog(contentPane, String.format(DELETE_SUCCESS), TITLE_DELETE_SUCCESS, JOptionPane.INFORMATION_MESSAGE);
+			okButton.setEnabled(false);
+			uiHacks.killMeThenGoToLastPage(contentPane);
+		}
+
 	}
 
 	/** @noinspection ALL */
@@ -85,52 +153,6 @@ public class DeleteUserUI {
 		panel1.add(okButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 	}
 
-	public void addUserRows() {
-		//TODO: Exclude the current user from the list of users to be deleted.
-		//for(User user : allUsers) {
-		//	scrollPanel.add(userCheckBox.getText(user.getUsername()));
-		//}
-	}
-
-	public JPanel getContentPane() {
-		return contentPane;
-	}
-
-	private void onCancel() {
-		uiHacks.killMeThenGoToLastPage(contentPane);
-	}
-
-	private void onChecked(JCheckBox userCheckBox) {
-		this.checkBoxes.add(userCheckBox);
-	}
-
-	private void onOK() {
-		if(checkBoxes != null) {
-			StringBuilder sb = new StringBuilder();
-			sb.append("Deleted Users: ");
-			Set<String> usernames = new HashSet<>();
-
-			for(JCheckBox userCheckBox : checkBoxes) {
-				usernames.add(userCheckBox.getText());
-				if(userCheckBox.isSelected()) {
-					sb.append(userCheckBox.getText()).append(' ');
-				}
-			}
-
-			for(String user : usernames) {
-				userService.deleteUser(user);
-			}
-			// Display confirmation to user
-//			JOptionPane.showMessageDialog(contentPane, String.format(MESSAGE_SUCCESS), JOptionPane.INFORMATION_MESSAGE);
-
-			//TODO: Navigate user away from page.
-			okButton.setEnabled(false);
-			uiHacks.killMeThenGoToLastPage(contentPane);
-		}
-		else {
-			JOptionPane.showMessageDialog(contentPane, PLEASE_CHECK_BOX, TITLE_PLEASE_CHECK, JOptionPane.ERROR_MESSAGE);
-		}
-	}
 
 }
 
