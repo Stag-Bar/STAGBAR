@@ -11,18 +11,15 @@ public class MainMenuUI {
 	private JButton alcoholButton;
 	private JPanel contentPane;
 	private JButton dataEntryButton;
-	private JButton deliveriesButton;
-	private JButton inventoryButton;
 	private JButton manageUsersButton;
 	private JButton mixedDrinksButton;
-	private JButton newAlcoholButton;
 	private JButton reportsButton;
-	private JButton retireAlcoholButton;
-	private JButton salesButton;
 
 	public MainMenuUI() {
 		contentPane.setName("Main Menu");
 
+		alcoholButton.addActionListener(e -> onAlcohol());
+		dataEntryButton.addActionListener(e -> onDataEntry());
 		manageUsersButton.addActionListener(e -> onManageUsers());
 		mixedDrinksButton.addActionListener(e -> onMixedDrinks());
 		reportsButton.addActionListener(e -> onReports());
@@ -61,16 +58,23 @@ public class MainMenuUI {
 	}
 
 	private void disableAdminOnlyButtons() {
-		newAlcoholButton.setEnabled(false);
-		inventoryButton.setEnabled(false);
-		salesButton.setEnabled(false);
-		retireAlcoholButton.setEnabled(false);
-		deliveriesButton.setEnabled(false);
+		alcoholButton.setEnabled(false);
 		mixedDrinksButton.setEnabled(false);
+		dataEntryButton.setEnabled(false);
 	}
 
 	public JPanel getContentPane() {
 		return contentPane;
+	}
+
+	private void onAlcohol() {
+		AlcoholMenuUI alcoholMenuUI = new AlcoholMenuUI();
+		uiHacks.goToPanel(contentPane, alcoholMenuUI.getContentPane());
+	}
+
+	private void onDataEntry() {
+		DataEntryMenuUI dataEntryMenuUI = new DataEntryMenuUI();
+		uiHacks.goToPanel(contentPane, dataEntryMenuUI.getContentPane());
 	}
 
 	private void onManageUsers() {
