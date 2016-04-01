@@ -15,39 +15,25 @@ package edu.nku.CSC440.stagbar.ui;
         import java.util.HashMap;
         import java.util.Map;
 
-/*
-    private JPanel contentPane;
-    private JButton cancelButton;
-    private JButton okButton;
-    private JCheckBox userCheckBox;
-    private JLabel usernameLabel;
-
-*/
-
 public class DeleteUserUI {
     private static final String DELETE_SUCCESS = "The deletion of user(s) is successful.";
     private static final String PLEASE_CHECK_BOX = "Please delete at least one user, or hit Cancel button.";
     private static final String TITLE_DELETE_SUCCESS = "The deletion of user(s) is successful.";
     private static final String TITLE_PLEASE_CHECK = "Deletion failed";
-    private ArrayList<User> allUsers;
     private ArrayList<Map<Integer, JCheckBox>> userMapList;
     private JButton cancelButton;
     private JPanel contentPane;
     private JButton okButton;
     private JPanel scrollPanel;
     private JCheckBox userCheckBox;
-    private JLabel usernameLabel;
+    //private JLabel usernameLabel;
     private ArrayList<String> usersToBeDeleted;
 
     public DeleteUserUI() {
         $$$setupUI$$$();
         usersToBeDeleted = new ArrayList<>();
-        allUsers = new ArrayList<>();
         userMapList = new ArrayList<>();
-        //get list of all users. Somehow this for-each loop keeps throwing NullPointExcp, I'd need to fix it
-        for (User user : Connect.getInstance().findAllUsers()) {
-            allUsers.add(user);
-        }
+
         contentPane.setName("Delete User(s)");
         okButton.addActionListener(e -> onOK());
         cancelButton.addActionListener(e -> onCancel());
@@ -55,16 +41,22 @@ public class DeleteUserUI {
 
     private void createUIComponents() {
         int counter = 0;
+        ArrayList<User> allUsers = new ArrayList<>();
+        ArrayList<Map<Integer, JCheckBox>> userMapList = new ArrayList<>();
+        for (User user : Connect.getInstance().findAllUsers()) {
+            allUsers.add(user);
+        }
         for (User thisUser : allUsers) {
             //ensure that current user is not added to list of users to be deleted
             if (!Application.getInstance().getUser().getUsername().equals(thisUser.getUsername())) {
                 String userToBeShown = thisUser.getUsername();
-                usernameLabel.setText(userToBeShown);
+                //usernameLabel = new JLabel();
+                //usernameLabel.setText(userToBeShown);
                 userCheckBox = new JCheckBox(userToBeShown, false); //all are initially false (i.e. unselected)
                 Map<Integer, JCheckBox> userMap = new HashMap<>();
                 userMap.put(counter, userCheckBox);
                 userMapList.add(userMap);
-                scrollPanel.add(userCheckBox);
+                //scrollPanel.add(userCheckBox);
                 counter++;
             }
         }
@@ -128,9 +120,9 @@ public class DeleteUserUI {
         contentPane.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         final JScrollPane scrollPane1 = new JScrollPane();
         contentPane.add(scrollPane1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        scrollPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        scrollPanel.setLayout(new GridLayoutManager(1, 1, new Insets(5, 5, 5, 5), -1, -1));
         scrollPane1.setViewportView(scrollPanel);
-        userCheckBox.setText("CheckBox");
+        userCheckBox.setText("");
         scrollPanel.add(userCheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
