@@ -40,6 +40,7 @@ public class UserAccountManagementUI {
 	private void $$$setupUI$$$() {
 		contentPane = new JPanel();
 		contentPane.setLayout(new GridLayoutManager(5, 1, new Insets(10, 10, 10, 10), -1, -1));
+		contentPane.setPreferredSize(new Dimension(250, 189));
 		changePasswordButton = new JButton();
 		changePasswordButton.setText("Change Password");
 		contentPane.add(changePasswordButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));

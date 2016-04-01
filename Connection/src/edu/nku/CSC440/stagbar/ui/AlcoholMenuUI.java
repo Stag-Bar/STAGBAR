@@ -35,6 +35,7 @@ public class AlcoholMenuUI {
 	private void $$$setupUI$$$() {
 		contentPane = new JPanel();
 		contentPane.setLayout(new GridLayoutManager(4, 1, new Insets(10, 10, 10, 10), -1, -1));
+		contentPane.setPreferredSize(new Dimension(250, 155));
 		createAlcoholButton = new JButton();
 		createAlcoholButton.setText("Create Alcohol");
 		contentPane.add(createAlcoholButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));

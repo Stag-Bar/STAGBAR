@@ -34,7 +34,8 @@ public class MixedDrinkMenuUI {
 	 */
 	private void $$$setupUI$$$() {
 		contentPane = new JPanel();
-		contentPane.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
+		contentPane.setLayout(new GridLayoutManager(4, 1, new Insets(10, 10, 10, 10), -1, -1));
+		contentPane.setPreferredSize(new Dimension(250, 155));
 		newDrinkButton = new JButton();
 		newDrinkButton.setText("New Drink");
 		contentPane.add(newDrinkButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
