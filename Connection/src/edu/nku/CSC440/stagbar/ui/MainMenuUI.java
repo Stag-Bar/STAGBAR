@@ -8,7 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainMenuUI {
+	private JButton alcoholButton;
 	private JPanel contentPane;
+	private JButton dataEntryButton;
 	private JButton deliveriesButton;
 	private JButton inventoryButton;
 	private JButton manageUsersButton;
@@ -19,17 +21,11 @@ public class MainMenuUI {
 	private JButton salesButton;
 
 	public MainMenuUI() {
-
 		contentPane.setName("Main Menu");
 
-		inventoryButton.addActionListener(e -> onInventory());
 		manageUsersButton.addActionListener(e -> onManageUsers());
 		mixedDrinksButton.addActionListener(e -> onMixedDrinks());
-		newAlcoholButton.addActionListener(e -> onNewAlcohol());
 		reportsButton.addActionListener(e -> onReports());
-		retireAlcoholButton.addActionListener(e -> onRetireAlcohol());
-		salesButton.addActionListener(e -> onSales());
-		deliveriesButton.addActionListener(e -> onDeliveries());
 
 		if(!Application.getInstance().getUser().isAdmin()) { disableAdminOnlyButtons(); }
 	}
@@ -46,31 +42,22 @@ public class MainMenuUI {
 	 */
 	private void $$$setupUI$$$() {
 		contentPane = new JPanel();
-		contentPane.setLayout(new GridLayoutManager(3, 4, new Insets(10, 10, 10, 10), -1, -1));
-		newAlcoholButton = new JButton();
-		newAlcoholButton.setText("New Alcohol");
-		contentPane.add(newAlcoholButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		inventoryButton = new JButton();
-		inventoryButton.setText("Inventory");
-		contentPane.add(inventoryButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		salesButton = new JButton();
-		salesButton.setText("Sales");
-		contentPane.add(salesButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		contentPane.setLayout(new GridLayoutManager(5, 1, new Insets(10, 10, 10, 10), -1, -1));
 		mixedDrinksButton = new JButton();
 		mixedDrinksButton.setText("Mixed Drinks");
-		contentPane.add(mixedDrinksButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
-		retireAlcoholButton = new JButton();
-		retireAlcoholButton.setText("Retire Alcohol");
-		contentPane.add(retireAlcoholButton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		contentPane.add(mixedDrinksButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		reportsButton = new JButton();
 		reportsButton.setText("Reports");
-		contentPane.add(reportsButton, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		deliveriesButton = new JButton();
-		deliveriesButton.setText("Deliveries");
-		contentPane.add(deliveriesButton, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		contentPane.add(reportsButton, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		manageUsersButton = new JButton();
-		manageUsersButton.setText("Manage Users");
-		contentPane.add(manageUsersButton, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		manageUsersButton.setText("User Management");
+		contentPane.add(manageUsersButton, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		alcoholButton = new JButton();
+		alcoholButton.setText("Alcohol");
+		contentPane.add(alcoholButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		dataEntryButton = new JButton();
+		dataEntryButton.setText("Data Entry");
+		contentPane.add(dataEntryButton, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 	}
 
 	private void disableAdminOnlyButtons() {
@@ -86,16 +73,6 @@ public class MainMenuUI {
 		return contentPane;
 	}
 
-	private void onDeliveries() {
-		DeliveryUI deliveryUI = new DeliveryUI();
-		uiHacks.goToPanel(contentPane, deliveryUI.getContentPane());
-	}
-
-	private void onInventory() {
-		InventoryUI inventoryUI = new InventoryUI();
-		uiHacks.goToPanel(contentPane, inventoryUI.getContentPane());
-	}
-
 	private void onManageUsers() {
 		UserAccountManagementUI manageUsers = new UserAccountManagementUI();
 		uiHacks.goToPanel(contentPane, manageUsers.getContentPane());
@@ -106,22 +83,8 @@ public class MainMenuUI {
 		uiHacks.goToPanel(contentPane, mixedDrinkMenuUI.getContentPane());
 	}
 
-	private void onNewAlcohol() {
-		NewAlcoholUI newAlcoholUI = new NewAlcoholUI();
-		uiHacks.goToPanel(contentPane, newAlcoholUI.getContentPane());
-	}
-
 	private void onReports() {
 		//TODO: Navigate to Reports panel
-	}
-
-	private void onRetireAlcohol() {
-		//TODO: Naviagte to retire beverages panel
-	}
-
-	private void onSales() {
-		SalesUI salesUI = new SalesUI();
-		uiHacks.goToPanel(contentPane, salesUI.getContentPane());
 	}
 
 	{

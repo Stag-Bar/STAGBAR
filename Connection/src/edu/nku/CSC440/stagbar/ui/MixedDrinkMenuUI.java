@@ -8,6 +8,7 @@ import java.awt.*;
 
 public class MixedDrinkMenuUI {
 	private JPanel contentPane;
+	private JButton editDrinkButton;
 	private JButton goBackButton;
 	private JButton newDrinkButton;
 	private JButton retireReinstateDrinkButton;
@@ -16,6 +17,7 @@ public class MixedDrinkMenuUI {
 		contentPane.setName("Mixed Drink Menu");
 
 		newDrinkButton.addActionListener(e -> onNewDrink());
+		editDrinkButton.addActionListener(e -> onEditDrink());
 		retireReinstateDrinkButton.addActionListener(e -> onRetireReinstateDrink());
 		goBackButton.addActionListener(e -> onGoBack());
 	}
@@ -32,20 +34,27 @@ public class MixedDrinkMenuUI {
 	 */
 	private void $$$setupUI$$$() {
 		contentPane = new JPanel();
-		contentPane.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
+		contentPane.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
 		newDrinkButton = new JButton();
 		newDrinkButton.setText("New Drink");
 		contentPane.add(newDrinkButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
-		retireReinstateDrinkButton = new JButton();
-		retireReinstateDrinkButton.setText("Retire/Reinstate Drink");
-		contentPane.add(retireReinstateDrinkButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		goBackButton = new JButton();
 		goBackButton.setText("Go Back");
-		contentPane.add(goBackButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		contentPane.add(goBackButton, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_SOUTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		retireReinstateDrinkButton = new JButton();
+		retireReinstateDrinkButton.setText("Retire/Reinstate Drink");
+		contentPane.add(retireReinstateDrinkButton, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		editDrinkButton = new JButton();
+		editDrinkButton.setText("Edit Drink");
+		contentPane.add(editDrinkButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 	}
 
 	public JPanel getContentPane() {
 		return contentPane;
+	}
+
+	private void onEditDrink() {
+		//TODO: Navigate to edit drink panel.
 	}
 
 	private void onGoBack() {
@@ -58,7 +67,7 @@ public class MixedDrinkMenuUI {
 	}
 
 	private void onRetireReinstateDrink() {
-
+		//TODO: Navigate to retire/reinstate drink panel.
 	}
 
 	{
