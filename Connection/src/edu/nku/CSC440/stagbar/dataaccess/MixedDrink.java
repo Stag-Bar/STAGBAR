@@ -21,10 +21,10 @@ public class MixedDrink {
 	}
 
 	/** Used when loading drink. */
-	public MixedDrink(String name, Set<MixedDrinkIngredient> ingredientsStoredInDatabase, LocalDate retireDate) {
-		this(name, ingredientsStoredInDatabase);
+	public MixedDrink(String name, LocalDate retireDate) {
+		this(name, new HashSet<>());
 		this.retireDate = retireDate;
-		previousIngredients = mapFromSet(ingredientsStoredInDatabase);
+		previousIngredients = new HashMap<>();
 	}
 
 	private static Map<MixedDrinkIngredient, MixedDrinkIngredient> mapFromSet(Set<MixedDrinkIngredient> set) {
@@ -33,6 +33,16 @@ public class MixedDrink {
 			map.put(ingredient, ingredient);
 		}
 		return map;
+	}
+
+	/**
+	 * Populates ingredient collection with ingredients stored in database. FOR USE IN Connect.java ONLY!
+	 *
+	 * @param ingredient
+	 */
+	public void addIngredientFromDatabase(MixedDrinkIngredient ingredient) {
+		ingredients.put(ingredient, ingredient);
+		previousIngredients.put(ingredient, ingredient);
 	}
 
 	@Override
