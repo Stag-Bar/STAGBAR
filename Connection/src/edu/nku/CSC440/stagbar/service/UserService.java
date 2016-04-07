@@ -119,14 +119,14 @@ public class UserService {
 		return successful;
 	}
 
-	public boolean deleteUser(String username) {
-		return Connect.getInstance().deleteUser(username);
+	public boolean deleteUser(User user) {
+		return Connect.getInstance().deleteUser(user.getUsername());
 	}
 
-	public boolean deleteUsers(Set<String> usernames) {
+	public boolean deleteUsers(Set<User> users) {
 		boolean deleteFailed = false;
-		for(String username : usernames) {
-			deleteFailed |= !deleteUser(username);
+		for(User user : users) {
+			deleteFailed |= !deleteUser(user);
 		}
 
 		return !deleteFailed;
