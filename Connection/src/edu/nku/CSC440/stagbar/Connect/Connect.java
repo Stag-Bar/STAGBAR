@@ -5,7 +5,9 @@ import edu.nku.CSC440.stagbar.dataaccess.*;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class Connect {
@@ -38,7 +40,7 @@ public class Connect {
 				return true;
 			}
 		} catch(SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return false;
@@ -56,7 +58,7 @@ public class Connect {
 			success = true;
 
 		} catch(Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		databaseName = name;
@@ -67,8 +69,18 @@ public class Connect {
 
 	/** Deletes given ingredient for given drink. */
 	public boolean deleteMixedDrinkIngredient(String mixedDrinkName, Alcohol alcohol) {
-		//TODO: Delete removed ingredients
-		return true;
+		String sql = "DELETE FROM mixeddrinkingredients WHERE drink = ? AND ingredientid = ?;";
+		try {
+			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			pSta.setString(1, mixedDrinkName);
+			pSta.setInt(2, alcohol.getAlcoholId());
+			pSta.execute();
+			return true;
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	//method to delete a user from the database
@@ -81,7 +93,7 @@ public class Connect {
 			return true;
 
 		} catch(SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return false;
@@ -96,7 +108,22 @@ public class Connect {
 	 * @throws RuntimeException If user's database connection is closed.
 	 */
 	public boolean doesDrinkExist(String drinkName) {
-
+		String sql = "SELECT * FROM mixeddrink WHERE name = ?;";
+		ResultSet results;
+		try {
+			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			pSta.setString(1, drinkName);
+			results = pSta.executeQuery();
+			if(results.next()){
+				return true;
+			}
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		
 		return false;
 	}
 
@@ -138,7 +165,7 @@ public class Connect {
 			}
 
 		} catch(SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return set;
@@ -160,7 +187,7 @@ public class Connect {
 			}
 
 		} catch(SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return set;
@@ -176,7 +203,7 @@ public class Connect {
 		String statement = "SELECT a.alcoholId, a.name, a.typeid, a.creationdate, a.retiredate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE a.alcoholId = t.typeid AND a.name = ?;";
 		ResultSet result;
 
-		//might need changed
+		
 		try {
 
 			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
@@ -187,7 +214,7 @@ public class Connect {
 				return new Alcohol(result.getInt(1), result.getString(2), new CustomAlcoholType(result.getInt(3), result.getString(7), AlcoholType.valueOf(result.getString(8))), result.getDate(4).toLocalDate(), result.getDate(5) == null ? null : result.getDate(5).toLocalDate());
 			}
 		} catch(SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -207,7 +234,6 @@ public class Connect {
 				set.add(new Alcohol(result.getInt(1), result.getString(2), new CustomAlcoholType(result.getInt(6), result.getString(7), AlcoholType.valueOf(result.getString(8))), result.getDate(4).toLocalDate(), result.getDate(5) == null ? null : result.getDate(5).toLocalDate()));
 			}
 		} catch(SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -227,7 +253,7 @@ public class Connect {
 				set.add(new CustomAlcoholType(result.getInt(1), result.getString(2), AlcoholType.valueOf(result.getString(3))));
 			}
 		} catch(SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -236,12 +262,50 @@ public class Connect {
 
 	/** Searches database for all mixed drinks and their corresponding ingredients. */
 	public Set<MixedDrink> findAllMixedDrinksAndIngredients() {
-		//TODO: Find all mixed drinks
-		//TODO: Find ingredients for each mixed drink
-		//TODO: Create and return mixed drink set
-		return ConnectMock.findAllMixedDrinksAndIngredients();
+		
+		String sql = "SELECT mi.*, a.*, d.*, t.* FROM mixeddrinkingredients mi, alcohol a, mixeddrink d, type t WHERE mi.drink = d.name AND ingredientid = alcoholid AND a.typeid = t.typeid ORDER BY d.name;";
+		ResultSet results;
+		Set<MixedDrink> set = new HashSet<>();
+		try {
+			Statement s = getActiveConnection().createStatement();
+			results = s.executeQuery(sql);
+			MixedDrink md = null;
+			Map<String, MixedDrink> mdMap = new HashMap<>(); 
+			while(results.next()){
+				md = mdMap.get(results.getString(1));
+				if(md == null){
+					md = new MixedDrink(results.getString(9), results.getDate(10) == null? null: results.getDate(10).toLocalDate());
+					mdMap.put(results.getString(1), md);
+				}
+				Alcohol a = new Alcohol(results.getInt(4), results.getString(5), new CustomAlcoholType(results.getInt(11), results.getString(12), AlcoholType.valueOf(results.getString(13))), results.getDate(7).toLocalDate(), results.getDate(8) == null? null:results.getDate(8).toLocalDate());
+				MixedDrinkIngredient i = new MixedDrinkIngredient(a, results.getDouble(3));
+				md.addIngredientFromDatabase(i);
+				if(!set.contains(md))
+					set.add(md);
+			}
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		return set;
 	}
-
+	public Set<String> findAllMixedDrinkNames(){
+		String sql = "SELECT name FROM mixeddrink;";
+		ResultSet results;
+		Set<String> set = new HashSet<>();
+		
+		try {
+			Statement s = getActiveConnection().createStatement();
+			results = s.executeQuery(sql);
+			while(results.next()){
+				set.add(results.getString(1));
+			}
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		return set;
+	}
 	/** Retrieves all users from database. */
 	public Set<User> findAllUsers() {
 		String sql = "SELECT username, permission FROM user;";
@@ -254,12 +318,40 @@ public class Connect {
 				set.add(new User(results.getString(1), PermissionLevel.valueOf(results.getString(2))));
 			}
 		} catch(SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return set;
 	}
-
+	public MixedDrink findMixedDrinkIngredientsByName(String drinkName){
+		String sql = "SELECT mi.*, a.*, d.* FROM mixeddrinkingredients mi, alcohol a, mixeddrink d WHERE mi.drink = ? AND mi.drink = d.name AND ingredientid = alcoholid;";
+		ResultSet results;
+		
+		try {
+			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			pSta.setString(1, drinkName);
+			
+			results = pSta.executeQuery();
+			MixedDrink md = null;
+			Map<String, MixedDrink> mdMap = new HashMap<>(); 
+			while(results.next()){
+				md = mdMap.get(results.getString(1));
+				if(md == null){
+					md = new MixedDrink(results.getString(9), results.getDate(10).toLocalDate());
+					mdMap.put(results.getString(1), md);
+				}
+				Alcohol a = new Alcohol(results.getInt(4), results.getString(5), new CustomAlcoholType(results.getInt(11), results.getString(12), AlcoholType.valueOf(results.getString(13))), results.getDate(7).toLocalDate(), results.getDate(8) == null? null:results.getDate(8).toLocalDate());
+				MixedDrinkIngredient i = new MixedDrinkIngredient(a, results.getDouble(3));
+				md.addIngredientFromDatabase(i);
+				
+			}
+			return md;
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		return null;
+	}
 	public PermissionLevel findPermissionsForUser(String username) {
 		String sql = "SELECT username, permission FROM user WHERE username = ?;";
 		ResultSet results;
@@ -272,11 +364,10 @@ public class Connect {
 				return PermissionLevel.valueOf(results.getString(2));
 			}
 		} catch(SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return null; //TODO: Delete test data.
+		return null; 
 	}
 
 	//first time setup will create set up the user and neccssary tables.
@@ -305,11 +396,11 @@ public class Connect {
 				sta.execute(statement);
 				statement = "CREATE TABLE mixeddrink (name VARCHAR(40), retiredate DATE, PRIMARY KEY(name));";
 				sta.execute(statement);
-				statement = "CREATE TABLE mixeddrinkingredients (drink VARCHAR(40), ingredientid INT, amount DOUBLE, FOREIGN KEY(drink) REFERENCES mixeddrink(name), FOREIGN KEY(ingredientid) REFERENCES alcohol(alcoholid));";
+				statement = "CREATE TABLE mixeddrinkingredients (drink VARCHAR(40), ingredientid INT, amount DOUBLE, FOREIGN KEY(drink) REFERENCES mixeddrink(name), FOREIGN KEY(ingredientid) REFERENCES alcohol(alcoholid), PRIMARY KEY(drink, ingredientid));";
 				sta.execute(statement);
 
 			} catch(SQLException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 
@@ -384,7 +475,7 @@ public class Connect {
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -393,8 +484,18 @@ public class Connect {
 
 	/** Sets retire date for given mixed drink. */
 	public boolean retireMixedDrink(String mixedDrink, LocalDate date) {
-		//TODO: Set retire date.
-		return true;
+		String sql = "UPDATE mixeddrink SET retireDate = ? WHERE name = ?;";
+		try {
+			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			pSta.setString(1, mixedDrink);
+			pSta.setDate(2, Date.valueOf(date));
+			pSta.execute();
+			return true;
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/**
@@ -417,7 +518,7 @@ public class Connect {
 			return true;
 
 		} catch(SQLException e) {
-			// TODO Auto-generated catch block
+			
 			System.out.println("Erroneous alcohol: " + alcohol.print());
 			e.printStackTrace();
 		}
@@ -435,7 +536,7 @@ public class Connect {
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return false;
@@ -491,7 +592,7 @@ public class Connect {
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return false;
@@ -552,7 +653,7 @@ public class Connect {
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		}
 		return false;
@@ -569,7 +670,7 @@ public class Connect {
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return false;
