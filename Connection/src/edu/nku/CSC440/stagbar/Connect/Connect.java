@@ -544,7 +544,20 @@ public class Connect {
 
 	/** Creates a new row on the Delivery table with the given entry. */
 	public boolean saveDeliveryEntry(Entry entry) {
-		return saveEntry(EntryTable.DELIVERY, entry);
+		String sql =  "INSERT INTO delivery (alcohol, amount, bottles, date) VALUES (?, ?, ?, ?);";
+		try {
+			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			pSta.setInt(1, entry.getAlcoholId());
+			pSta.setDouble(2, entry.getAmount());
+			pSta.setInt(3, entry.getBottles());
+			pSta.setDate(4, Date.valueOf(entry.getDate()));
+			pSta.execute();
+			return true;
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	private boolean saveEntry(EntryTable table, Entry entry) {
@@ -559,7 +572,20 @@ public class Connect {
 
 	/** Creates a new row on the Inventory table with the given entry. */
 	public boolean saveInventoryEntry(Entry entry) {
-		return saveEntry(EntryTable.INVENTORY, entry);
+		String sql = "INSERT INTO inventory (alcohol, amount, bottles, date) VALUES (?, ?, ?, ?);";
+		try {
+			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			pSta.setInt(1, entry.getAlcoholId());
+			pSta.setDouble(2, entry.getAmount());
+			pSta.setInt(3, entry.getBottles());
+			pSta.setDate(4, Date.valueOf(entry.getDate()));
+			pSta.execute();
+			return true;
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/** Creates a new mixed drink with given name and no retire date. */
