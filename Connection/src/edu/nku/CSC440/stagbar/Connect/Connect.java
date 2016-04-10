@@ -564,15 +564,35 @@ public class Connect {
 
 	/** Creates a new mixed drink with given name and no retire date. */
 	public boolean saveMixedDrink(String name) {
-		//TODO: Create new mixed drink.
-		System.out.println("Mixed Drink " + name + " saved.");
-		return true;
+		String sql = "INSERT INTO mixeddrink (name, retireDate) VALUES (?, null)";
+		try {
+			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			pSta.setString(1, name);
+			pSta.execute();
+			return true;
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 
 	/** Creates a new mixed drink ingredient for drink with given name. */
 	public boolean saveMixedDrinkIngredient(String mixedDrinkName, Alcohol alcohol, Double amount) {
-		System.out.println("Ingredient for " + mixedDrinkName + ": " + alcohol + ", " + amount + "oz saved.");
-		return true;
+		String sql =  "INSERT INTO mixeddrinkingredients (drink, ingredientid, amount) VALUES (?, ?, ?);";
+		try {
+			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			pSta.setString(1, mixedDrinkName);
+			pSta.setInt(2, alcohol.getAlcoholId());
+			pSta.setDouble(3, amount);
+			pSta.execute();
+			return true;
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/** Creates a new row on the Sales table with the given entry. */
@@ -634,8 +654,20 @@ public class Connect {
 
 	/** Updates given ingredient for given drink with given value. */
 	public boolean updateMixedDrinkIngredient(String mixedDrinkName, Alcohol alcohol, Double amount) {
-		//TODO: Update mixed drink
-		return true;
+		String sql = "UPDATE mixeddrinkingredients SET amount = ? WHERE drink = ? AND ingredientid = ?;";
+		try {
+			PreparedStatement pSta =  getActiveConnection().prepareStatement(sql);
+			pSta.setDouble(1, amount);
+			pSta.setString(2, mixedDrinkName);
+			pSta.setInt(3, alcohol.getAlcoholId());
+			pSta.execute();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 
 	public boolean updateSalesEntry(Entry entry) {
