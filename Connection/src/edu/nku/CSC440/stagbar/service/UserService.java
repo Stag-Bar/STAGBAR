@@ -148,7 +148,7 @@ public class UserService {
 	}
 
 	private PermissionLevel getPermissionsForUser(String username) {
-		return Connect.getInstance().findPermissionsForUser(username);
+		return Connect.getInstance().findPermissionsForUser(username.toLowerCase());
 	}
 
 	public boolean login(String username, char[] password) {
