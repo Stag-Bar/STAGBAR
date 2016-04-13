@@ -182,7 +182,7 @@ public class NewAlcoholUI {
 			nameTextField.requestFocusInWindow();
 		}
 		// Save alcohol to database.
-		else if(AlcoholService.getInstance().saveNewAlcohol(nameTextField.getText(), (CustomAlcoholType)typeComboBox.getSelectedItem(), bottles, amount)) {
+		else if(AlcoholService.getInstance().saveNewAlcohol(nameTextField.getText(), (CustomAlcoholType)typeComboBox.getSelectedItem())) {
 			// Display confirmation to user
 			JOptionPane.showMessageDialog(contentPane, String.format(MESSAGE_NEW_ALCOHOL, nameTextField.getText()), TITLE_NEW_ALCOHOL, JOptionPane.INFORMATION_MESSAGE);
 

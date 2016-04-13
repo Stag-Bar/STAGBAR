@@ -184,7 +184,7 @@ public class SalesUI {
 		for(CustomAlcoholType type : TypeService.getInstance().getAllCustomAlcoholTypes()) {
 			TabUI tabUI = new TabUI(checkboxListener);
 
-			for(Alcohol alcohol : AlcoholService.getInstance().getAlcoholByType(type, LocalDate.now(), LocalDate.now())) {
+			for(Alcohol alcohol : AlcoholService.getInstance().getAlcoholByType(type, LocalDate.now())) {
 				tabUI.addCheckbox(alcohol);
 			}
 

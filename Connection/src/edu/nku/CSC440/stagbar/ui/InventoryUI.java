@@ -123,7 +123,7 @@ public class InventoryUI {
 		for(CustomAlcoholType type : TypeService.getInstance().getAllCustomAlcoholTypes()) {
 			TypePaneUI typePaneUI = new TypePaneUI(type);
 
-			for(Alcohol alcohol : AlcoholService.getInstance().getAlcoholByType(type, LocalDate.now(), LocalDate.now())) {
+			for(Alcohol alcohol : AlcoholService.getInstance().getAlcoholByType(type, LocalDate.now())) {
 				typePaneUI.addEntryRow(alcohol);
 			}
 
