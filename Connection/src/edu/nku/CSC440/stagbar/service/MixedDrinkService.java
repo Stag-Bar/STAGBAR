@@ -4,7 +4,6 @@ import edu.nku.CSC440.stagbar.Connect.Connect;
 import edu.nku.CSC440.stagbar.dataaccess.MixedDrink;
 import edu.nku.CSC440.stagbar.dataaccess.MixedDrinkIngredient;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,7 +46,7 @@ public class MixedDrinkService {
 	}
 
 	public boolean retireMixedDrink(MixedDrink mixedDrink, boolean isRetired) {
-		return Connect.getInstance().retireMixedDrink(mixedDrink.getName(), isRetired ? LocalDate.now() : null);
+		return Connect.getInstance().retireMixedDrink(mixedDrink.getName(), isRetired);
 	}
 
 	/** Saves a new Mixed Drink to the database. */

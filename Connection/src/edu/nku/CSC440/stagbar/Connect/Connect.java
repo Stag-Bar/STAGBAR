@@ -14,11 +14,10 @@ import java.util.logging.Logger;
 public class Connect {
 
 	private static final String DATABASE_URL = "jdbc:mysql://stagbar2.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306";
+	private static final Connect connect = new Connect();
 	private static final Logger log = Logger.getLogger(Connect.class.getName());
-	private static Connect connect = new Connect();
 	private Connection activeConnection;
 	private String databaseName;
-
 
 	private Connect() {}
 
@@ -63,7 +62,7 @@ public class Connect {
 
 	/** Deletes given ingredient for given drink. */
 	public boolean deleteMixedDrinkIngredient(String mixedDrinkName, Alcohol alcohol) {
-		String sql = "DELETE FROM mixeddrinkingredients WHERE drink = ? AND ingredientid = ?;";
+		String sql = "DELETE FROM mixedDrinkIngredients WHERE drink = ? AND alcoholId = ?;";
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
 			pSta.setString(1, mixedDrinkName);
@@ -83,10 +82,21 @@ public class Connect {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
 			pSta.setString(1, username);
 			pSta.execute();
+			log.info("Deleted user: " + username);
 			return true;
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
+		return false;
+	}
+
+	/**
+	 * Checks database for an alcohol with given name & type that is active (not retired as of given date, inclusive).
+	 *
+	 * @return <code>true</code> if specified alcohol is defined in database and is active, <code>false</code> otherwise.
+	 */
+	public boolean doesActiveAlcoholExist(String name, CustomAlcoholType type, LocalDate today) {
+		//TODO: implement method
 		return false;
 	}
 
@@ -99,7 +109,7 @@ public class Connect {
 	 * @throws RuntimeException If user's database connection is closed.
 	 */
 	public boolean doesDrinkExist(String drinkName) {
-		String sql = "SELECT * FROM mixeddrink WHERE name = ?;";
+		String sql = "SELECT * FROM mixedDrink WHERE name = ?;";
 		ResultSet results;
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
@@ -135,7 +145,7 @@ public class Connect {
 	}
 
 	public Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type, LocalDate startDate, LocalDate endDate) {
-		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE t.typeid = ? AND a.typeid = t.typeid AND a.creationDate >= ? AND (a.retireDate IS NULL OR a.retireDate <= ?);";
+		String sql = "SELECT a.alcoholId, a.name, a.typeId, a.creationDate, a.retireDate, t.typeId, t.name, t.kind FROM alcohol a, type t WHERE t.typeId = ? AND a.typeId = t.typeId AND a.creationDate >= ? AND (a.retireDate IS NULL OR a.retireDate <= ?);";
 
 		Set<Alcohol> set = new HashSet<>();
 		try {
@@ -143,7 +153,6 @@ public class Connect {
 			ResultSet results;
 			pSta.setInt(1, type.getTypeId());
 			pSta.setDate(2, Date.valueOf(startDate));
-
 			pSta.setDate(3, Date.valueOf(endDate));
 			results = pSta.executeQuery();
 			while(results.next()) {
@@ -157,7 +166,7 @@ public class Connect {
 
 	/** Searches database for alcohol whose retire date is null or after the start date & whose creation date is before the end date. */
 	public Set<Alcohol> findActiveAlcoholForDateRange(LocalDate startDate, LocalDate endDate) {
-		String sql = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE a.typeid = t.typeid AND a.creationDate >= ? AND (a.retireDate IS NULL OR a.retireDate <= ?);";
+		String sql = "SELECT a.alcoholId, a.name, a.typeId, a.creationDate, a.retireDate, t.typeId, t.name, t.kind FROM alcohol a, type t WHERE a.typeId = t.typeId AND a.creationDate >= ? AND (a.retireDate IS NULL OR a.retireDate <= ?);";
 
 		Set<Alcohol> set = new HashSet<>();
 		try {
@@ -177,12 +186,11 @@ public class Connect {
 
 	/**
 	 * Searches database for an Alcohol with given name.
-	 *
-	 * @param name
 	 * @return Alcohol with given name if found, otherwise returns <code>null</code>.
+	 * @deprecated replaced by doesActiveAlcoholExist
 	 */
-	public Alcohol findAlcoholByName(String name) {
-		String statement = "SELECT a.alcoholId, a.name, a.typeid, a.creationdate, a.retiredate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE a.alcoholId = t.typeid AND a.name = ?;";
+	public Alcohol findAlcoholByName(String name) {    //FIXME: Delete this method. Replace with doesActiveAlcoholExist()
+		String statement = "SELECT a.alcoholId, a.name, a.typeId, a.creationDate, a.retireDate, t.typeId, t.name, t.kind FROM alcohol a, type t WHERE a.alcoholId = t.typeId AND a.name = ?;";
 		ResultSet result;
 
 		try {
@@ -200,7 +208,7 @@ public class Connect {
 	}
 
 	public Set<Alcohol> findAllAlcohol() {
-		String statement = "SELECT a.alcoholid, a.name, a.typeid, a.creationDate, a.retireDate, t.typeid, t.name, t.kind FROM alcohol a, type t WHERE a.typeid = t.typeid;";
+		String statement = "SELECT a.alcoholId, a.name, a.typeId, a.creationDate, a.retireDate, t.typeId, t.name, t.kind FROM alcohol a, type t WHERE a.typeId = t.typeId;";
 		ResultSet result;
 		Set<Alcohol> set = new HashSet<>();
 
@@ -235,7 +243,7 @@ public class Connect {
 	}
 
 	public Set<String> findAllMixedDrinkNames() {
-		String sql = "SELECT name FROM mixeddrink;";
+		String sql = "SELECT name FROM mixedDrink;";
 		ResultSet results;
 		Set<String> set = new HashSet<>();
 
@@ -253,14 +261,14 @@ public class Connect {
 
 	/** Searches database for all mixed drinks and their corresponding ingredients. */
 	public Set<MixedDrink> findAllMixedDrinksAndIngredients() {
-		String sql = "SELECT mi.*, a.*, d.*, t.* FROM mixeddrinkingredients mi, alcohol a, mixeddrink d, type t WHERE mi.drink = d.name AND ingredientid = alcoholid AND a.typeid = t.typeid ORDER BY d.name;";
+		String sql = "SELECT mi.*, a.*, d.*, t.* FROM mixedDrinkIngredients mi, alcohol a, mixedDrink d, type t WHERE mi.drink = d.name AND mi.alcoholId = a.alcoholId AND a.typeId = t.typeId ORDER BY d.name;";
 		ResultSet results;
 
 		Map<String, MixedDrink> mdMap = new HashMap<>();
 		try {
 			Statement s = getActiveConnection().createStatement();
 			results = s.executeQuery(sql);
-			MixedDrink md = null;
+			MixedDrink md;
 
 			while(results.next()) {
 				md = mdMap.get(results.getString(1));
@@ -271,12 +279,11 @@ public class Connect {
 				Alcohol a = new Alcohol(results.getInt(4), results.getString(5), new CustomAlcoholType(results.getInt(11), results.getString(12), AlcoholType.valueOf(results.getString(13))), results.getDate(7).toLocalDate(), results.getDate(8) == null ? null : results.getDate(8).toLocalDate());
 				MixedDrinkIngredient i = new MixedDrinkIngredient(a, results.getDouble(3));
 				md.addIngredientFromDatabase(i);
-
 			}
 		} catch(SQLException e) {
 			log.log(Level.SEVERE, e.toString(), e);
 		}
-		return new HashSet<MixedDrink>(mdMap.values());
+		return new HashSet<>(mdMap.values());
 	}
 
 	/** Retrieves all users from database. */
@@ -297,7 +304,7 @@ public class Connect {
 	}
 
 	public MixedDrink findMixedDrinkIngredientsByName(String drinkName) {
-		String sql = "SELECT mi.*, a.*, d.* FROM mixeddrinkingredients mi, alcohol a, mixeddrink d WHERE mi.drink = ? AND mi.drink = d.name AND ingredientid = alcoholid;";
+		String sql = "SELECT mi.*, a.*, d.* FROM mixedDrinkIngredients mi, alcohol a, mixedDrink d WHERE mi.drink = ? AND mi.drink = d.name AND mi.alcoholId = a.alcoholId;";
 		ResultSet results;
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
@@ -344,27 +351,24 @@ public class Connect {
 			try {
 				//creating user table and adding the first user
 				Statement sta = getActiveConnection().createStatement();
-				String statement = "CREATE TABLE user (username VARCHAR(50), password VARCHAR(128), permission VARCHAR(5), PRIMARY KEY(username));";
+				String statement = "CREATE TABLE user (username VARCHAR(40), password VARCHAR(128), permission CHAR(5), PRIMARY KEY(username));";
 				sta.execute(statement);
-				statement = "INSERT INTO user (username, password, permission) VALUES (?, ?, \'Administrator\');";
+				statement = "INSERT INTO user (username, password, permission) VALUES (?, ?, ?);";
 				PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
 				pSta.setString(1, userName);
 				pSta.setString(2, password);
+				pSta.setString(3, PermissionLevel.ADMIN.name());
 				pSta.execute();
 				//creating the type other tables
-				statement = "CREATE TABLE type (typeid INT NOT NULL AUTO_INCREMENT, name VARCHAR(40), kind VARCHAR(10), PRIMARY KEY(typeid));";
+				statement = "CREATE TABLE type (typeId INT NOT NULL AUTO_INCREMENT, name VARCHAR(40) NOT NULL, kind VARCHAR(10) NOT NULL, PRIMARY KEY(typeId));";
 				sta.execute(statement);
-				statement = "CREATE TABLE alcohol (alcoholid INT NOT NULL AUTO_INCREMENT, name VARCHAR(40), typeid INT, creationDate DATE, retireDate DATE, PRIMARY KEY(alcoholid), FOREIGN KEY(typeid) REFERENCES type(typeid));";
+				statement = "CREATE TABLE alcohol (alcoholId INT NOT NULL AUTO_INCREMENT, name VARCHAR(40) NOT NULL, typeId INT, creationDate DATE NOT NULL, retireDate DATE, PRIMARY KEY(alcoholId), FOREIGN KEY(typeId) REFERENCES type(typeId));";
 				sta.execute(statement);
-				statement = "CREATE TABLE inventory (entryid INT NOT NULL AUTO_INCREMENT, alcohol INT, amount DOUBLE, bottles INT, date DATE, PRIMARY KEY(entryid), FOREIGN KEY (alcohol) REFERENCES alcohol(alcoholid));";
+				statement = "CREATE TABLE entry (entryId INT NOT NULL AUTO_INCREMENT, category VARCHAR(9) NOT NULL, alcoholId INT, amount DOUBLE, bottles INT, date DATE NOT NULL, PRIMARY KEY(entryId), FOREIGN KEY (alcoholId) REFERENCES alcohol(alcoholId));";
 				sta.execute(statement);
-				statement = "CREATE TABLE sales (entryid INT NOT NULL AUTO_INCREMENT, alcohol INT, amount DOUBLE, bottles INT, date DATE, PRIMARY KEY(entryid), FOREIGN KEY(alcohol) REFERENCES alcohol(alcoholid));";
+				statement = "CREATE TABLE mixedDrink (name VARCHAR(40) NOT NULL, isRetired BOOLEAN NOT NULL, PRIMARY KEY(name));";
 				sta.execute(statement);
-				statement = "CREATE TABLE delivery (entryid INT NOT NULL AUTO_INCREMENT, alcohol INT, amount DOUBLE, bottles INT, date DATE, PRIMARY KEY(entryid), FOREIGN KEY(alcohol) REFERENCES alcohol(alcoholid));";
-				sta.execute(statement);
-				statement = "CREATE TABLE mixeddrink (name VARCHAR(40), retiredate DATE, PRIMARY KEY(name));";
-				sta.execute(statement);
-				statement = "CREATE TABLE mixeddrinkingredients (drink VARCHAR(40), ingredientid INT, amount DOUBLE, FOREIGN KEY(drink) REFERENCES mixeddrink(name), FOREIGN KEY(ingredientid) REFERENCES alcohol(alcoholid), PRIMARY KEY(drink, ingredientid));";
+				statement = "CREATE TABLE mixedDrinkIngredients (drink VARCHAR(40), alcoholId INT, amount DOUBLE NOT NULL, FOREIGN KEY(drink) REFERENCES mixedDrink(name), FOREIGN KEY(alcoholId) REFERENCES alcohol(alcoholId), PRIMARY KEY(drink, alcoholId));";
 				sta.execute(statement);
 
 			} catch(SQLException e) {
@@ -381,7 +385,7 @@ public class Connect {
 		return activeConnection;
 	}
 
-	private String getDatabaseName() {
+	public String getDatabaseName() {
 		if(null == databaseName) { databaseName = getDatabaseNameFromFile(); }
 
 		return databaseName;
@@ -390,7 +394,7 @@ public class Connect {
 	/** Gets database name from file. */
 	private String getDatabaseNameFromFile() { //TODO: Get database name from file
 //		return null; // For creating new database
-		return "test11"; // For testing current working database
+		return "test15"; // For testing current working database
 	}
 
 	private boolean isConnectionValid() {
@@ -403,10 +407,6 @@ public class Connect {
 
 	/**
 	 * Make a connection to the database.
-	 *
-	 * @param username
-	 * @param password
-	 * @param dataBaseName
 	 * @return Connection to database if successful, otherwise returns <code>null</code>.
 	 * @throws RuntimeException If mysql is not setup properly.
 	 */
@@ -431,9 +431,27 @@ public class Connect {
 		return makeNewConnection("stagbar", "Nkucsc440", database);
 	}
 
+	/** Unrefined method. Currently used for JUnit testing ONLY. */
+	public boolean nukeDatabase(String name) {
+		boolean success = false;
+		try {
+			String statement = "DROP DATABASE " + name + ";";
+			PreparedStatement pSta = makeNewMasterConnection(null).prepareStatement(statement);
+			log.info(pSta.toString());
+			pSta.execute();
+			success = true;
+		} catch(Exception e) {
+			log.log(Level.SEVERE, e.toString(), e);
+		}
+		databaseName = null;
+		activeConnection = null;
+
+		return success;
+	}
+
 	/** Sets retire date for given alcohol. */
 	public boolean retireAlcohol(int alcoholId, LocalDate date) {
-		String statement = "UPDATE alcohol SET retiredate = ? WHERE alcoholId = ?;";
+		String statement = "UPDATE alcohol SET retireDate = ? WHERE alcoholId = ?;";
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
 			pSta.setDate(1, Date.valueOf(date));
@@ -447,12 +465,12 @@ public class Connect {
 	}
 
 	/** Sets retire date for given mixed drink. */
-	public boolean retireMixedDrink(String mixedDrink, LocalDate date) {
-		String sql = "UPDATE mixeddrink SET retireDate = ? WHERE name = ?;";
+	public boolean retireMixedDrink(String mixedDrink, boolean isRetired) {
+		String sql = "UPDATE mixedDrink SET mixedDrink.isRetired = ? WHERE name = ?;";
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
-			pSta.setString(1, mixedDrink);
-			pSta.setDate(2, Date.valueOf(date));
+			pSta.setString(2, mixedDrink);
+			pSta.setBoolean(1, isRetired);
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
@@ -468,7 +486,7 @@ public class Connect {
 	 * @return <code>true</code> if successful, <code>false</code> otherwise.
 	 */
 	public boolean saveAlcohol(Alcohol alcohol) {
-		String statement = "INSERT INTO alcohol(name, typeid, creationDate, retireDate) VALUES (?, ?, ?, ?);";
+		String statement = "INSERT INTO alcohol(name, typeId, creationDate, retireDate) VALUES (?, ?, ?, ?);";
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
 			pSta.setString(1, alcohol.getName());
@@ -477,6 +495,8 @@ public class Connect {
 			if(alcohol.getRetireDate() != null) { pSta.setDate(4, Date.valueOf(alcohol.getRetireDate())); }
 			else { pSta.setDate(4, null); }
 			pSta.execute();
+
+			log.info("Saved " + alcohol.print());
 
 			return true;
 		} catch(SQLException e) {
@@ -493,6 +513,9 @@ public class Connect {
 			pSta.setString(1, type.getName());
 			pSta.setString(2, type.getKind().name());
 			pSta.execute();
+
+			log.info("Saved: " + type.print());
+
 			return true;
 		} catch(SQLException e) {
 			log.log(Level.SEVERE, e.toString(), e);
@@ -502,19 +525,20 @@ public class Connect {
 
 	/** Creates a new row on the Delivery table with the given entry. */
 	public boolean saveDeliveryEntry(Entry entry) {
-		return saveEntry(EntryTable.DELIVERY, entry);
+		return saveEntry(EntryCategory.DELIVERY, entry);
 	}
 
-	private boolean saveEntry(EntryTable table, Entry entry) {
-		log.info("Saving to " + table + ": " + entry);
+	private boolean saveEntry(EntryCategory category, Entry entry) {
+		log.info("Saving to " + category + ": " + entry);
 
-		String sql = String.format("INSERT INTO %s (alcohol, amount, bottles, date) VALUES (?, ?, ?, ?);", table.toString());
+		String sql = "INSERT INTO entry (category, alcoholId, amount, bottles, date) VALUES (?, ?, ?, ?, ?);";
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
-			pSta.setInt(1, entry.getAlcoholId());
-			pSta.setDouble(2, entry.getAmount());
-			pSta.setInt(3, entry.getBottles());
-			pSta.setDate(4, Date.valueOf(entry.getDate()));
+			pSta.setString(1, category.name());
+			pSta.setInt(2, entry.getAlcoholId());
+			pSta.setDouble(3, entry.getAmount());
+			pSta.setInt(4, entry.getBottles());
+			pSta.setDate(5, Date.valueOf(entry.getDate()));
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
@@ -525,16 +549,18 @@ public class Connect {
 
 	/** Creates a new row on the Inventory table with the given entry. */
 	public boolean saveInventoryEntry(Entry entry) {
-		return saveEntry(EntryTable.INVENTORY, entry);
+		return saveEntry(EntryCategory.INVENTORY, entry);
 	}
 
 	/** Creates a new mixed drink with given name and no retire date. */
 	public boolean saveMixedDrink(String name) {
-		String sql = "INSERT INTO mixeddrink (name, retireDate) VALUES (?, NULL)";
+		String sql = "INSERT INTO mixedDrink (name, isRetired) VALUES (?, FALSE)";
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
 			pSta.setString(1, name);
 			pSta.execute();
+
+			log.info("Saved: " + name);
 			return true;
 		} catch(SQLException e) {
 			log.log(Level.SEVERE, e.toString(), e);
@@ -544,7 +570,7 @@ public class Connect {
 
 	/** Creates a new mixed drink ingredient for drink with given name. */
 	public boolean saveMixedDrinkIngredient(String mixedDrinkName, Alcohol alcohol, Double amount) {
-		String sql = "INSERT INTO mixeddrinkingredients (drink, ingredientid, amount) VALUES (?, ?, ?);";
+		String sql = "INSERT INTO mixedDrinkIngredients (drink, alcoholId, amount) VALUES (?, ?, ?);";
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
 			pSta.setString(1, mixedDrinkName);
@@ -560,7 +586,7 @@ public class Connect {
 
 	/** Creates a new row on the Sales table with the given entry. */
 	public boolean saveSalesEntry(Entry entry) {
-		return saveEntry(EntryTable.SALES, entry);
+		return saveEntry(EntryCategory.SALES, entry);
 	}
 
 	public boolean saveUser(String username, String password, PermissionLevel permissionLevel) {
@@ -571,6 +597,8 @@ public class Connect {
 			pSta.setString(2, password);
 			pSta.setString(3, permissionLevel.name());
 			pSta.execute();
+
+			log.info("Saving: " + username + ", " + permissionLevel);
 			return true;
 		} catch(SQLException e) {
 			log.log(Level.SEVERE, e.toString(), e);
@@ -580,7 +608,7 @@ public class Connect {
 
 	/** Updates given ingredient for given drink with given value. */
 	public boolean updateMixedDrinkIngredient(String mixedDrinkName, Alcohol alcohol, Double amount) {
-		String sql = "UPDATE mixeddrinkingredients SET amount = ? WHERE drink = ? AND ingredientid = ?;";
+		String sql = "UPDATE mixedDrinkIngredients SET amount = ? WHERE drink = ? AND alcoholId = ?;";
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
 			pSta.setDouble(1, amount);
@@ -602,6 +630,8 @@ public class Connect {
 			pSta.setString(1, password);
 			pSta.setString(2, username);
 			pSta.execute();
+
+			log.info("Password updated for: " + username);
 			return true;
 		} catch(SQLException e) {
 			log.log(Level.SEVERE, e.toString(), e);
@@ -611,12 +641,14 @@ public class Connect {
 
 	/** Updates permissions for given user to given value. */
 	public boolean updateUserPermissions(String username, PermissionLevel permissionLevel) {
-		String sql = "UPDATE user SET permission = ? WHERE userName = ?;";
+		String sql = "UPDATE user SET permission = ? WHERE username = ?;";
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
 			pSta.setString(1, permissionLevel.name());
 			pSta.setString(2, username);
 			pSta.execute();
+
+			log.info("Permissions updated: " + username + ", " + permissionLevel.name());
 			return true;
 		} catch(SQLException e) {
 			log.log(Level.SEVERE, e.toString(), e);
@@ -624,16 +656,7 @@ public class Connect {
 		return false;
 	}
 
-	private enum EntryTable {
-		INVENTORY("Inventory"), DELIVERY("Delivery"), SALES("Sales");
-		private String tableName;
-
-		EntryTable(String tableName) {
-			this.tableName = tableName;
-		}
-
-		public String toString() {
-			return tableName;
-		}
+	private enum EntryCategory {
+		INVENTORY, DELIVERY, SALES
 	}
 }
