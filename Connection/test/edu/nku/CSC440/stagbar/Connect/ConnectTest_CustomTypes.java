@@ -4,9 +4,9 @@ import edu.nku.CSC440.stagbar.Connect.mock.ConnectMock;
 import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
 import org.junit.Test;
 
-import java.util.Set;
+import java.util.ArrayList;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ConnectTest_CustomTypes extends ConnectTest {
 
@@ -16,9 +16,16 @@ public class ConnectTest_CustomTypes extends ConnectTest {
 			assertTrue("Save of " + type + " failed.", Connect.getInstance().saveCustomAlcoholType(type));
 		}
 
-		Set<CustomAlcoholType> databaseResults = Connect.getInstance().findAllCustomAlcoholTypes();
+		ArrayList<CustomAlcoholType> databaseResults = new ArrayList<>(Connect.getInstance().findAllCustomAlcoholTypes());
 		for(CustomAlcoholType type : ConnectMock.findAllCustomAlcoholTypes()) {
-			assertTrue("Failed to find: " + type.print(), databaseResults.remove(type));
+			int index = databaseResults.indexOf(type);
+			assertNotEquals("Failed to find: " + type.print(), -1, index);
+			assertEquals("Names do not match for " + type.print(), type.getName(), databaseResults.get(index).getName());
+			assertEquals("Kind does not match for " + type.print(), type.getKind(), databaseResults.get(index).getKind());
+			assertNotNull(databaseResults.remove(index));
 		}
+
+		assertEquals("Extra data in database!", 0, databaseResults.size());
+
 	}
 }

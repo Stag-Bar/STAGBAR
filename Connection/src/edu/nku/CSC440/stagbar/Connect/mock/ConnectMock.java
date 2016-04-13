@@ -12,7 +12,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ConnectMock {
+
 	private ConnectMock() {}
+
+	public static Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type) {
+		return findActiveAlcoholByType(type, LocalDate.ofEpochDay(0), LocalDate.now());
+	}
 
 	public static Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type, LocalDate startDate, LocalDate endDate) {
 		Set<Alcohol> results = new HashSet<>();
