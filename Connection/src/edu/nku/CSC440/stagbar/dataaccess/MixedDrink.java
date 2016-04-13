@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class MixedDrink {
-	private Map<MixedDrinkIngredient, MixedDrinkIngredient> ingredients;
-	private String name;
+	private final Map<MixedDrinkIngredient, MixedDrinkIngredient> ingredients;
+	private final String name;
 	private Map<MixedDrinkIngredient, MixedDrinkIngredient> previousIngredients;
 	private LocalDate retireDate;
 

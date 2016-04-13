@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class MixedDrinkCheckBox extends JCheckBox {
 
-	private MixedDrink mixedDrink;
+	private final MixedDrink mixedDrink;
 
 	public MixedDrinkCheckBox(MixedDrink mixedDrink) {
 		super(mixedDrink.getName());

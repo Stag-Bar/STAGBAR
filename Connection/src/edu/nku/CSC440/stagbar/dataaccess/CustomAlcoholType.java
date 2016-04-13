@@ -3,9 +3,9 @@ package edu.nku.CSC440.stagbar.dataaccess;
 /** User created type. */
 public class CustomAlcoholType {
 	public static final int NEW_CUSTOM_TYPE_ID = -1;
-	private AlcoholType kind;
-	private String name;
-	private int typeId;
+	private final AlcoholType kind;
+	private final String name;
+	private final int typeId;
 
 	public CustomAlcoholType(int typeId, String name, AlcoholType kind) {
 		this.typeId = typeId;
@@ -33,10 +33,6 @@ public class CustomAlcoholType {
 
 	public int getTypeId() {
 		return typeId;
-	}
-
-	public void setTypeId(int typeId) {
-		this.typeId = typeId;
 	}
 
 	@Override
