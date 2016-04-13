@@ -19,6 +19,7 @@ public class Application {
 		return application;
 	}
 
+	@SuppressWarnings("UnusedReturnValue")
 	public ApplicationUI getApplicationUI() {
 		if(null == applicationUI)
 			applicationUI = new ApplicationUI();

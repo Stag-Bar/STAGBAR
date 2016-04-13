@@ -25,7 +25,7 @@ public class ApplicationUI {
 
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
 
 	public JFrame getFrame() {

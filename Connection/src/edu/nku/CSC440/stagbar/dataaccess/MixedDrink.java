@@ -35,11 +35,7 @@ public class MixedDrink {
 		return map;
 	}
 
-	/**
-	 * Populates ingredient collection with ingredients stored in database. FOR USE IN Connect.java ONLY!
-	 *
-	 * @param ingredient
-	 */
+	/** Populates ingredient collection with ingredients stored in database. FOR USE IN Connect.java ONLY! */
 	public void addIngredientFromDatabase(MixedDrinkIngredient ingredient) {
 		ingredients.put(ingredient, ingredient);
 		previousIngredients.put(ingredient, ingredient);

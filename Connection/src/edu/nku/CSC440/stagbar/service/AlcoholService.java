@@ -18,7 +18,7 @@ public class AlcoholService {
 		return ALCOHOL_SERVICE;
 	}
 
-	public Set<Alcohol> getAlcoholByType(CustomAlcoholType type, LocalDate startDate, LocalDate endDate) {
+	public Set<Alcohol> getAlcoholByType(CustomAlcoholType type, LocalDate endDate) {
 		return Connect.getInstance().findActiveAlcoholByType(type, LocalDate.ofYearDay(1970, 1), endDate);
 	}
 
@@ -32,27 +32,35 @@ public class AlcoholService {
 	}
 
 	public boolean saveDeliveries(Set<Entry> deliveryEntries) {
+		boolean entryFailed = false;
+
 		for(Entry entry : deliveryEntries)
-			Connect.getInstance().saveDeliveryEntry(entry);
-		return true;
+			entryFailed |= !Connect.getInstance().saveDeliveryEntry(entry);
+
+		return entryFailed;
 	}
 
 	public boolean saveInventory(Set<Entry> inventoryEntries) {
+		boolean entryFailed = false;
+
 		for(Entry entry : inventoryEntries)
-			Connect.getInstance().saveInventoryEntry(entry);
-		return true;
+			entryFailed |= !Connect.getInstance().saveInventoryEntry(entry);
+
+		return entryFailed;
 	}
 
-	//TODO: Should we allow initial amounts to be set for alcohol or wait until inventory is done???
-	public boolean saveNewAlcohol(String name, CustomAlcoholType type, int bottles, double amount) {
+	public boolean saveNewAlcohol(String name, CustomAlcoholType type) {
 		Alcohol newAlcohol = new Alcohol(Alcohol.NEW_ALCOHOL_ID, name, type, LocalDate.now(), null);
 
 		return Connect.getInstance().saveAlcohol(newAlcohol);
 	}
 
 	public boolean saveSales(Set<Entry> salesEntries) {
+		boolean entryFailed = false;
+
 		for(Entry entry : salesEntries)
-			Connect.getInstance().saveSalesEntry(entry);
-		return true;
+			entryFailed |= !Connect.getInstance().saveSalesEntry(entry);
+
+		return entryFailed;
 	}
 }

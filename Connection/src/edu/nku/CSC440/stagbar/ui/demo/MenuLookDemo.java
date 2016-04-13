@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-@SuppressWarnings("SameParameterValue")
+@SuppressWarnings("ALL")
 @Deprecated
 public class MenuLookDemo {
 	JTextArea output;

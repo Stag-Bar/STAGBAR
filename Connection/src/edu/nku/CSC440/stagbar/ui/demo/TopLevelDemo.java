@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /* TopLevelDemo.java requires no other files. */
+@SuppressWarnings("ALL")
 @Deprecated
 public class TopLevelDemo {
 	/**

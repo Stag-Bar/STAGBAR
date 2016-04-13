@@ -7,6 +7,7 @@ import java.text.*;
  * by the delegate format. If the value can only be partially parsed, the decorator will refuse to
  * parse the value.</p>
  */
+@SuppressWarnings("ALL")
 public class ParseAllFormat extends Format {
 	private final Format fDelegate;
 
