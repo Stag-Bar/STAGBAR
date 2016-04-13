@@ -633,7 +633,21 @@ public class Connect {
 
 	/** Creates a new row on the Sales table with the given entry. */
 	public boolean saveSalesEntry(Entry entry) {
-		return saveEntry(EntryTable.SALES, entry);
+		String sql = "INSERT INTO sales (alcohol, amount, bottles, date) VALUES (?, ?, ?, ?)";
+		try {
+			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			pSta.setInt(1, entry.getAlcoholId());
+			pSta.setDouble(2, entry.getAmount());
+			pSta.setInt(3, entry.getBottles());
+			pSta.setDate(4, Date.valueOf(entry.getDate()));
+			pSta.execute();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 
 	public boolean saveUser(String username, String password, PermissionLevel permissionLevel) {
