@@ -265,12 +265,13 @@ public class Connect {
 		
 		String sql = "SELECT mi.*, a.*, d.*, t.* FROM mixeddrinkingredients mi, alcohol a, mixeddrink d, type t WHERE mi.drink = d.name AND ingredientid = alcoholid AND a.typeid = t.typeid ORDER BY d.name;";
 		ResultSet results;
-		Set<MixedDrink> set = new HashSet<>();
+		
+		Map<String, MixedDrink> mdMap = new HashMap<>(); 
 		try {
 			Statement s = getActiveConnection().createStatement();
 			results = s.executeQuery(sql);
 			MixedDrink md = null;
-			Map<String, MixedDrink> mdMap = new HashMap<>(); 
+			
 			while(results.next()){
 				md = mdMap.get(results.getString(1));
 				if(md == null){
@@ -280,14 +281,14 @@ public class Connect {
 				Alcohol a = new Alcohol(results.getInt(4), results.getString(5), new CustomAlcoholType(results.getInt(11), results.getString(12), AlcoholType.valueOf(results.getString(13))), results.getDate(7).toLocalDate(), results.getDate(8) == null? null:results.getDate(8).toLocalDate());
 				MixedDrinkIngredient i = new MixedDrinkIngredient(a, results.getDouble(3));
 				md.addIngredientFromDatabase(i);
-				if(!set.contains(md))
-					set.add(md);
+				
 			}
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
 		}
-		return set;
+		return new HashSet<MixedDrink>(mdMap.values());
+		//return set;
 	}
 	public Set<String> findAllMixedDrinkNames(){
 		String sql = "SELECT name FROM mixeddrink;";
@@ -561,13 +562,22 @@ public class Connect {
 	}
 
 	private boolean saveEntry(EntryTable table, Entry entry) {
-		//TODO: Save to database. We should be able to use a single query to update all 3 tables.
-		// Use the toString method on 'table' to get the table name
-		// then add each of the values from 'entry' to the appropriate column.
+		//TODO: Check to make sure this is the proper entry.
+		String sql =  "UPDATE ? SET amount TO ? WHERE alcoholid = ?;";
+		try {
+			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			pSta.setString(1, table.toString());
+			pSta.setDouble(2, entry.getAmount());
+			pSta.setInt(3, entry.getAlcoholId());
+			pSta.execute();
+			return true;
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
 
-		System.out.println("Saving to " + table + ": " + entry);
-
-		return true;
+		return false;
 	}
 
 	/** Creates a new row on the Inventory table with the given entry. */
