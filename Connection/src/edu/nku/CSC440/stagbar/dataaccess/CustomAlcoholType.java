@@ -40,6 +40,14 @@ public class CustomAlcoholType {
 		return getTypeId();
 	}
 
+	public String print() {
+		return "CustomAlcoholType{" +
+				"kind=" + kind +
+				", name='" + name + '\'' +
+				", typeId=" + typeId +
+				'}';
+	}
+
 	@Override
 	public String toString() {
 		return getName();
