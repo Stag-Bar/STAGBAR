@@ -9,7 +9,7 @@ import edu.nku.CSC440.stagbar.ui.ApplicationUI;
  */
 public class Application {
 
-	private static Application application = new Application();
+	private static final Application application = new Application();
 	private ApplicationUI applicationUI;
 	private User user;
 

@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+@SuppressWarnings("ALL")
 @Deprecated
 public class GridLayoutDemo extends JFrame {
 	static final String gapList[] = {"0", "10", "15", "20"};
