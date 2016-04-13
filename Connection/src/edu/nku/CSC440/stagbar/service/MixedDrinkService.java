@@ -65,22 +65,24 @@ public class MixedDrinkService {
 	}
 
 	public boolean updateMixedDrink(MixedDrink mixedDrink) {
+		boolean updateFailed = false;
+
 		// Save all NEW ingredients.
 		for(MixedDrinkIngredient ingredient : mixedDrink.getIngredients()) {
-			Connect.getInstance().saveMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol(), ingredient.getAmount());
+			updateFailed |= Connect.getInstance().saveMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol(), ingredient.getAmount());
 		}
 
 		// Update ingredients whose amount has been changed.
 		for(MixedDrinkIngredient ingredient : mixedDrink.getUpdatedIngredients()) {
-			Connect.getInstance().updateMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol(), ingredient.getAmount());
+			updateFailed |= Connect.getInstance().updateMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol(), ingredient.getAmount());
 		}
 
 		// Delete removed ingredients.
 		for(MixedDrinkIngredient ingredient : mixedDrink.getUpdatedIngredients()) {
-			Connect.getInstance().deleteMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol());
+			updateFailed |= Connect.getInstance().deleteMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol());
 		}
 
-		return true;
+		return updateFailed;
 	}
 
 }
