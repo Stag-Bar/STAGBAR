@@ -8,13 +8,17 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Connect {
 
 	private static final String DATABASE_URL = "jdbc:mysql://stagbar2.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306";
+	private static final Logger log = Logger.getLogger(Connect.class.getName());
 	private static Connect connect = new Connect();
 	private Connection activeConnection;
 	private String databaseName;
+
 
 	private Connect() {}
 
@@ -34,7 +38,7 @@ public class Connect {
 				return true;
 			}
 		} catch(SQLException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return false;
 	}
@@ -45,11 +49,11 @@ public class Connect {
 		try {
 			String statement = "CREATE DATABASE " + name + ";";
 			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
-			System.out.println(pSta.toString());
+			log.info(pSta.toString());
 			pSta.execute();
 			success = true;
 		} catch(Exception e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		databaseName = name;
 		activeConnection = null;
@@ -67,7 +71,7 @@ public class Connect {
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return false;
 	}
@@ -105,7 +109,7 @@ public class Connect {
 				return true;
 			}
 		} catch(SQLException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return false;
 	}
@@ -146,7 +150,7 @@ public class Connect {
 				set.add(new Alcohol(results.getInt(1), results.getString(2), new CustomAlcoholType(results.getInt(3), results.getString(7), AlcoholType.valueOf(results.getString(8))), results.getDate(4).toLocalDate(), results.getDate(5) == null ? null : results.getDate(5).toLocalDate()));
 			}
 		} catch(SQLException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return set;
 	}
@@ -166,7 +170,7 @@ public class Connect {
 				set.add(new Alcohol(results.getInt(1), results.getString(2), new CustomAlcoholType(results.getInt(3), results.getString(7), AlcoholType.valueOf(results.getString(8))), results.getDate(4).toLocalDate(), results.getDate(5) == null ? null : results.getDate(5).toLocalDate()));
 			}
 		} catch(SQLException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return set;
 	}
@@ -190,7 +194,7 @@ public class Connect {
 				return new Alcohol(result.getInt(1), result.getString(2), new CustomAlcoholType(result.getInt(3), result.getString(7), AlcoholType.valueOf(result.getString(8))), result.getDate(4).toLocalDate(), result.getDate(5) == null ? null : result.getDate(5).toLocalDate());
 			}
 		} catch(SQLException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return null;
 	}
@@ -208,7 +212,7 @@ public class Connect {
 				set.add(new Alcohol(result.getInt(1), result.getString(2), new CustomAlcoholType(result.getInt(6), result.getString(7), AlcoholType.valueOf(result.getString(8))), result.getDate(4).toLocalDate(), result.getDate(5) == null ? null : result.getDate(5).toLocalDate()));
 			}
 		} catch(SQLException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return set;
 	}
@@ -225,8 +229,7 @@ public class Connect {
 				set.add(new CustomAlcoholType(result.getInt(1), result.getString(2), AlcoholType.valueOf(result.getString(3))));
 			}
 		} catch(SQLException e) {
-
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return set;
 	}
@@ -243,8 +246,7 @@ public class Connect {
 				set.add(results.getString(1));
 			}
 		} catch(SQLException e) {
-
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return set;
 	}
@@ -272,8 +274,7 @@ public class Connect {
 
 			}
 		} catch(SQLException e) {
-
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return new HashSet<MixedDrink>(mdMap.values());
 	}
@@ -290,8 +291,7 @@ public class Connect {
 				set.add(new User(results.getString(1), PermissionLevel.valueOf(results.getString(2))));
 			}
 		} catch(SQLException e) {
-
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return set;
 	}
@@ -317,8 +317,7 @@ public class Connect {
 			}
 			return md;
 		} catch(SQLException e) {
-
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return null;
 	}
@@ -334,7 +333,7 @@ public class Connect {
 				return PermissionLevel.valueOf(results.getString(2));
 			}
 		} catch(SQLException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return null;
 	}
@@ -369,8 +368,7 @@ public class Connect {
 				sta.execute(statement);
 
 			} catch(SQLException e) {
-
-				e.printStackTrace();
+				log.log(Level.SEVERE, e.toString(), e);
 			}
 
 		}
@@ -417,7 +415,6 @@ public class Connect {
 		try {
 			Class.forName("com.mysql.jdbc.Driver"); // Register MySQL Driver. Needed?
 			String url = DATABASE_URL + (null == dataBaseName ? "" : "/" + dataBaseName);
-			System.out.println(url);
 			conn = DriverManager.getConnection(url, username, password);
 		} catch(SQLException e) {
 			conn = null;
@@ -444,8 +441,7 @@ public class Connect {
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
-
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return false;
 	}
@@ -460,8 +456,7 @@ public class Connect {
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
-
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return false;
 	}
@@ -485,8 +480,8 @@ public class Connect {
 
 			return true;
 		} catch(SQLException e) {
-			System.out.println("Erroneous alcohol: " + alcohol.print());
-			e.printStackTrace();
+			log.severe("Erroneous alcohol: " + alcohol.print());
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return false;
 	}
@@ -500,8 +495,7 @@ public class Connect {
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
-
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return false;
 	}
@@ -512,7 +506,7 @@ public class Connect {
 	}
 
 	private boolean saveEntry(EntryTable table, Entry entry) {
-		System.out.println("Saving to " + table + ": " + entry);
+		log.info("Saving to " + table + ": " + entry);
 
 		String sql = String.format("INSERT INTO %s (alcohol, amount, bottles, date) VALUES (?, ?, ?, ?);", table.toString());
 		try {
@@ -524,7 +518,7 @@ public class Connect {
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return false;
 	}
@@ -543,7 +537,7 @@ public class Connect {
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return false;
 	}
@@ -559,7 +553,7 @@ public class Connect {
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return false;
 	}
@@ -576,11 +570,10 @@ public class Connect {
 			pSta.setString(1, username);
 			pSta.setString(2, password);
 			pSta.setString(3, permissionLevel.name());
-			System.out.println(pSta);
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return false;
 	}
@@ -596,7 +589,7 @@ public class Connect {
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return false;
 	}
@@ -611,7 +604,7 @@ public class Connect {
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return false;
 	}
@@ -626,7 +619,7 @@ public class Connect {
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return false;
 	}
