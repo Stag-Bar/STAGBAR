@@ -7,7 +7,7 @@ import edu.nku.CSC440.stagbar.Application;
 import javax.swing.*;
 import java.awt.*;
 
-public class UserAccountManagementUI {
+public class UserManagementMenuUI {
 	private JButton changePasswordButton;
 	private JPanel contentPane;
 	private JButton createUserButton;
@@ -15,7 +15,7 @@ public class UserAccountManagementUI {
 	private JButton editUserPermissionsButton;
 	private JButton goBackButton;
 
-	public UserAccountManagementUI() {
+	public UserManagementMenuUI() {
 		contentPane.setName("Manage Users");
 
 		changePasswordButton.addActionListener(e -> onChangePassword());

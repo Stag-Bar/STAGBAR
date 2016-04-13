@@ -15,7 +15,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Set;
 
-public class NewAlcoholUI {
+public class CreateAlcoholUI {
 	private static final String ERROR_CANNOT_SAVE = "Unable to save new alcohol. Try again later.";
 	private static final String ERROR_INVALID_QUANTITIES = "Invalid entry in Bottles/Amount fields.";
 	private static final String ERROR_NAME_NOT_UNIQUE = "An alcohol with that name already exists.";
@@ -34,7 +34,7 @@ public class NewAlcoholUI {
 	private JComboBox<CustomAlcoholType> typeComboBox;
 	private JLabel typeLabel;
 
-	public NewAlcoholUI() {
+	public CreateAlcoholUI() {
 		$$$setupUI$$$();
 		contentPane.setName("New Alcohol");
 
