@@ -95,7 +95,7 @@ public class Connect {
 	 *
 	 * @return <code>true</code> if specified alcohol is defined in database and is active, <code>false</code> otherwise.
 	 */
-	public boolean doesActiveAlcoholExist(String name, CustomAlcoholType type, LocalDate today) {
+	public boolean doesActiveAlcoholExist(String name, CustomAlcoholType type, LocalDate date) {
 		//TODO: implement method
 		return false;
 	}
