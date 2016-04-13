@@ -21,7 +21,7 @@ import java.util.Set;
 
 public class DeliveryUI {
 
-	Map<CustomAlcoholType, TypePaneUI> typePaneUIMap;
+	final Map<CustomAlcoholType, TypePaneUI> typePaneUIMap;
 	private final ItemListener checkboxListener = e -> onCheck(e);
 	private JButton cancelButton;
 	private JPanel contentPane;

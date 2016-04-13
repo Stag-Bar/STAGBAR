@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class InventoryUI {
-	Map<CustomAlcoholType, TypePaneUI> typePaneUIMap;
+	final Map<CustomAlcoholType, TypePaneUI> typePaneUIMap;
 	private JButton cancelButton;
 	private JPanel contentPane;
 	private JLabel errorMessage;

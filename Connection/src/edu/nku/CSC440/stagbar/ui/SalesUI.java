@@ -22,14 +22,14 @@ import java.util.Map;
 import java.util.Set;
 
 public class SalesUI {
+	private final Map<CustomAlcoholType, TypePaneUI> typePaneUIMap;
+	private final ItemListener checkboxListener = e -> onCheck(e);
 	private JButton cancelButton;
 	private JPanel contentPane;
 	private JLabel errorMessage;
 	private JButton okButton;
 	private JPanel scrollPane;
 	private JTabbedPane tabbedPane;
-	private Map<CustomAlcoholType, TypePaneUI> typePaneUIMap;
-	private final ItemListener checkboxListener = e -> onCheck(e);
 
 	public SalesUI() {
 		$$$setupUI$$$();

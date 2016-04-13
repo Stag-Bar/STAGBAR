@@ -15,10 +15,10 @@ import java.util.Map;
 import java.util.Set;
 
 public class TypePaneUI {
+	private final Map<Integer, EntryRowUI> rowUIMap;
+	private final CustomAlcoholType type;
 	private JPanel contentPane;
 	private JPanel rowPane;
-	private Map<Integer, EntryRowUI> rowUIMap;
-	private CustomAlcoholType type;
 	private JLabel typeLabel;
 
 	public TypePaneUI(CustomAlcoholType type) {

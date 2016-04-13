@@ -11,12 +11,12 @@ import java.awt.event.*;
 public class LoginUI extends JDialog {
 	public static final String TITLE = "Login";
 	private static final String INVALID_LOGIN = "Invalid Username/Password.";
+	private final UserService userService;
 	private JButton buttonCancel;
 	private JButton buttonOK;
 	private JPanel contentPane;
 	private JLabel errorMessage;
 	private JPasswordField password;
-	private UserService userService;
 	private JTextField username;
 
 	public LoginUI(JFrame owner) {
