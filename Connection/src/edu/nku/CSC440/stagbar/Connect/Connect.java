@@ -20,7 +20,10 @@ public class Connect {
 	private String databaseName;
 
 	private Connect() {}
-
+	public static void main(String args[]){
+		
+		getInstance().retireAlcohol(12, LocalDate.now());
+	}
 	public static Connect getInstance() {
 		return connect;
 	}
@@ -386,7 +389,7 @@ public class Connect {
 	/** Gets database name from file. */
 	private String getDatabaseNameFromFile() { //TODO: Get database name from file
 //		return null; // For creating new database
-		return "test15"; // For testing current working database
+		return "test11"; // For testing current working database
 	}
 
 	private boolean isConnectionValid() {
@@ -427,7 +430,7 @@ public class Connect {
 	public boolean nukeDatabase(String name) {
 		boolean success = false;
 		try {
-			String statement = "DROP DATABASE " + name + ";";
+			String statement = "DROP DATABASE IF EXISTS" + name + ";";
 			PreparedStatement pSta = makeNewMasterConnection(null).prepareStatement(statement);
 			log.info(pSta.toString());
 			pSta.execute();
@@ -458,7 +461,7 @@ public class Connect {
 
 	/** Sets retire date for given mixed drink. */
 	public boolean retireMixedDrink(String mixedDrink, boolean isRetired) {
-		String sql = "UPDATE mixedDrink SET mixedDrink.isRetired = ? WHERE name = ?;";
+		String sql = "UPDATE mixedDrink SET isRetired = ? WHERE name = ?;";
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
 			pSta.setBoolean(1, isRetired);
