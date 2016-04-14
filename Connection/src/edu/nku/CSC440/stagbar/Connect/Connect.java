@@ -461,8 +461,8 @@ public class Connect {
 		String sql = "UPDATE mixedDrink SET mixedDrink.isRetired = ? WHERE name = ?;";
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
-			pSta.setString(2, mixedDrink);
 			pSta.setBoolean(1, isRetired);
+			pSta.setString(2, mixedDrink);
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
