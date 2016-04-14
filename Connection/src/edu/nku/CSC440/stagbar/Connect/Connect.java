@@ -96,7 +96,22 @@ public class Connect {
 	 * @return <code>true</code> if specified alcohol is defined in database and is active, <code>false</code> otherwise.
 	 */
 	public boolean doesActiveAlcoholExist(String name, CustomAlcoholType type, LocalDate date) {
-		//TODO: implement method
+		String statement = "SELECT * FROM alcohol WHERE name = ? AND typeId = ? AND (retireDate IS NULL OR retireDate <= ?);";
+		ResultSet result;
+
+		try {
+			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
+			pSta.setString(1, name);
+			pSta.setInt(2, type.getTypeId());
+			pSta.setDate(3, Date.valueOf(date));
+			result = pSta.executeQuery();
+
+			if(result.next()) {
+				return true;
+			}
+		} catch(SQLException e) {
+			log.log(Level.SEVERE, e.toString(), e);
+		}
 		return false;
 	}
 
@@ -182,29 +197,6 @@ public class Connect {
 			log.log(Level.SEVERE, e.toString(), e);
 		}
 		return set;
-	}
-
-	/**
-	 * Searches database for an Alcohol with given name.
-	 * @return Alcohol with given name if found, otherwise returns <code>null</code>.
-	 * @deprecated replaced by doesActiveAlcoholExist
-	 */
-	public Alcohol findAlcoholByName(String name) {    //FIXME: Delete this method. Replace with doesActiveAlcoholExist()
-		String statement = "SELECT a.alcoholId, a.name, a.typeId, a.creationDate, a.retireDate, t.typeId, t.name, t.kind FROM alcohol a, type t WHERE a.alcoholId = t.typeId AND a.name = ?;";
-		ResultSet result;
-
-		try {
-			PreparedStatement pSta = getActiveConnection().prepareStatement(statement);
-			pSta.setString(1, name);
-			result = pSta.executeQuery();
-
-			if(result != null) {
-				return new Alcohol(result.getInt(1), result.getString(2), new CustomAlcoholType(result.getInt(3), result.getString(7), AlcoholType.valueOf(result.getString(8))), result.getDate(4).toLocalDate(), result.getDate(5) == null ? null : result.getDate(5).toLocalDate());
-			}
-		} catch(SQLException e) {
-			log.log(Level.SEVERE, e.toString(), e);
-		}
-		return null;
 	}
 
 	public Set<Alcohol> findAllAlcohol() {
