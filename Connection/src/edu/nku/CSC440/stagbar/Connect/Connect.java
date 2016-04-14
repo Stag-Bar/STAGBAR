@@ -578,7 +578,9 @@ public class Connect {
 
 	/** Creates a new row on the Sales table with the given entry. */
 	public boolean saveSalesEntry(Entry entry) {
-		String sql = "INSERT INTO sales (alcohol, amount, bottles, date) VALUES (?, ?, ?, ?)";
+		return saveEntry(EntryCategory.SALES, entry);
+		//DO WE NO LONG NEED THIS BELOW?
+		/*String sql = "INSERT INTO sales (alcohol, amount, bottles, date) VALUES (?, ?, ?, ?)";
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
 			pSta.setInt(1, entry.getAlcoholId());
@@ -592,7 +594,7 @@ public class Connect {
 			e.printStackTrace();
 		}
 		
-		return false;
+		return false;*/
 	}
 
 	public boolean saveUser(String username, String password, PermissionLevel permissionLevel) {
