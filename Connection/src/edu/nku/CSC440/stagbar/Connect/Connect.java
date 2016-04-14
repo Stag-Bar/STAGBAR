@@ -643,7 +643,7 @@ public class Connect {
 			pSta.execute();
 			return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		
