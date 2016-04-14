@@ -21,8 +21,8 @@ public class DeleteUserUI {
 	private static final String PLEASE_CHECK_BOX = "Please delete at least one user, or hit Cancel button.";
 	private static final String TITLE_DELETE_SUCCESS = "The deletion of user(s) is successful.";
 	private static final String TITLE_PLEASE_CHECK = "Deletion failed";
+	private final Map<User, JCheckBox> checkBoxMap;
 	private JButton cancelButton;
-	private Map<User, JCheckBox> checkBoxMap;
 	private JPanel contentPane;
 	private JButton okButton;
 	private JPanel scrollPanel;

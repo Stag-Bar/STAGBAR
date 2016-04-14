@@ -67,7 +67,7 @@ public class UserService {
 	 */
 	public boolean authenticateUser(String username, char[] password) {
 		//FIXME: hash password
-		return Connect.getInstance().authenticateUser(username, new String(password));
+		return Connect.getInstance().authenticateUser(username.toLowerCase(), new String(password));
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class UserService {
 	 */
 	public boolean changePassword(String username, char[] password) {
 //		Connect.getInstance().updateUserPassword(username, toHash(password));
-		boolean result = Connect.getInstance().updateUserPassword(username, new String(password)); //FIXME: Hash password before storage.
+		boolean result = Connect.getInstance().updateUserPassword(username.toLowerCase(), new String(password)); //FIXME: Hash password before storage.
 
 		//Zero out the possible password, for security.
 		Arrays.fill(password, '0');
@@ -95,7 +95,7 @@ public class UserService {
 	 * @return <code>true</code> if update is successful, <code>false</code> otherwise.
 	 */
 	public boolean changePermissions(String username, PermissionLevel permissionLevel) {
-		return Connect.getInstance().updateUserPermissions(username, permissionLevel);
+		return Connect.getInstance().updateUserPermissions(username.toLowerCase(), permissionLevel);
 	}
 
 	/**
@@ -110,8 +110,8 @@ public class UserService {
 //		byte[] passwordHash = toHash(password); // FIXME: Disable until we do security.
 
 		//This method below will create a new user (with all permissions) in the database
-		boolean successful = Connect.getInstance().saveUser(username, new String(password), permissionLevel);
-		if(successful) System.out.format("New user %s has been created\n", username);
+		boolean successful = Connect.getInstance().saveUser(username.toLowerCase(), new String(password), permissionLevel);
+		if(successful) System.out.format("New user %s has been created\n", username.toLowerCase());
 
 		//Zero out the possible password, for security.
 		Arrays.fill(password, '0');
@@ -140,7 +140,7 @@ public class UserService {
 	 * <code>false</code> otherwise.
 	 */
 	public boolean doesUserExist(String username) {
-		return Connect.getInstance().doesUserExist(username);
+		return Connect.getInstance().doesUserExist(username.toLowerCase());
 	}
 
 	public Set<User> getAllUsers() {
@@ -148,14 +148,14 @@ public class UserService {
 	}
 
 	private PermissionLevel getPermissionsForUser(String username) {
-		return Connect.getInstance().findPermissionsForUser(username);
+		return Connect.getInstance().findPermissionsForUser(username.toLowerCase());
 	}
 
 	public boolean login(String username, char[] password) {
 		if(null == username) return false;
 
 		if(authenticateUser(username, password)) {
-			User currentUser = new User(username, getPermissionsForUser(username));
+			User currentUser = new User(username.toLowerCase(), getPermissionsForUser(username.toLowerCase()));
 			Application.getInstance().setUser(currentUser);
 			System.out.format("Login as %s Successful\n", username);
 			return true;

@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class MixedDrink {
-	private Map<MixedDrinkIngredient, MixedDrinkIngredient> ingredients;
-	private String name;
+	private final Map<MixedDrinkIngredient, MixedDrinkIngredient> ingredients;
+	private final String name;
 	private Map<MixedDrinkIngredient, MixedDrinkIngredient> previousIngredients;
 	private LocalDate retireDate;
 
@@ -35,11 +35,7 @@ public class MixedDrink {
 		return map;
 	}
 
-	/**
-	 * Populates ingredient collection with ingredients stored in database. FOR USE IN Connect.java ONLY!
-	 *
-	 * @param ingredient
-	 */
+	/** Populates ingredient collection with ingredients stored in database. FOR USE IN Connect.java ONLY! */
 	public void addIngredientFromDatabase(MixedDrinkIngredient ingredient) {
 		ingredients.put(ingredient, ingredient);
 		previousIngredients.put(ingredient, ingredient);

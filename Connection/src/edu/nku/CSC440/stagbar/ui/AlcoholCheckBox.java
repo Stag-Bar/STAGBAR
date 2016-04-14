@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class AlcoholCheckBox extends JCheckBox {
 
-	private Alcohol alcohol;
+	private final Alcohol alcohol;
 
 	public AlcoholCheckBox(Alcohol alcohol) {
 		super(alcohol.getName());

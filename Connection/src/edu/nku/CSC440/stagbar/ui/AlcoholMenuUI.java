@@ -55,8 +55,8 @@ public class AlcoholMenuUI {
 	}
 
 	private void onCreateAlcohol() {
-		NewAlcoholUI newAlcoholUI = new NewAlcoholUI();
-		uiHacks.goToPanel(contentPane, newAlcoholUI.getContentPane());
+		CreateAlcoholUI createAlcoholUI = new CreateAlcoholUI();
+		uiHacks.goToPanel(contentPane, createAlcoholUI.getContentPane());
 	}
 
 	private void onCreateCustomType() {

@@ -12,11 +12,11 @@ public class Alcohol {
 	 * There may be multiple entries with the same name or name/type combination.
 	 * Ex. Bud Light on tap & in bottle or a liquor whose bottle size changes.
 	 */
-	private int alcoholId;
-	private LocalDate creationDate;
-	private String name;
+	private final int alcoholId;
+	private final LocalDate creationDate;
+	private final String name;
+	private final CustomAlcoholType type;
 	private LocalDate retireDate;
-	private CustomAlcoholType type;
 
 
 	public Alcohol(int alcoholId, String name, CustomAlcoholType type, LocalDate creationDate, LocalDate retireDate) {
@@ -39,10 +39,6 @@ public class Alcohol {
 
 	public int getAlcoholId() {
 		return alcoholId;
-	}
-
-	public void setAlcoholId(int alcoholId) {
-		this.alcoholId = alcoholId;
 	}
 
 	public LocalDate getCreationDate() {

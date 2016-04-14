@@ -20,6 +20,7 @@ public class ChangePasswordUI {
 	private static final String MESSAGE_NEW_USER = "Password for %s has been changed.";
 	private static final String TITLE_CANNOT_SAVE = "Change of password failed.";
 	private static final String TITLE_NEW_USER = "Congratulations! Your password is changed.";
+	private final UserService userService;
 	private JButton cancelButton;
 	private JPasswordField confirmPasswordField;
 	private JLabel confirmPasswordLabel;
@@ -30,7 +31,6 @@ public class ChangePasswordUI {
 	private JButton okButton;
 	private JPasswordField oldPasswordField;
 	private JLabel oldPasswordLabel;
-	private UserService userService;
 	private JLabel usernameLabel;
 	private JTextField usernameTextField;
 

@@ -21,7 +21,7 @@ import java.util.Set;
 
 public class DeliveryUI {
 
-	Map<CustomAlcoholType, TypePaneUI> typePaneUIMap;
+	final Map<CustomAlcoholType, TypePaneUI> typePaneUIMap;
 	private final ItemListener checkboxListener = e -> onCheck(e);
 	private JButton cancelButton;
 	private JPanel contentPane;
@@ -171,7 +171,7 @@ public class DeliveryUI {
 		for(CustomAlcoholType type : TypeService.getInstance().getAllCustomAlcoholTypes()) {
 			TabUI tabUI = new TabUI(checkboxListener);
 
-			for(Alcohol alcohol : AlcoholService.getInstance().getAlcoholByType(type, LocalDate.now(), LocalDate.now())) {
+			for(Alcohol alcohol : AlcoholService.getInstance().getAlcoholByType(type, LocalDate.now())) {
 				tabUI.addCheckbox(alcohol);
 			}
 

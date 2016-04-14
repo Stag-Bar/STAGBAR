@@ -4,7 +4,6 @@ import edu.nku.CSC440.stagbar.Connect.Connect;
 import edu.nku.CSC440.stagbar.dataaccess.MixedDrink;
 import edu.nku.CSC440.stagbar.dataaccess.MixedDrinkIngredient;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,7 +46,7 @@ public class MixedDrinkService {
 	}
 
 	public boolean retireMixedDrink(MixedDrink mixedDrink, boolean isRetired) {
-		return Connect.getInstance().retireMixedDrink(mixedDrink.getName(), isRetired ? LocalDate.now() : null);
+		return Connect.getInstance().retireMixedDrink(mixedDrink.getName(), isRetired);
 	}
 
 	/** Saves a new Mixed Drink to the database. */
@@ -65,22 +64,24 @@ public class MixedDrinkService {
 	}
 
 	public boolean updateMixedDrink(MixedDrink mixedDrink) {
+		boolean updateFailed = false;
+
 		// Save all NEW ingredients.
 		for(MixedDrinkIngredient ingredient : mixedDrink.getIngredients()) {
-			Connect.getInstance().saveMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol(), ingredient.getAmount());
+			updateFailed |= Connect.getInstance().saveMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol(), ingredient.getAmount());
 		}
 
 		// Update ingredients whose amount has been changed.
 		for(MixedDrinkIngredient ingredient : mixedDrink.getUpdatedIngredients()) {
-			Connect.getInstance().updateMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol(), ingredient.getAmount());
+			updateFailed |= Connect.getInstance().updateMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol(), ingredient.getAmount());
 		}
 
 		// Delete removed ingredients.
 		for(MixedDrinkIngredient ingredient : mixedDrink.getUpdatedIngredients()) {
-			Connect.getInstance().deleteMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol());
+			updateFailed |= Connect.getInstance().deleteMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol());
 		}
 
-		return true;
+		return updateFailed;
 	}
 
 }

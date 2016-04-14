@@ -29,8 +29,7 @@ public class Entry {
 
 		Entry entry = (Entry)o;
 
-		if(alcoholId != entry.alcoholId) return false;
-		return date.equals(entry.date);
+		return alcoholId == entry.alcoholId && date.equals(entry.date);
 	}
 
 	public int getAlcoholId() {

@@ -7,7 +7,6 @@ public class ApplicationUI {
 
 	public static final String APPLICATION_TITLE = "STAGBAR";
 	private JFrame frame;
-	private JPanel masterPanel;
 
 	public ApplicationUI(){
 		LoginUI loginUI = new LoginUI(frame);
@@ -15,7 +14,7 @@ public class ApplicationUI {
 
 		frame = new JFrame(APPLICATION_TITLE);
 
-		masterPanel = new JPanel(new CardLayout());
+		JPanel masterPanel = new JPanel(new CardLayout());
 		masterPanel.setName("Master");
 
 		MainMenuUI mainMenuUI = new MainMenuUI();
@@ -26,7 +25,7 @@ public class ApplicationUI {
 
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
 
 	public JFrame getFrame() {

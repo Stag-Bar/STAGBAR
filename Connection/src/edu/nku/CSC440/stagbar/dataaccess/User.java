@@ -2,8 +2,8 @@ package edu.nku.CSC440.stagbar.dataaccess;
 
 /** Class used by the application to store information on the current user. */
 public class User {
-	private PermissionLevel permissionLevel;
-	private String username;
+	private final PermissionLevel permissionLevel;
+	private final String username;
 
 	public User(String username, PermissionLevel permissionLevel) {
 		this.username = username;

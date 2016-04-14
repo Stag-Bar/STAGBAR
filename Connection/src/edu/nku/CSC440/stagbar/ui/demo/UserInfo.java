@@ -1,5 +1,6 @@
 package edu.nku.CSC440.stagbar.ui.demo;
 
+@SuppressWarnings("ALL")
 public class UserInfo {
 	private String firstName;
 	private String lastName;

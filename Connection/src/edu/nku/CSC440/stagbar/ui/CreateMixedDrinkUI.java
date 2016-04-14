@@ -22,17 +22,16 @@ import java.util.Map;
 import java.util.Set;
 
 public class CreateMixedDrinkUI {
+	private final Map<Integer, IngredientRowUI> rowUIMap;
 	private JButton cancelButton;
 	private JPanel contentPane;
 	private JLabel errorMessage;
 	private JPanel ingredientPane;
+	private final ItemListener checkboxListener = e -> onCheck(e);
 	private JLabel nameLabel;
 	private JTextField nameTextField;
 	private JButton okButton;
-	private Map<Integer, IngredientRowUI> rowUIMap;
-	private final ItemListener checkboxListener = e -> onCheck(e);
 	private JTabbedPane tabbedPane;
-
 
 	public CreateMixedDrinkUI() {
 		$$$setupUI$$$();
@@ -190,7 +189,7 @@ public class CreateMixedDrinkUI {
 		for(CustomAlcoholType type : TypeService.getInstance().getAllCustomAlcoholTypes()) {
 			TabUI tabUI = new TabUI(checkboxListener);
 
-			for(Alcohol alcohol : AlcoholService.getInstance().getAlcoholByType(type, LocalDate.now(), LocalDate.now())) {
+			for(Alcohol alcohol : AlcoholService.getInstance().getAlcoholByType(type, LocalDate.now())) {
 				tabUI.addCheckbox(alcohol);
 			}
 

@@ -18,6 +18,7 @@ public class CreateUserUI {
 	private static final String MESSAGE_NEW_USER = "New user %s has been created.";
 	private static final String TITLE_CANNOT_SAVE = "User Creation Failed";
 	private static final String TITLE_NEW_USER = "User Created";
+	private final UserService userService;
 	private JButton cancelButton;
 	private JLabel confirmPasswordLabel;
 	private JPasswordField confirmPasswordPasswordField;
@@ -28,7 +29,6 @@ public class CreateUserUI {
 	private JPasswordField passwordPasswordField;
 	private JComboBox<PermissionLevel> permissionLevelComboBox;
 	private JLabel permissionLevelLabel;
-	private UserService userService;
 	private JLabel usernameLabel;
 	private JTextField usernameTextField;
 

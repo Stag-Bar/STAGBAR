@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class InventoryUI {
-	Map<CustomAlcoholType, TypePaneUI> typePaneUIMap;
+	final Map<CustomAlcoholType, TypePaneUI> typePaneUIMap;
 	private JButton cancelButton;
 	private JPanel contentPane;
 	private JLabel errorMessage;
@@ -123,7 +123,7 @@ public class InventoryUI {
 		for(CustomAlcoholType type : TypeService.getInstance().getAllCustomAlcoholTypes()) {
 			TypePaneUI typePaneUI = new TypePaneUI(type);
 
-			for(Alcohol alcohol : AlcoholService.getInstance().getAlcoholByType(type, LocalDate.now(), LocalDate.now())) {
+			for(Alcohol alcohol : AlcoholService.getInstance().getAlcoholByType(type, LocalDate.now())) {
 				typePaneUI.addEntryRow(alcohol);
 			}
 

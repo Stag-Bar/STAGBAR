@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+@SuppressWarnings("ALL")
 @Deprecated
 class CardLayoutDemo1 extends JFrame {
 
@@ -23,6 +24,23 @@ class CardLayoutDemo1 extends JFrame {
 		{
 			panelContainer.add(createSamplePanel("Panel "+i), ""+i);
 		}
+	}
+
+	public static void main(String args[]) {
+
+		java.awt.EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				new CardLayoutDemo1().setVisible(true);
+			}
+		});
+	}
+
+	public JPanel createSamplePanel(String panelTitle)
+	{
+		JPanel samplePanel = new JPanel();
+		samplePanel.add(new JLabel(panelTitle));
+
+		return samplePanel;
 	}
 
 	private void initComponents() {
@@ -49,7 +67,6 @@ class CardLayoutDemo1 extends JFrame {
 		jPanel1.add(navHomeButt);
 
 
-
 		panelContainer.setPreferredSize(new Dimension(400, 300));
 		panelContainer.setLayout(new CardLayout());
 		// setting the card layout
@@ -58,25 +75,23 @@ class CardLayoutDemo1 extends JFrame {
 		getContentPane().add(panelContainer, BorderLayout.CENTER);
 
 
-
-
 		navNextButt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				CardLayout cardLayout = (CardLayout) panelContainer.getLayout();
+				CardLayout cardLayout = (CardLayout)panelContainer.getLayout();
 				cardLayout.next(panelContainer);
 				// using cardLayout next() to go  to next panel
 			}
 		});
 		navHomeButt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				CardLayout cardLayout = (CardLayout) panelContainer.getLayout();
+				CardLayout cardLayout = (CardLayout)panelContainer.getLayout();
 				cardLayout.first(panelContainer);
 				// suing first to get to the home panel
 			}
 		});
 		navPreviousButt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				CardLayout cardLayout = (CardLayout) panelContainer.getLayout();
+				CardLayout cardLayout = (CardLayout)panelContainer.getLayout();
 				cardLayout.previous(panelContainer);
 
 				// using previous to get to previous(left)panel
@@ -84,24 +99,6 @@ class CardLayoutDemo1 extends JFrame {
 		});
 
 		pack();
-	}
-
-	public JPanel createSamplePanel(String panelTitle)
-	{
-		JPanel samplePanel = new JPanel();
-		samplePanel.add(new JLabel(panelTitle));
-
-		return samplePanel;
-	}
-
-
-	public static void main(String args[]) {
-
-		java.awt.EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				new CardLayoutDemo1().setVisible(true);
-			}
-		});
 	}
 
 }

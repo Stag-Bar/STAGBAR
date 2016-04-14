@@ -22,14 +22,14 @@ import java.util.Map;
 import java.util.Set;
 
 public class SalesUI {
+	private final Map<CustomAlcoholType, TypePaneUI> typePaneUIMap;
+	private final ItemListener checkboxListener = e -> onCheck(e);
 	private JButton cancelButton;
 	private JPanel contentPane;
 	private JLabel errorMessage;
 	private JButton okButton;
 	private JPanel scrollPane;
 	private JTabbedPane tabbedPane;
-	private Map<CustomAlcoholType, TypePaneUI> typePaneUIMap;
-	private final ItemListener checkboxListener = e -> onCheck(e);
 
 	public SalesUI() {
 		$$$setupUI$$$();
@@ -184,7 +184,7 @@ public class SalesUI {
 		for(CustomAlcoholType type : TypeService.getInstance().getAllCustomAlcoholTypes()) {
 			TabUI tabUI = new TabUI(checkboxListener);
 
-			for(Alcohol alcohol : AlcoholService.getInstance().getAlcoholByType(type, LocalDate.now(), LocalDate.now())) {
+			for(Alcohol alcohol : AlcoholService.getInstance().getAlcoholByType(type, LocalDate.now())) {
 				tabUI.addCheckbox(alcohol);
 			}
 

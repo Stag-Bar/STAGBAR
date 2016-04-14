@@ -79,7 +79,7 @@ public class MainMenuUI {
 	}
 
 	private void onManageUsers() {
-		UserAccountManagementUI manageUsers = new UserAccountManagementUI();
+		UserManagementMenuUI manageUsers = new UserManagementMenuUI();
 		uiHacks.goToPanel(contentPane, manageUsers.getContentPane());
 	}
 

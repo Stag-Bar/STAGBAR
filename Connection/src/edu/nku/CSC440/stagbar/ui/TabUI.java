@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.ItemListener;
 
 public class TabUI {
-	private ItemListener checkBoxListener;
+	private final ItemListener checkBoxListener;
 	private JPanel contentPane;
 
 	public TabUI(ItemListener checkBoxListener) {
