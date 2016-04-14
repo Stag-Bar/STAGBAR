@@ -48,7 +48,7 @@ public class ConnectTest_Alcohol extends ConnectTest {
 
 		// **** Another load for troubleshooting ****
 		for(Alcohol a : Connect.getInstance().findActiveAlcoholByType(alcohol.getType(), LocalDate.ofEpochDay(0), LocalDate.now())) {
-			if(alcohol.getName().equals(a.getName()) && alcohol.getType().equals(a.getType()) && null == a.getRetireDate()) {
+			if(alcohol.getName().equals(a.getName()) && alcohol.getType().equals(a.getType())) {
 				alcohol = a;
 				break;
 			}

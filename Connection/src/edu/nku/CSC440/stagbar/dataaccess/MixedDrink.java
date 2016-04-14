@@ -1,6 +1,5 @@
 package edu.nku.CSC440.stagbar.dataaccess;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -9,21 +8,21 @@ import java.util.Set;
 public class MixedDrink {
 	private final Map<MixedDrinkIngredient, MixedDrinkIngredient> ingredients;
 	private final String name;
+	private boolean isRetired;
 	private Map<MixedDrinkIngredient, MixedDrinkIngredient> previousIngredients;
-	private LocalDate retireDate;
 
 	/** Used when creating new drink. */
 	public MixedDrink(String name, Set<MixedDrinkIngredient> ingredients) {
 		this.name = name;
 		this.ingredients = mapFromSet(ingredients);
 		previousIngredients = null;
-		retireDate = null;
+		isRetired = false;
 	}
 
 	/** Used when loading drink. */
-	public MixedDrink(String name, LocalDate retireDate) {
+	public MixedDrink(String name, boolean isRetired) {
 		this(name, new HashSet<>());
-		this.retireDate = retireDate;
+		this.isRetired = isRetired;
 		previousIngredients = new HashMap<>();
 	}
 
@@ -87,14 +86,6 @@ public class MixedDrink {
 		return removedIngredients;
 	}
 
-	public LocalDate getRetireDate() {
-		return retireDate;
-	}
-
-	public void setRetireDate(LocalDate retireDate) {
-		this.retireDate = retireDate;
-	}
-
 	public Set<MixedDrinkIngredient> getUpdatedIngredients() {
 		Set<MixedDrinkIngredient> updatedIngredients = new HashSet<>();
 
@@ -114,12 +105,20 @@ public class MixedDrink {
 		return getName().hashCode();
 	}
 
+	public boolean isRetired() {
+		return isRetired;
+	}
+
+	public void setIsRetired(boolean isRetired) {
+		this.isRetired = isRetired;
+	}
+
 	@Override
 	public String toString() {
 		return "MixedDrink{" +
 				"name='" + name + '\'' +
 				", ingredients=" + getIngredients() +
-				", retireDate=" + retireDate +
+				", isRetired=" + isRetired +
 				'}';
 	}
 
