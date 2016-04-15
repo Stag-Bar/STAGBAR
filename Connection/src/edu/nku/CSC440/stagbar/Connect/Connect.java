@@ -20,12 +20,14 @@ public class Connect {
 	private String databaseName;
 
 	private Connect() {}
-	public static void main(String args[]){
-		
-		getInstance().retireAlcohol(12, LocalDate.now());
-	}
+
 	public static Connect getInstance() {
 		return connect;
+	}
+
+	public static void main(String args[]){
+
+		getInstance().retireAlcohol(12, LocalDate.now());
 	}
 
 	public boolean authenticateUser(String username, String password) {
@@ -268,7 +270,7 @@ public class Connect {
 			while(results.next()) {
 				md = mdMap.get(results.getString(1));
 				if(md == null) {
-					md = new MixedDrink(results.getString(9), results.getDate(10) == null ? null : results.getDate(10).toLocalDate());
+					md = new MixedDrink(results.getString(9), results.getBoolean(10));
 					mdMap.put(results.getString(1), md);
 				}
 				Alcohol a = new Alcohol(results.getInt(4), results.getString(5), new CustomAlcoholType(results.getInt(11), results.getString(12), AlcoholType.valueOf(results.getString(13))), results.getDate(7).toLocalDate(), results.getDate(8) == null ? null : results.getDate(8).toLocalDate());
@@ -310,7 +312,7 @@ public class Connect {
 			while(results.next()) {
 				md = mdMap.get(results.getString(1));
 				if(md == null) {
-					md = new MixedDrink(results.getString(9), results.getDate(10).toLocalDate());
+					md = new MixedDrink(results.getString(9), results.getBoolean(10));
 					mdMap.put(results.getString(1), md);
 				}
 				Alcohol a = new Alcohol(results.getInt(4), results.getString(5), new CustomAlcoholType(results.getInt(11), results.getString(12), AlcoholType.valueOf(results.getString(13))), results.getDate(7).toLocalDate(), results.getDate(8) == null ? null : results.getDate(8).toLocalDate());
@@ -430,7 +432,7 @@ public class Connect {
 	public boolean nukeDatabase(String name) {
 		boolean success = false;
 		try {
-			String statement = "DROP DATABASE IF EXISTS" + name + ";";
+			String statement = "DROP DATABASE IF EXISTS " + name + ";";
 			PreparedStatement pSta = makeNewMasterConnection(null).prepareStatement(statement);
 			log.info(pSta.toString());
 			pSta.execute();
@@ -582,22 +584,6 @@ public class Connect {
 	/** Creates a new row on the Sales table with the given entry. */
 	public boolean saveSalesEntry(Entry entry) {
 		return saveEntry(EntryCategory.SALES, entry);
-		//DO WE NO LONG NEED THIS BELOW?
-		/*String sql = "INSERT INTO sales (alcohol, amount, bottles, date) VALUES (?, ?, ?, ?)";
-		try {
-			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
-			pSta.setInt(1, entry.getAlcoholId());
-			pSta.setDouble(2, entry.getAmount());
-			pSta.setInt(3, entry.getBottles());
-			pSta.setDate(4, Date.valueOf(entry.getDate()));
-			pSta.execute();
-			return true;
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
-		}
-		
-		return false;*/
 	}
 
 	public boolean saveUser(String username, String password, PermissionLevel permissionLevel) {
