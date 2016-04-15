@@ -33,7 +33,6 @@ public class ConnectManualTest {
 		// Save alcohol.
 		for(Alcohol alcohol : ConnectMock.findAllAlcohol()) {
 			assertTrue(alcohol.print(), Connect.getInstance().saveAlcohol(alcohol));
-			System.out.println(alcohol + " added to database");
 		}
 
 		// Save drinks to database.
@@ -57,7 +56,6 @@ public class ConnectManualTest {
 	public void testSaveAlcohol() {
 		for(Alcohol alcohol : ConnectMock.findAllAlcohol()) {
 			assertTrue(alcohol.print(), Connect.getInstance().saveAlcohol(alcohol));
-			System.out.println(alcohol + " added to database");
 		}
 	}
 
