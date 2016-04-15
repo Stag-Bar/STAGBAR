@@ -83,7 +83,9 @@ public class ConnectMock {
 	public static Set<MixedDrink> findAllMixedDrinks() {
 		Set<MixedDrink> results = new HashSet<>();
 		results.add(MixedDrinkMock.FIREBULL);
+		results.add(MixedDrinkMock.J_AND_J);
 		results.add(MixedDrinkMock.LONG_ISLAND);
+		results.add(MixedDrinkMock.MARTINI);
 		return results;
 	}
 }
