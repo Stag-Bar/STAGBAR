@@ -37,7 +37,7 @@ public class ConnectManualTest {
 		}
 
 		// Save drinks to database.
-		for(MixedDrink mixedDrink : ConnectMock.findAllMixedDrinksAndIngredients()) {
+		for(MixedDrink mixedDrink : ConnectMock.findAllMixedDrinks()) {
 			assertTrue("Save failed: " + mixedDrink.toString(), Connect.getInstance().saveMixedDrink(mixedDrink.getName()));
 			for(MixedDrinkIngredient ingredient : mixedDrink.getIngredients()) {
 				assertTrue("Save failed: " + ingredient.toString(), Connect.getInstance().saveMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol(), ingredient.getAmount()));

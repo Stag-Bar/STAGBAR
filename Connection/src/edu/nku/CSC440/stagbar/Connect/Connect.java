@@ -263,7 +263,7 @@ public class Connect {
 	}
 
 	/** Searches database for all mixed drinks and their corresponding ingredients. */
-	public Set<MixedDrink> findAllMixedDrinksAndIngredients() {
+	public Set<MixedDrink> findAllMixedDrinks() {
 		String sql = "SELECT mi.*, a.*, d.*, t.* FROM mixedDrinkIngredients mi, alcohol a, mixedDrink d, type t WHERE mi.drink = d.name AND mi.alcoholId = a.alcoholId AND a.typeId = t.typeId ORDER BY d.name;";
 		ResultSet results;
 
@@ -306,7 +306,7 @@ public class Connect {
 		return set;
 	}
 
-	public MixedDrink findMixedDrinkIngredientsByName(String drinkName) {
+	public MixedDrink findMixedDrinkByName(String drinkName) {
 		String sql = "SELECT mi.*, a.*, d.*, t.* FROM mixedDrinkIngredients mi, alcohol a, mixedDrink d, type t WHERE mi.drink = d.name AND mi.alcoholId = a.alcoholId AND a.typeId = t.typeId AND mi.drink = ? ORDER BY d.name;";
 		ResultSet results;
 		try {

@@ -38,7 +38,7 @@ public class MixedDrinkService {
 	}
 
 	public Set<MixedDrink> getAllMixedDrinks() {
-		return Connect.getInstance().findAllMixedDrinksAndIngredients();
+		return Connect.getInstance().findAllMixedDrinks();
 	}
 
 	public boolean isDrinkNameUnique(String name) {

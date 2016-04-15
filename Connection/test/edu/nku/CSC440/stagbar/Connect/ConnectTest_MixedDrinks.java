@@ -43,7 +43,7 @@ public class ConnectTest_MixedDrinks extends ConnectTest {
 		final String fakeDrink = "Fake Drink";
 
 		// Save drinks to database.
-		for(MixedDrink mixedDrink : ConnectMock.findAllMixedDrinksAndIngredients()) {
+		for(MixedDrink mixedDrink : ConnectMock.findAllMixedDrinks()) {
 			assertTrue("Save failed: " + mixedDrink.toString(), Connect.getInstance().saveMixedDrink(mixedDrink.getName()));
 			for(MixedDrinkIngredient ingredient : mixedDrink.getIngredients()) {
 				assertTrue("Save failed: " + ingredient.toString(), Connect.getInstance().saveMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol(), ingredient.getAmount()));
@@ -52,29 +52,29 @@ public class ConnectTest_MixedDrinks extends ConnectTest {
 
 		// Test findAllMixedDrinkNames()
 		Set<String> drinkNames = Connect.getInstance().findAllMixedDrinkNames();
-		for(MixedDrink drink : ConnectMock.findAllMixedDrinksAndIngredients()) {
+		for(MixedDrink drink : ConnectMock.findAllMixedDrinks()) {
 			assertTrue("Drink not found: " + drink.toString(), drinkNames.remove(drink.getName()));
 		}
 		assertEquals("Extra data in database!", 0, drinkNames.size());
 
 		// Test doesDrinkExist()
-		for(MixedDrink drink : ConnectMock.findAllMixedDrinksAndIngredients()) {
+		for(MixedDrink drink : ConnectMock.findAllMixedDrinks()) {
 			assertTrue("Drink not found: " + drink.toString(), Connect.getInstance().doesDrinkExist(drink.getName()));
 		}
 		assertFalse("False positive: " + fakeDrink, Connect.getInstance().doesDrinkExist(fakeDrink));
 
-		//Test findAllMixedDrinksAndIngredients()
-		ArrayList<MixedDrink> databaseDrinks = new ArrayList<>(Connect.getInstance().findAllMixedDrinksAndIngredients());
-		for(MixedDrink drink : ConnectMock.findAllMixedDrinksAndIngredients()) {
+		//Test findAllMixedDrinks()
+		ArrayList<MixedDrink> databaseDrinks = new ArrayList<>(Connect.getInstance().findAllMixedDrinks());
+		for(MixedDrink drink : ConnectMock.findAllMixedDrinks()) {
 			int index = databaseDrinks.indexOf(drink);
 			assertNotEquals("Drink not found " + drink, -1, index);
 			verifyMixedDrink(drink, databaseDrinks.remove(index));
 		}
 		assertEquals("Extra data in database!", 0, databaseDrinks.size());
 
-		// Test findMixedDrinkIngredientsByName()
-		for(MixedDrink drink : ConnectMock.findAllMixedDrinksAndIngredients()) {
-			verifyMixedDrink(drink, Connect.getInstance().findMixedDrinkIngredientsByName(drink.getName()));
+		// Test findMixedDrinkByName()
+		for(MixedDrink drink : ConnectMock.findAllMixedDrinks()) {
+			verifyMixedDrink(drink, Connect.getInstance().findMixedDrinkByName(drink.getName()));
 		}
 
 	}
