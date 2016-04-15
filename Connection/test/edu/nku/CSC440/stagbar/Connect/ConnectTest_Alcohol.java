@@ -52,9 +52,10 @@ public class ConnectTest_Alcohol extends ConnectTest {
 
 		assertNull("Sanity check failed: " + alcohol.print(), alcohol.getRetireDate());
 		assertTrue("Sanity check failed: " + alcohol.print(), Connect.getInstance().doesActiveAlcoholExist(alcohol.getName(), alcohol.getType(), LocalDate.now().plusDays(1)));
-//		assertFalse("Sanity check failed: " + alcohol.print(), Connect.getInstance().findActiveAlcoholByType(alcohol.getType(), LocalDate.now(), LocalDate.now().plusDays(1)).isEmpty());
-//		assertFalse("Sanity check failed: " + alcohol.print(), Connect.getInstance().findActiveAlcoholForDateRange(LocalDate.now(), LocalDate.now().plusDays(1)).isEmpty());
+		assertFalse("Sanity check failed: " + alcohol.print(), Connect.getInstance().findActiveAlcoholByType(alcohol.getType(), LocalDate.now(), LocalDate.now().plusDays(1)).isEmpty());
+		assertFalse("Sanity check failed: " + alcohol.print(), Connect.getInstance().findActiveAlcoholForDateRange(LocalDate.now(), LocalDate.now().plusDays(1)).isEmpty());
 
+		// Retire
 		assertTrue("Retire Failed: " + alcohol.print(), Connect.getInstance().retireAlcohol(alcohol.getAlcoholId(), LocalDate.now()));
 
 		// Reload from database
@@ -68,8 +69,8 @@ public class ConnectTest_Alcohol extends ConnectTest {
 
 		assertNotNull("Improper retire: " + alcohol.print(), alcohol.getRetireDate());
 		assertFalse("Improper retire: " + alcohol.print(), Connect.getInstance().doesActiveAlcoholExist(alcohol.getName(), alcohol.getType(), LocalDate.now().plusDays(1)));
-//		assertTrue("Improper retire: " + alcohol.print(), Connect.getInstance().findActiveAlcoholByType(alcohol.getType(), LocalDate.now(), LocalDate.now().plusDays(1)).isEmpty());
-//		assertTrue("Improper retire: " + alcohol.print(), Connect.getInstance().findActiveAlcoholForDateRange(LocalDate.now(), LocalDate.now().plusDays(1)).isEmpty());
+		assertTrue("Improper retire: " + alcohol.print(), Connect.getInstance().findActiveAlcoholByType(alcohol.getType(), LocalDate.now(), LocalDate.now().plusDays(1)).isEmpty());
+		assertTrue("Improper retire: " + alcohol.print(), Connect.getInstance().findActiveAlcoholForDateRange(LocalDate.now(), LocalDate.now().plusDays(1)).isEmpty());
 	}
 
 	@Test
