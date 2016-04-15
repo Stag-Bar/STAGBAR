@@ -15,28 +15,33 @@ public class ConnectMock {
 
 	private ConnectMock() {}
 
-	public static Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type) {
-		return findActiveAlcoholByType(type, LocalDate.ofEpochDay(0), LocalDate.now());
+	/** Searches for alcohol whose retire date is null or after the start date & whose creation date is before the end date. */
+	public static Set<Alcohol> findActiveAlcohol() {
+		return findActiveAlcohol(LocalDate.now(), LocalDate.now());
 	}
 
-	public static Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type, LocalDate startDate, LocalDate endDate) {
+	/** Searches for alcohol whose retire date is null or after the start date & whose creation date is before the end date. */
+	public static Set<Alcohol> findActiveAlcohol(LocalDate startDate, LocalDate endDate) {
 		Set<Alcohol> results = new HashSet<>();
-		for(Alcohol alcohol : findActiveAlcoholForDateRange(startDate, endDate)) {
-			if(alcohol.getType().equals(type)) {
-				results.add(alcohol);
+		for(Alcohol alcohol : findAllAlcohol()) {
+			if(null == alcohol.getRetireDate() || alcohol.getRetireDate().isAfter(startDate)) {
+				if(alcohol.getCreationDate().isEqual(endDate) || alcohol.getCreationDate().isBefore(endDate)) {
+					results.add(alcohol);
+				}
 			}
 		}
 		return results;
 	}
 
-	/** Searches for alcohol whose retire date is null or after the start date & whose creation date is before the end date. */
-	public static Set<Alcohol> findActiveAlcoholForDateRange(LocalDate startDate, LocalDate endDate) {
+	public static Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type) {
+		return findActiveAlcoholByType(type, LocalDate.now(), LocalDate.now());
+	}
+
+	public static Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type, LocalDate startDate, LocalDate endDate) {
 		Set<Alcohol> results = new HashSet<>();
-		for(Alcohol alcohol : findAllAlcohol()) {
-			if(null == alcohol.getRetireDate() || alcohol.getRetireDate().isEqual(startDate) || alcohol.getRetireDate().isAfter(startDate)) {
-				if(alcohol.getCreationDate().isEqual(endDate) || alcohol.getCreationDate().isBefore(endDate)) {
-					results.add(alcohol);
-				}
+		for(Alcohol alcohol : findActiveAlcohol(startDate, endDate)) {
+			if(alcohol.getType().equals(type)) {
+				results.add(alcohol);
 			}
 		}
 		return results;

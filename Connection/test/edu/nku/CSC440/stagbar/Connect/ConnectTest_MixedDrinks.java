@@ -29,8 +29,8 @@ public class ConnectTest_MixedDrinks extends ConnectTest {
 
 	@After
 	public void clearTable() {
-		assertTrue("Table clear failed.", Connect.getInstance().nukeTable("mixedDrink"));
 		assertTrue("Table clear failed.", Connect.getInstance().nukeTable("mixedDrinkIngredients"));
+		assertTrue("Table clear failed.", Connect.getInstance().nukeTable("mixedDrink"));
 	}
 
 	@Test
