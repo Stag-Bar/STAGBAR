@@ -19,7 +19,7 @@ public class AlcoholService {
 	}
 
 	public Set<Alcohol> getAlcoholByType(CustomAlcoholType type, LocalDate endDate) {
-		return Connect.getInstance().findActiveAlcoholByType(type, LocalDate.ofEpochDay(0), endDate);
+		return Connect.getInstance().findActiveAlcoholByType(type, endDate);
 	}
 
 	public boolean isAlcoholNameUnique(String name, CustomAlcoholType selectedItem) {

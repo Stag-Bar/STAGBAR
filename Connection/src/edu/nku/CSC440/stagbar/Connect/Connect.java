@@ -186,22 +186,7 @@ public class Connect {
 
 	/** Searches database for alcohol whose retire date is null or after the given date & whose creation date is before (inclusive) given date. */
 	public Set<Alcohol> findActiveAlcohol(LocalDate date) {
-		String sql = "SELECT a.alcoholId, a.name, a.typeId, a.creationDate, a.retireDate, t.typeId, t.name, t.kind FROM alcohol a, type t WHERE a.typeId = t.typeId AND a.creationDate <= ? AND (a.retireDate IS NULL OR a.retireDate > ?);";
-
-		Set<Alcohol> set = new HashSet<>();
-		try {
-			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
-			ResultSet results;
-			pSta.setDate(1, Date.valueOf(date));
-			pSta.setDate(2, Date.valueOf(date));
-			results = pSta.executeQuery();
-			while(results.next()) {
-				set.add(new Alcohol(results.getInt(1), results.getString(2), new CustomAlcoholType(results.getInt(3), results.getString(7), AlcoholType.valueOf(results.getString(8))), results.getDate(4).toLocalDate(), results.getDate(5) == null ? null : results.getDate(5).toLocalDate()));
-			}
-		} catch(SQLException e) {
-			log.log(Level.SEVERE, e.toString(), e);
-		}
-		return set;
+		return findActiveAlcohol(date, date);
 	}
 
 	/** Searches database for alcohol, matching given type, whose retire date is null or after the start date & whose creation date is before (inclusive) the end date. */
@@ -227,23 +212,7 @@ public class Connect {
 
 	/** Searches database for alcohol, matching given type, whose retire date is null or after the given date & whose creation date is before (inclusive) given date. */
 	public Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type, LocalDate date) {
-		String sql = "SELECT a.alcoholId, a.name, a.typeId, a.creationDate, a.retireDate, t.typeId, t.name, t.kind FROM alcohol a, type t WHERE t.typeId = ? AND a.typeId = t.typeId AND a.creationDate <= ? AND (a.retireDate IS NULL OR a.retireDate > ?);";
-
-		Set<Alcohol> set = new HashSet<>();
-		try {
-			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
-			ResultSet results;
-			pSta.setInt(1, type.getTypeId());
-			pSta.setDate(2, Date.valueOf(date));
-			pSta.setDate(3, Date.valueOf(date));
-			results = pSta.executeQuery();
-			while(results.next()) {
-				set.add(new Alcohol(results.getInt(1), results.getString(2), new CustomAlcoholType(results.getInt(3), results.getString(7), AlcoholType.valueOf(results.getString(8))), results.getDate(4).toLocalDate(), results.getDate(5) == null ? null : results.getDate(5).toLocalDate()));
-			}
-		} catch(SQLException e) {
-			log.log(Level.SEVERE, e.toString(), e);
-		}
-		return set;
+		return findActiveAlcoholByType(type, date, date);
 	}
 
 	public Set<Alcohol> findAllAlcohol() {

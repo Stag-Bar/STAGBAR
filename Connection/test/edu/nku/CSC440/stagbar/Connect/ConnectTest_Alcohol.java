@@ -51,8 +51,8 @@ public class ConnectTest_Alcohol extends ConnectTest {
 		assertNotEquals("Failed to load from database.", Alcohol.NEW_ALCOHOL_ID, alcohol.getAlcoholId());
 
 		assertNull("Sanity check failed: " + alcohol.print(), alcohol.getRetireDate());
-		assertTrue("Sanity check failed: " + alcohol.print(), Connect.getInstance().doesActiveAlcoholExist(alcohol.getName(), alcohol.getType(), LocalDate.now().plusDays(1)));
-		assertFalse("Sanity check failed: " + alcohol.print(), Connect.getInstance().findActiveAlcoholByType(alcohol.getType(), LocalDate.now(), LocalDate.now().plusDays(1)).isEmpty());
+		assertTrue("Sanity check failed: " + alcohol.print(), Connect.getInstance().doesActiveAlcoholExist(alcohol.getName(), alcohol.getType(), LocalDate.now()));
+		assertFalse("Sanity check failed: " + alcohol.print(), Connect.getInstance().findActiveAlcoholByType(alcohol.getType(), LocalDate.now()).isEmpty());
 		assertFalse("Sanity check failed: " + alcohol.print(), Connect.getInstance().findActiveAlcohol(LocalDate.now()).isEmpty());
 
 		// Retire
@@ -68,8 +68,8 @@ public class ConnectTest_Alcohol extends ConnectTest {
 		assertNotEquals("Failed to load from database.", Alcohol.NEW_ALCOHOL_ID, alcohol.getAlcoholId());
 
 		assertNotNull("Improper retire: " + alcohol.print(), alcohol.getRetireDate());
-		assertFalse("Improper retire: " + alcohol.print(), Connect.getInstance().doesActiveAlcoholExist(alcohol.getName(), alcohol.getType(), LocalDate.now().plusDays(1)));
-		assertTrue("Improper retire: " + alcohol.print(), Connect.getInstance().findActiveAlcoholByType(alcohol.getType(), LocalDate.now(), LocalDate.now().plusDays(1)).isEmpty());
+		assertFalse("Improper retire: " + alcohol.print(), Connect.getInstance().doesActiveAlcoholExist(alcohol.getName(), alcohol.getType(), LocalDate.now()));
+		assertTrue("Improper retire: " + alcohol.print(), Connect.getInstance().findActiveAlcoholByType(alcohol.getType(), LocalDate.now()).isEmpty());
 		assertTrue("Improper retire: " + alcohol.print(), Connect.getInstance().findActiveAlcohol(LocalDate.now()).isEmpty());
 	}
 
