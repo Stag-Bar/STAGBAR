@@ -263,8 +263,8 @@ public class Connect {
 
 		Map<String, MixedDrink> mdMap = new HashMap<>();
 		try {
-			Statement s = getActiveConnection().createStatement();
-			results = s.executeQuery(sql);
+			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			results = pSta.executeQuery();
 			MixedDrink md;
 
 			while(results.next()) {
@@ -301,7 +301,7 @@ public class Connect {
 	}
 
 	public MixedDrink findMixedDrinkIngredientsByName(String drinkName) {
-		String sql = "SELECT mi.*, a.*, d.* FROM mixedDrinkIngredients mi, alcohol a, mixedDrink d WHERE mi.drink = ? AND mi.drink = d.name AND mi.alcoholId = a.alcoholId;";
+		String sql = "SELECT mi.*, a.*, d.*, t.* FROM mixedDrinkIngredients mi, alcohol a, mixedDrink d, type t WHERE mi.drink = d.name AND mi.alcoholId = a.alcoholId AND a.typeId = t.typeId AND mi.drink = ? ORDER BY d.name;";
 		ResultSet results;
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
