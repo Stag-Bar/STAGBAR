@@ -3,9 +3,9 @@ package edu.nku.CSC440.stagbar.Connect;
 import edu.nku.CSC440.stagbar.Connect.mock.ConnectMock;
 import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
 import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
+import edu.nku.CSC440.stagbar.dataaccess.MixedDrink;
+import edu.nku.CSC440.stagbar.dataaccess.MixedDrinkIngredient;
 import edu.nku.CSC440.stagbar.dataaccess.mock.MixedDrinkMock;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -15,18 +15,34 @@ import static org.junit.Assert.assertTrue;
 public class ConnectManualTest {
 
 	@Test
+	@Ignore
 	public void playground() {
 		System.out.println(MixedDrinkMock.FIREBULL);
 	}
 
-	@Before
-	public void setUp() {
+	@Test
+	@Ignore
+	public void testCreateAndLoadDatabase() {
+		Connect.getInstance().firstTimeSetup("test16", "user", "password");
 
-	}
+		// Save custom types.
+		for(CustomAlcoholType type : ConnectMock.findAllCustomAlcoholTypes()) {
+			assertTrue(type.print(), Connect.getInstance().saveCustomAlcoholType(type));
+		}
 
-	@After
-	public void tearDown() {
+		// Save alcohol.
+		for(Alcohol alcohol : ConnectMock.findAllAlcohol()) {
+			assertTrue(alcohol.print(), Connect.getInstance().saveAlcohol(alcohol));
+			System.out.println(alcohol + " added to database");
+		}
 
+		// Save drinks to database.
+		for(MixedDrink mixedDrink : ConnectMock.findAllMixedDrinksAndIngredients()) {
+			assertTrue("Save failed: " + mixedDrink.toString(), Connect.getInstance().saveMixedDrink(mixedDrink.getName()));
+			for(MixedDrinkIngredient ingredient : mixedDrink.getIngredients()) {
+				assertTrue("Save failed: " + ingredient.toString(), Connect.getInstance().saveMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol(), ingredient.getAmount()));
+			}
+		}
 	}
 
 	@Test
@@ -50,7 +66,7 @@ public class ConnectManualTest {
 	@Ignore
 	public void testSaveCustomAlcoholType() {
 		for(CustomAlcoholType type : ConnectMock.findAllCustomAlcoholTypes()) {
-			Connect.getInstance().saveCustomAlcoholType(type);
+			assertTrue(type.print(), Connect.getInstance().saveCustomAlcoholType(type));
 		}
 	}
 

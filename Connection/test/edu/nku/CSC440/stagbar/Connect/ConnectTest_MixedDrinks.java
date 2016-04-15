@@ -40,6 +40,8 @@ public class ConnectTest_MixedDrinks extends ConnectTest {
 
 	@Test
 	public void testMixedDrink_SaveLoad() {
+		final String fakeDrink = "Fake Drink";
+
 		// Save drinks to database.
 		for(MixedDrink mixedDrink : ConnectMock.findAllMixedDrinksAndIngredients()) {
 			assertTrue("Save failed: " + mixedDrink.toString(), Connect.getInstance().saveMixedDrink(mixedDrink.getName()));
@@ -59,6 +61,7 @@ public class ConnectTest_MixedDrinks extends ConnectTest {
 		for(MixedDrink drink : ConnectMock.findAllMixedDrinksAndIngredients()) {
 			assertTrue("Drink not found: " + drink.toString(), Connect.getInstance().doesDrinkExist(drink.getName()));
 		}
+		assertFalse("False positive: " + fakeDrink, Connect.getInstance().doesDrinkExist(fakeDrink));
 
 		//Test findAllMixedDrinksAndIngredients()
 		ArrayList<MixedDrink> databaseDrinks = new ArrayList<>(Connect.getInstance().findAllMixedDrinksAndIngredients());
