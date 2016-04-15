@@ -25,11 +25,6 @@ public class Connect {
 		return connect;
 	}
 
-	public static void main(String args[]){
-
-		getInstance().retireAlcohol(12, LocalDate.now());
-	}
-
 	public boolean authenticateUser(String username, String password) {
 		String sql = "SELECT * FROM user WHERE username = ? AND password = ?;";
 		ResultSet results;

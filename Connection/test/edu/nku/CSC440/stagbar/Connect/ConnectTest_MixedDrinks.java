@@ -14,6 +14,11 @@ import java.util.Set;
 
 import static org.junit.Assert.*;
 
+/*
+ * TODO: Test update drink.
+ * TODO: Test retire drink.
+ * TODO: Test delete ingredient.
+ */
 public class ConnectTest_MixedDrinks extends ConnectTest {
 
 	@BeforeClass
@@ -35,6 +40,7 @@ public class ConnectTest_MixedDrinks extends ConnectTest {
 
 	@Test
 	public void testMixedDrink_SaveLoad() {
+		// Save drinks to database.
 		for(MixedDrink mixedDrink : ConnectMock.findAllMixedDrinksAndIngredients()) {
 			assertTrue("Save failed: " + mixedDrink.toString(), Connect.getInstance().saveMixedDrink(mixedDrink.getName()));
 			for(MixedDrinkIngredient ingredient : mixedDrink.getIngredients()) {
@@ -42,13 +48,19 @@ public class ConnectTest_MixedDrinks extends ConnectTest {
 			}
 		}
 
+		// Test findAllMixedDrinkNames()
 		Set<String> drinkNames = Connect.getInstance().findAllMixedDrinkNames();
 		for(MixedDrink drink : ConnectMock.findAllMixedDrinksAndIngredients()) {
 			assertTrue("Drink not found: " + drink.toString(), drinkNames.remove(drink.getName()));
 		}
 		assertEquals("Extra data in database!", 0, drinkNames.size());
 
+		// Test doesDrinkExist()
+		for(MixedDrink drink : ConnectMock.findAllMixedDrinksAndIngredients()) {
+			assertTrue("Drink not found: " + drink.toString(), Connect.getInstance().doesDrinkExist(drink.getName()));
+		}
 
+		//Test findAllMixedDrinksAndIngredients()
 		ArrayList<MixedDrink> databaseDrinks = new ArrayList<>(Connect.getInstance().findAllMixedDrinksAndIngredients());
 		for(MixedDrink drink : ConnectMock.findAllMixedDrinksAndIngredients()) {
 			int index = databaseDrinks.indexOf(drink);
@@ -57,6 +69,7 @@ public class ConnectTest_MixedDrinks extends ConnectTest {
 		}
 		assertEquals("Extra data in database!", 0, databaseDrinks.size());
 
+		// Test findMixedDrinkIngredientsByName()
 		for(MixedDrink drink : ConnectMock.findAllMixedDrinksAndIngredients()) {
 			verifyMixedDrink(drink, Connect.getInstance().findMixedDrinkIngredientsByName(drink.getName()));
 		}
