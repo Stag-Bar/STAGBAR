@@ -101,7 +101,7 @@ public class Connect {
 	 * @return <code>true</code> if specified alcohol is defined in database and is active, <code>false</code> otherwise.
 	 */
 	public boolean doesActiveAlcoholExist(String name, CustomAlcoholType type, LocalDate date) {
-		String statement = "SELECT * FROM alcohol WHERE name = ? AND typeId = ? AND (retireDate IS NULL OR retireDate <= ?);";
+		String statement = "SELECT * FROM alcohol WHERE name = ? AND typeId = ? AND (retireDate IS NULL OR retireDate > ?);";
 		ResultSet result;
 
 		try {
@@ -391,7 +391,7 @@ public class Connect {
 	/** Gets database name from file. */
 	private String getDatabaseNameFromFile() { //TODO: Get database name from file
 //		return null; // For creating new database
-		return "test11"; // For testing current working database
+		return "test15"; // For testing current working database
 	}
 
 	private boolean isConnectionValid() {

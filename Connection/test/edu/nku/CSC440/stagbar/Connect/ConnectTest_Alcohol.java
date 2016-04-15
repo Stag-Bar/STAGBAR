@@ -42,7 +42,7 @@ public class ConnectTest_Alcohol extends ConnectTest {
 		assertTrue("Failed to find: " + alcohol.print(), Connect.getInstance().doesActiveAlcoholExist(alcohol.getName(), alcohol.getType(), LocalDate.now()));
 
 		// Load alcohol from database to set proper ID
-		for(Alcohol a : Connect.getInstance().findActiveAlcoholByType(alcohol.getType(), LocalDate.ofEpochDay(0), LocalDate.now())) {
+		for(Alcohol a : Connect.getInstance().findAllAlcohol()) {
 			if(alcohol.getName().equals(a.getName()) && alcohol.getType().equals(a.getType()) && null == a.getRetireDate()) {
 				alcohol = a;
 				break;
@@ -50,29 +50,38 @@ public class ConnectTest_Alcohol extends ConnectTest {
 		}
 		assertNotEquals("Failed to load from database.", Alcohol.NEW_ALCOHOL_ID, alcohol.getAlcoholId());
 
+		assertNull("Sanity check failed: " + alcohol.print(), alcohol.getRetireDate());
+		assertTrue("Sanity check failed: " + alcohol.print(), Connect.getInstance().doesActiveAlcoholExist(alcohol.getName(), alcohol.getType(), LocalDate.now().plusDays(1)));
+//		assertFalse("Sanity check failed: " + alcohol.print(), Connect.getInstance().findActiveAlcoholByType(alcohol.getType(), LocalDate.now(), LocalDate.now().plusDays(1)).isEmpty());
+//		assertFalse("Sanity check failed: " + alcohol.print(), Connect.getInstance().findActiveAlcoholForDateRange(LocalDate.now(), LocalDate.now().plusDays(1)).isEmpty());
+
 		assertTrue("Retire Failed: " + alcohol.print(), Connect.getInstance().retireAlcohol(alcohol.getAlcoholId(), LocalDate.now()));
 
-		// **** Another load for troubleshooting ****
-		for(Alcohol a : Connect.getInstance().findActiveAlcoholByType(alcohol.getType(), LocalDate.ofEpochDay(0), LocalDate.now())) {
+		// Reload from database
+		for(Alcohol a : Connect.getInstance().findAllAlcohol()) {
 			if(alcohol.getName().equals(a.getName()) && alcohol.getType().equals(a.getType())) {
 				alcohol = a;
 				break;
 			}
 		}
 		assertNotEquals("Failed to load from database.", Alcohol.NEW_ALCOHOL_ID, alcohol.getAlcoholId());
-		// **** end extra code
 
+		assertNotNull("Improper retire: " + alcohol.print(), alcohol.getRetireDate());
 		assertFalse("Improper retire: " + alcohol.print(), Connect.getInstance().doesActiveAlcoholExist(alcohol.getName(), alcohol.getType(), LocalDate.now().plusDays(1)));
+//		assertTrue("Improper retire: " + alcohol.print(), Connect.getInstance().findActiveAlcoholByType(alcohol.getType(), LocalDate.now(), LocalDate.now().plusDays(1)).isEmpty());
+//		assertTrue("Improper retire: " + alcohol.print(), Connect.getInstance().findActiveAlcoholForDateRange(LocalDate.now(), LocalDate.now().plusDays(1)).isEmpty());
 	}
 
 	@Test
 	public void testAlcohol_SaveLoad() {
 		int initialDatabaseLoad = Connect.getInstance().findAllAlcohol().size(); // In case other tests run first and add extra data to the database.
 
+		// Save mocks to database.
 		for(Alcohol alcohol : ConnectMock.findAllAlcohol()) {
 			assertTrue("Save failed: " + alcohol.print(), Connect.getInstance().saveAlcohol(alcohol));
 		}
 
+		// Test findAllAlcohol().
 		ArrayList<Alcohol> databaseResults = new ArrayList<>(Connect.getInstance().findAllAlcohol());
 		for(Alcohol alcohol : ConnectMock.findAllAlcohol()) {
 			int index = databaseResults.indexOf(alcohol);
@@ -82,6 +91,7 @@ public class ConnectTest_Alcohol extends ConnectTest {
 
 		assertEquals("Extra data in database!", initialDatabaseLoad, databaseResults.size());
 
+		// Test findActiveAlcoholForDateRange().
 		databaseResults = new ArrayList<>(Connect.getInstance().findActiveAlcoholForDateRange(LocalDate.ofEpochDay(0), LocalDate.now()));
 		for(Alcohol alcohol : ConnectMock.findActiveAlcoholForDateRange(LocalDate.ofEpochDay(0), LocalDate.now())) {
 			int index = databaseResults.indexOf(alcohol);
@@ -91,6 +101,7 @@ public class ConnectTest_Alcohol extends ConnectTest {
 
 		assertEquals("Extra data in database!", initialDatabaseLoad, databaseResults.size());
 
+		// Test findActiveAlcoholByType().
 		for(CustomAlcoholType type : ConnectMock.findAllCustomAlcoholTypes()) {
 			databaseResults = new ArrayList<>(Connect.getInstance().findActiveAlcoholByType(type, LocalDate.ofEpochDay(0), LocalDate.now()));
 			for(Alcohol alcohol : ConnectMock.findActiveAlcoholByType(type)) {
