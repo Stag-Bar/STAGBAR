@@ -2,6 +2,7 @@ package edu.nku.CSC440.stagbar.Connect;
 
 import edu.nku.CSC440.stagbar.Connect.mock.ConnectMock;
 import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
+import org.junit.After;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -9,6 +10,11 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 public class ConnectTest_CustomTypes extends ConnectTest {
+
+	@After
+	public void clearTable() {
+		assertTrue("Table clear failed.", Connect.getInstance().nukeTable("type"));
+	}
 
 	@Test
 	public void testCustomType_SaveLoad() {

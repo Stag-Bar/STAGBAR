@@ -4,6 +4,7 @@ import edu.nku.CSC440.stagbar.Connect.mock.ConnectMock;
 import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
 import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
 import edu.nku.CSC440.stagbar.dataaccess.mock.CustomAlcoholTypeMock;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -27,6 +28,11 @@ public class ConnectTest_Alcohol extends ConnectTest {
 		assertEquals("Type does not match for " + first.print(), first.getType(), second.getType());
 		assertEquals("Creation date does not match for " + first.print(), first.getCreationDate(), second.getCreationDate());
 		assertEquals("Retire date does not match for " + first.print(), first.getRetireDate(), second.getRetireDate());
+	}
+
+	@After
+	public void clearTable() {
+		assertTrue("Table clear failed.", Connect.getInstance().nukeTable("alcohol"));
 	}
 
 	@Test

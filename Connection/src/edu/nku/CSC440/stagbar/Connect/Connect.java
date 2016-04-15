@@ -429,7 +429,7 @@ public class Connect {
 	}
 
 	/** Unrefined method. Currently used for JUnit testing ONLY. */
-	public boolean nukeDatabase(String name) {
+	protected boolean nukeDatabase(String name) {
 		boolean success = false;
 		try {
 			String statement = "DROP DATABASE IF EXISTS " + name + ";";
@@ -442,6 +442,27 @@ public class Connect {
 		}
 		databaseName = null;
 		activeConnection = null;
+
+		return success;
+	}
+
+	protected boolean nukeTable(String name) {
+		boolean success = false;
+		String statement_Delete = "DELETE FROM " + name + ";";
+		String statement_Reset = "ALTER TABLE " + name + " AUTO_INCREMENT = 1;";
+		try {
+			PreparedStatement pSta = getActiveConnection().prepareStatement(statement_Delete);
+			log.info(pSta.toString());
+			pSta.execute();
+
+			pSta = getActiveConnection().prepareStatement(statement_Reset);
+			log.info(pSta.toString());
+			pSta.execute();
+
+			success = true;
+		} catch(Exception e) {
+			log.log(Level.SEVERE, e.toString(), e);
+		}
 
 		return success;
 	}

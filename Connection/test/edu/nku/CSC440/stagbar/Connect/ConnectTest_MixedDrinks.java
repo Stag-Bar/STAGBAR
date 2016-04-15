@@ -5,6 +5,7 @@ import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
 import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
 import edu.nku.CSC440.stagbar.dataaccess.MixedDrink;
 import edu.nku.CSC440.stagbar.dataaccess.MixedDrinkIngredient;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -24,6 +25,12 @@ public class ConnectTest_MixedDrinks extends ConnectTest {
 		for(Alcohol alcohol : ConnectMock.findAllAlcohol()) {
 			assertTrue("Save failed: " + alcohol.print(), Connect.getInstance().saveAlcohol(alcohol));
 		}
+	}
+
+	@After
+	public void clearTable() {
+		assertTrue("Table clear failed.", Connect.getInstance().nukeTable("mixedDrink"));
+		assertTrue("Table clear failed.", Connect.getInstance().nukeTable("mixedDrinkIngredients"));
 	}
 
 	@Test
@@ -55,7 +62,6 @@ public class ConnectTest_MixedDrinks extends ConnectTest {
 		}
 
 	}
-
 
 	public void verifyMixedDrink(MixedDrink drink, MixedDrink databaseDrink) {
 		assertNotNull("Drink not found " + drink, databaseDrink);

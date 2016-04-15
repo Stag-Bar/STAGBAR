@@ -3,6 +3,8 @@ package edu.nku.CSC440.stagbar.Connect;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
+import static org.junit.Assert.assertTrue;
+
 public abstract class ConnectTest {
 
 	public static final String TEST_DATABASE = "junitTestDatabase";
@@ -14,7 +16,7 @@ public abstract class ConnectTest {
 
 	@AfterClass
 	public static void tearDown() {
-		Connect.getInstance().nukeDatabase(TEST_DATABASE);
+		assertTrue("Database teardown failed.", Connect.getInstance().nukeDatabase(TEST_DATABASE));
 	}
 
 }
