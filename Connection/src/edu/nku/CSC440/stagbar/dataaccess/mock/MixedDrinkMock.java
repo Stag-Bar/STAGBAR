@@ -1,6 +1,7 @@
 package edu.nku.CSC440.stagbar.dataaccess.mock;
 
 import edu.nku.CSC440.stagbar.dataaccess.MixedDrink;
+import edu.nku.CSC440.stagbar.dataaccess.MixedDrinkBuilder;
 import edu.nku.CSC440.stagbar.dataaccess.MixedDrinkIngredient;
 
 public class MixedDrinkMock {
@@ -12,22 +13,4 @@ public class MixedDrinkMock {
 			.addIngredientFromDatabase(new MixedDrinkIngredient(AlcoholMock.VODKA, 1.0))
 			.build();
 
-	private static class MixedDrinkBuilder {
-		MixedDrink mixedDrink;
-
-		public MixedDrinkBuilder(String name, boolean isRetired) {
-			mixedDrink = new MixedDrink(name, isRetired);
-		}
-
-		public MixedDrinkBuilder addIngredientFromDatabase(MixedDrinkIngredient ingredient) {
-			mixedDrink.addIngredientFromDatabase(ingredient);
-			return this;
-		}
-
-		public MixedDrink build() {
-			return mixedDrink;
-		}
-
-
-	}
 }
