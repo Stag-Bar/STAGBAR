@@ -69,6 +69,7 @@ public class Connect {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
 			pSta.setString(1, mixedDrinkName);
 			pSta.setInt(2, alcohol.getAlcoholId());
+			log.info(pSta.toString());
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
@@ -602,6 +603,7 @@ public class Connect {
 			pSta.setString(1, mixedDrinkName);
 			pSta.setInt(2, alcohol.getAlcoholId());
 			pSta.setDouble(3, amount);
+			log.info(pSta.toString());
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
@@ -640,6 +642,7 @@ public class Connect {
 			pSta.setDouble(1, amount);
 			pSta.setString(2, mixedDrinkName);
 			pSta.setInt(3, alcohol.getAlcoholId());
+			log.info(pSta.toString());
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {

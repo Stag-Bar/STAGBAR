@@ -138,7 +138,10 @@ public class EditMixedDrinkUI {
 
 	public void addIngredientRow(Alcohol alcohol, double amount) {
 		IngredientRowUI ingredientRow = new IngredientRowUI(alcohol, amount);
-		rowUIMap.put(alcohol.getAlcoholId(), ingredientRow);
+		IngredientRowUI oldRow = rowUIMap.put(alcohol.getAlcoholId(), ingredientRow); // Ensure each row is unique.
+		if(null != oldRow) {
+			ingredientPane.remove(oldRow.getContentPane());
+		}
 		ingredientPane.add(ingredientRow.getContentPane());
 	}
 
@@ -238,14 +241,15 @@ public class EditMixedDrinkUI {
 	}
 
 	private void resetScreen() {
-		// Remove all ingredient rows
-		for(Integer alcoholId : rowUIMap.keySet()) {
-			removeIngredientRow(alcoholId);
-		}
-
 		// Uncheck all checkboxes
 		for(AlcoholCheckBox checkBox : checkBoxMap.values()) {
 			checkBox.setSelected(false);
+		}
+
+		// Remove all ingredient rows
+		Set<Integer> keySet = new HashSet<>(rowUIMap.keySet());
+		for(Integer alcoholId : keySet) {
+			removeIngredientRow(alcoholId);
 		}
 	}
 
