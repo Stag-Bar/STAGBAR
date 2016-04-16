@@ -4,6 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import edu.nku.CSC440.stagbar.ui.common.uiHacks;
 import edu.nku.CSC440.stagbar.ui.mixedDrink.CreateMixedDrinkUI;
+import edu.nku.CSC440.stagbar.ui.mixedDrink.EditMixedDrinkUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,7 +58,8 @@ public class MixedDrinkMenuUI {
 	}
 
 	private void onEditDrink() {
-		//TODO: Navigate to edit drink panel.
+		EditMixedDrinkUI editMixedDrinkUI = new EditMixedDrinkUI();
+		uiHacks.goToPanel(contentPane, editMixedDrinkUI.getContentPane());
 	}
 
 	private void onGoBack() {
