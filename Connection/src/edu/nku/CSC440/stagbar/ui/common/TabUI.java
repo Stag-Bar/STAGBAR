@@ -29,16 +29,18 @@ public class TabUI {
 		createUIComponents();
 	}
 
-	public void addCheckbox(Alcohol alcohol) {
+	public AlcoholCheckBox addCheckbox(Alcohol alcohol) {
 		AlcoholCheckBox alcoholCheckBox = new AlcoholCheckBox(alcohol);
 		alcoholCheckBox.addItemListener(checkBoxListener);
 		contentPane.add(alcoholCheckBox);
+		return alcoholCheckBox;
 	}
 
-	public void addCheckbox(MixedDrink mixedDrink) {
+	public MixedDrinkCheckBox addCheckbox(MixedDrink mixedDrink) {
 		MixedDrinkCheckBox mixedDrinkCheckBox = new MixedDrinkCheckBox(mixedDrink);
 		mixedDrinkCheckBox.addItemListener(checkBoxListener);
 		contentPane.add(mixedDrinkCheckBox);
+		return mixedDrinkCheckBox;
 	}
 
 	private void createUIComponents() {

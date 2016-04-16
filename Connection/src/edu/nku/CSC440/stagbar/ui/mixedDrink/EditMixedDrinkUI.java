@@ -28,6 +28,7 @@ import java.util.Set;
 public class EditMixedDrinkUI {
 	private final Map<Integer, IngredientRowUI> rowUIMap;
 	private JButton cancelButton;
+	private Map<Integer, AlcoholCheckBox> checkBoxMap;
 	private JPanel contentPane;
 	private JLabel errorMessage;
 	private JPanel ingredientPane;
@@ -42,6 +43,7 @@ public class EditMixedDrinkUI {
 		$$$setupUI$$$();
 		contentPane.setName("Edit Mixed Drink");
 
+		checkBoxMap = new HashMap<>();
 		rowUIMap = new HashMap<>();
 		mixedDrinkMap = new HashMap<>();
 		for(MixedDrink drink : Connect.getInstance().findAllMixedDrinks()) {
@@ -210,18 +212,20 @@ public class EditMixedDrinkUI {
 			TabUI tabUI = new TabUI(checkboxListener);
 
 			for(Alcohol alcohol : AlcoholService.getInstance().getAlcoholByType(type, LocalDate.now())) {
-				tabUI.addCheckbox(alcohol);
+				AlcoholCheckBox checkBox = tabUI.addCheckbox(alcohol);
+				checkBoxMap.put(alcohol.getAlcoholId(), checkBox);
 			}
 
 			tabbedPane.addTab(type.toString(), tabUI.getContentPane());
 		}
 	}
 
-	//TODO: Check checkbox
 	private void poulateIngredients(String selectedDrinkName) {
 		MixedDrink selectedDrink = mixedDrinkMap.get(selectedDrinkName);
 		for(MixedDrinkIngredient ingredient : selectedDrink.getIngredients()) {
 			// Check checkbox
+			AlcoholCheckBox checkBox = checkBoxMap.get(ingredient.getAlcohol().getAlcoholId());
+			checkBox.setSelected(true);
 
 			// Add Ingredient row & pre-fill existing amount
 			addIngredientRow(ingredient.getAlcohol(), ingredient.getAmount());
@@ -233,7 +237,6 @@ public class EditMixedDrinkUI {
 		ingredientPane.remove(ingredientRow.getContentPane());
 	}
 
-	// TODO: Uncheck all checkboxes
 	private void resetScreen() {
 		// Remove all ingredient rows
 		for(Integer alcoholId : rowUIMap.keySet()) {
@@ -241,6 +244,9 @@ public class EditMixedDrinkUI {
 		}
 
 		// Uncheck all checkboxes
+		for(AlcoholCheckBox checkBox : checkBoxMap.values()) {
+			checkBox.setSelected(false);
+		}
 	}
 
 	private boolean validateName() {
