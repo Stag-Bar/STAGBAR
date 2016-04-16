@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class MixedDrink {
-	private final Map<MixedDrinkIngredient, MixedDrinkIngredient> ingredients;
 	private final String name;
+	private Map<MixedDrinkIngredient, MixedDrinkIngredient> ingredients;
 	private boolean isRetired;
 	private Map<MixedDrinkIngredient, MixedDrinkIngredient> previousIngredients;
 
@@ -52,6 +52,10 @@ public class MixedDrink {
 
 	public Set<MixedDrinkIngredient> getIngredients() {
 		return ingredients.keySet();
+	}
+
+	public void setIngredients(Set<MixedDrinkIngredient> ingredients) {
+		this.ingredients = mapFromSet(ingredients);
 	}
 
 	public String getName() {

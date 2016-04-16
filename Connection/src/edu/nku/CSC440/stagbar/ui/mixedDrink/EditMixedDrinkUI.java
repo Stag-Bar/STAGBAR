@@ -35,7 +35,6 @@ public class EditMixedDrinkUI {
 	private Map<String, MixedDrink> mixedDrinkMap;
 	private JComboBox<String> nameComboBox;
 	private JLabel nameLabel;
-	private JTextField nameTextField;
 	private JButton okButton;
 	private JTabbedPane tabbedPane;
 
@@ -135,8 +134,8 @@ public class EditMixedDrinkUI {
 		panel7.add(nameComboBox, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 	}
 
-	public void addIngredientRow(Alcohol alcohol) {
-		IngredientRowUI ingredientRow = new IngredientRowUI(alcohol);
+	public void addIngredientRow(Alcohol alcohol, double amount) {
+		IngredientRowUI ingredientRow = new IngredientRowUI(alcohol, amount);
 		rowUIMap.put(alcohol.getAlcoholId(), ingredientRow);
 		ingredientPane.add(ingredientRow.getContentPane());
 	}
@@ -180,7 +179,7 @@ public class EditMixedDrinkUI {
 			AlcoholCheckBox alcoholCheckBox = (AlcoholCheckBox)event.getItemSelectable();
 
 			if(event.getStateChange() == ItemEvent.SELECTED) { // Add to scrollPane
-				addIngredientRow(alcoholCheckBox.getAlcohol());
+				addIngredientRow(alcoholCheckBox.getAlcohol(), 0);
 			}
 			else { // Remove from scrollPane
 				removeIngredientRow(alcoholCheckBox.getAlcohol().getAlcoholId());
@@ -194,8 +193,9 @@ public class EditMixedDrinkUI {
 		if(validateName()) {
 			Set<MixedDrinkIngredient> ingredients = getIngredients();
 			if(null != ingredients) { // Save Drink
-				MixedDrink newDrink = new MixedDrink(nameTextField.getText(), ingredients);
-				MixedDrinkService.getInstance().saveMixedDrink(newDrink);
+				MixedDrink editedDrink = mixedDrinkMap.get((String)nameComboBox.getSelectedItem());
+				editedDrink.setIngredients(getIngredients());
+				MixedDrinkService.getInstance().updateMixedDrink(editedDrink);
 				okButton.setEnabled(false);
 				uiHacks.killMeThenGoToLastPage(contentPane);
 			}
@@ -217,12 +217,14 @@ public class EditMixedDrinkUI {
 		}
 	}
 
+	//TODO: Check checkbox
 	private void poulateIngredients(String selectedDrinkName) {
 		MixedDrink selectedDrink = mixedDrinkMap.get(selectedDrinkName);
 		for(MixedDrinkIngredient ingredient : selectedDrink.getIngredients()) {
 			// Check checkbox
-			// Add Ingredient row
-			// Pre-fill existing amount
+
+			// Add Ingredient row & pre-fill existing amount
+			addIngredientRow(ingredient.getAlcohol(), ingredient.getAmount());
 		}
 	}
 
@@ -231,19 +233,20 @@ public class EditMixedDrinkUI {
 		ingredientPane.remove(ingredientRow.getContentPane());
 	}
 
+	// TODO: Uncheck all checkboxes
 	private void resetScreen() {
 		// Remove all ingredient rows
+		for(Integer alcoholId : rowUIMap.keySet()) {
+			removeIngredientRow(alcoholId);
+		}
+
 		// Uncheck all checkboxes
 	}
 
 	private boolean validateName() {
 		boolean valid = true;
-		if(nameTextField.getText().isEmpty()) {
+		if(null == nameComboBox.getSelectedItem()) {
 			errorMessage.setText("Name field cannot be blank.");
-			valid = false;
-		}
-		else if(!MixedDrinkService.getInstance().isDrinkNameUnique(nameTextField.getText())) {
-			errorMessage.setText("A drink of that name already exists.");
 			valid = false;
 		}
 		nameLabel.setForeground(valid ? Color.BLACK : Color.RED);
