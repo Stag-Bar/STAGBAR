@@ -1,5 +1,8 @@
 package edu.nku.CSC440.stagbar.ui;
 
+import edu.nku.CSC440.stagbar.ui.menu.MainMenuUI;
+import edu.nku.CSC440.stagbar.ui.user.LoginUI;
+
 import javax.swing.*;
 import java.awt.*;
 
