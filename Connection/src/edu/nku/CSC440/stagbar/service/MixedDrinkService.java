@@ -67,7 +67,7 @@ public class MixedDrinkService {
 		boolean updateFailed = false;
 
 		// Save all NEW ingredients.
-		for(MixedDrinkIngredient ingredient : mixedDrink.getIngredients()) {
+		for(MixedDrinkIngredient ingredient : mixedDrink.getNewIngredients()) {
 			updateFailed |= Connect.getInstance().saveMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol(), ingredient.getAmount());
 		}
 
@@ -77,7 +77,7 @@ public class MixedDrinkService {
 		}
 
 		// Delete removed ingredients.
-		for(MixedDrinkIngredient ingredient : mixedDrink.getUpdatedIngredients()) {
+		for(MixedDrinkIngredient ingredient : mixedDrink.getRemovedIngredients()) {
 			updateFailed |= Connect.getInstance().deleteMixedDrinkIngredient(mixedDrink.getName(), ingredient.getAlcohol());
 		}
 
