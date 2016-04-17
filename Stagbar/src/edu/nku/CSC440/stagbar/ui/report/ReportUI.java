@@ -45,4 +45,5 @@ public class ReportUI {
 // DO NOT EDIT OR ADD ANY CODE HERE!
 		$$$setupUI$$$();
 	}
+
 }
