@@ -2,16 +2,18 @@ package edu.nku.CSC440.stagbar.ui.report;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import edu.nku.CSC440.stagbar.dataaccess.data.ReportItem;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class ReportUI {
 	private JPanel contentPane;
 	private JTable reportTable;
 
-	public ReportUI() {
-
+	public ReportUI(ArrayList<ReportItem> data) {
+		reportTable.setModel(new ReportTableModel(data));
 	}
 
 	/** @noinspection ALL */
