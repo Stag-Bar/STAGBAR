@@ -1,6 +1,6 @@
-package edu.nku.CSC440.stagbar.Connect.mock;
+package edu.nku.CSC440.stagbar.dataaccess.databaseConnection;
 
-import edu.nku.CSC440.stagbar.Connect.Database;
+import edu.nku.CSC440.stagbar.Connect.mock.ConnectMock;
 import edu.nku.CSC440.stagbar.dataaccess.data.*;
 
 import java.time.LocalDate;

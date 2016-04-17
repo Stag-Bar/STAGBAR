@@ -3,9 +3,9 @@ package edu.nku.CSC440.stagbar.Connect.mock;
 import edu.nku.CSC440.stagbar.dataaccess.data.Alcohol;
 import edu.nku.CSC440.stagbar.dataaccess.data.CustomAlcoholType;
 import edu.nku.CSC440.stagbar.dataaccess.data.MixedDrink;
-import edu.nku.CSC440.stagbar.dataaccess.mock.AlcoholMock;
-import edu.nku.CSC440.stagbar.dataaccess.mock.CustomAlcoholTypeMock;
-import edu.nku.CSC440.stagbar.dataaccess.mock.MixedDrinkMock;
+import edu.nku.CSC440.stagbar.dataaccess.data.mock.AlcoholMock;
+import edu.nku.CSC440.stagbar.dataaccess.data.mock.CustomAlcoholTypeMock;
+import edu.nku.CSC440.stagbar.dataaccess.data.mock.MixedDrinkMock;
 
 import java.time.LocalDate;
 import java.util.HashSet;

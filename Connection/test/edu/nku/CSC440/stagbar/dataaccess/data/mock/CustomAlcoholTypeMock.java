@@ -1,4 +1,4 @@
-package edu.nku.CSC440.stagbar.dataaccess.mock;
+package edu.nku.CSC440.stagbar.dataaccess.data.mock;
 
 import edu.nku.CSC440.stagbar.dataaccess.data.AlcoholType;
 import edu.nku.CSC440.stagbar.dataaccess.data.CustomAlcoholType;

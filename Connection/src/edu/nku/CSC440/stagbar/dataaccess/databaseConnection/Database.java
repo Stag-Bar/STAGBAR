@@ -1,4 +1,4 @@
-package edu.nku.CSC440.stagbar.Connect;
+package edu.nku.CSC440.stagbar.dataaccess.databaseConnection;
 
 import edu.nku.CSC440.stagbar.dataaccess.data.*;
 
@@ -27,7 +27,7 @@ public interface Database {
 	 * @param drinkName Drink to check database for.
 	 * @return <code>true</code> if given drink is in the database,
 	 * <code>false</code> otherwise.
-	 * @throws RuntimeException If user's database connection is closed.
+	 * @throws RuntimeException If user's database databaseConnection is closed.
 	 */
 	boolean doesDrinkExist(String drinkName);
 
@@ -37,7 +37,7 @@ public interface Database {
 	 * @param username Username to check database for.
 	 * @return <code>true</code> if given username is in the database,
 	 * <code>false</code> otherwise.
-	 * @throws RuntimeException If user's database connection is closed.
+	 * @throws RuntimeException If user's database databaseConnection is closed.
 	 */
 	boolean doesUserExist(String username);
 

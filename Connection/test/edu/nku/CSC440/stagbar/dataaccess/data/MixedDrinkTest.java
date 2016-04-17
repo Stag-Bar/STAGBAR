@@ -1,9 +1,6 @@
-package edu.nku.CSC440.stagbar.dataaccess;
+package edu.nku.CSC440.stagbar.dataaccess.data;
 
-import edu.nku.CSC440.stagbar.dataaccess.data.MixedDrink;
-import edu.nku.CSC440.stagbar.dataaccess.data.MixedDrinkBuilder;
-import edu.nku.CSC440.stagbar.dataaccess.data.MixedDrinkIngredient;
-import edu.nku.CSC440.stagbar.dataaccess.mock.AlcoholMock;
+import edu.nku.CSC440.stagbar.dataaccess.data.mock.AlcoholMock;
 import org.junit.Test;
 
 import java.util.ArrayList;

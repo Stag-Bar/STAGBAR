@@ -1,6 +1,7 @@
 package edu.nku.CSC440.stagbar.Connect;
 
 import edu.nku.CSC440.stagbar.dataaccess.data.*;
+import edu.nku.CSC440.stagbar.dataaccess.databaseConnection.Database;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -371,7 +372,7 @@ public class Connect implements Database {
 	}
 
 	private Connection getActiveConnection() {
-		if(!isConnectionValid()) // Lazy initialization in case connection is closed/corrupted.
+		if(!isConnectionValid()) // Lazy initialization in case databaseConnection is closed/corrupted.
 		{ activeConnection = makeNewMasterConnection(getDatabaseName()); }
 
 		return activeConnection;
@@ -399,7 +400,7 @@ public class Connect implements Database {
 	}
 
 	/**
-	 * Make a connection to the database.
+	 * Make a databaseConnection to the database.
 	 * @return Connection to database if successful, otherwise returns <code>null</code>.
 	 * @throws RuntimeException If mysql is not setup properly.
 	 */
