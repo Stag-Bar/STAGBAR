@@ -1,4 +1,4 @@
-package edu.nku.CSC440.stagbar.Connect;
+package edu.nku.CSC440.stagbar.dataaccess.databaseConnection;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

@@ -1,11 +1,11 @@
-package edu.nku.CSC440.stagbar.Connect;
+package edu.nku.CSC440.stagbar.dataaccess.databaseConnection;
 
-import edu.nku.CSC440.stagbar.Connect.mock.ConnectMock;
 import edu.nku.CSC440.stagbar.dataaccess.data.Alcohol;
 import edu.nku.CSC440.stagbar.dataaccess.data.CustomAlcoholType;
 import edu.nku.CSC440.stagbar.dataaccess.data.MixedDrink;
 import edu.nku.CSC440.stagbar.dataaccess.data.MixedDrinkIngredient;
 import edu.nku.CSC440.stagbar.dataaccess.data.mock.MixedDrinkMock;
+import edu.nku.CSC440.stagbar.dataaccess.databaseConnection.mock.ConnectMock;
 import org.junit.Ignore;
 import org.junit.Test;
 
