@@ -54,15 +54,15 @@ public class AlcoholService {
 		return Connect.getInstance().saveAlcohol(newAlcohol);
 	}
 
-	public boolean saveSales(Set<Entry> salesEntries, Map<MixedDrink, Integer> drinkSales) {
+	public boolean saveSales(Set<Entry> salesEntries, Set<DrinkEntry> drinkEntries) {
 		Map<Integer, Entry> salesEntryMap = new HashMap<>(salesEntries.size());
 		for(Entry salesEntry : salesEntries) {
 			salesEntryMap.put(salesEntry.getAlcoholId(), salesEntry);
 		}
 
-		for(Map.Entry<MixedDrink, Integer> drinkSalesEntry : drinkSales.entrySet()) {
-			MixedDrink drink = drinkSalesEntry.getKey();
-			int amountSold = drinkSalesEntry.getValue();
+		for(DrinkEntry drinkEntry : drinkEntries) {
+			MixedDrink drink = drinkEntry.getDrink();
+			int amountSold = drinkEntry.getAmount();
 
 			for(MixedDrinkIngredient ingredient : drink.getIngredients()) {
 				Entry salesEntry = salesEntryMap.get(ingredient.getAlcohol().getAlcoholId());

@@ -3,10 +3,7 @@ package edu.nku.CSC440.stagbar.ui.dataEntry;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
-import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
-import edu.nku.CSC440.stagbar.dataaccess.Entry;
-import edu.nku.CSC440.stagbar.dataaccess.MixedDrink;
+import edu.nku.CSC440.stagbar.dataaccess.*;
 import edu.nku.CSC440.stagbar.service.AlcoholService;
 import edu.nku.CSC440.stagbar.service.MixedDrinkService;
 import edu.nku.CSC440.stagbar.service.TypeService;
@@ -44,7 +41,7 @@ public class SalesUI {
 		typePaneUIMap = new HashMap<>();
 		drinkPane = new DrinkPaneUI();
 
-		populateScrollPaneByType();
+		populateScrollPaneWithTypes();
 		populateScrollPaneWithDrinks();
 		populateTabPaneByType();
 		populateTabPaneWithDrinks();
@@ -114,11 +111,7 @@ public class SalesUI {
 		scrollPane.setLayout(new BoxLayout(scrollPane, BoxLayout.Y_AXIS));
 	}
 
-	public JPanel getContentPane() {
-		return contentPane;
-	}
-
-	public Set<Entry> getEntries() {
+	public Set<Entry> getAlcoholEntries() {
 		boolean failure = false;
 		Set<Entry> results = new HashSet<>();
 		for(TypePaneUI typePaneUI : typePaneUIMap.values()) {
@@ -132,6 +125,22 @@ public class SalesUI {
 		if(failure) {
 			errorMessage.setText("Sales entry incomplete.");
 			results = null;
+		}
+
+		return results;
+	}
+
+	public JPanel getContentPane() {
+		return contentPane;
+	}
+
+	private Set<DrinkEntry> getDrinkEntries() {
+		Set<DrinkEntry> results = null;
+
+		try {
+			results = drinkPane.getEntries();
+		} catch(IllegalStateException e) {
+			errorMessage.setText("Sales entry incomplete.");
 		}
 
 		return results;
@@ -173,15 +182,21 @@ public class SalesUI {
 	}
 
 	private void onOK() {
-		Set<Entry> entries = getEntries();
-		if(null != entries) {
-			AlcoholService.getInstance().saveSales(entries, new HashMap<>());
+		Set<Entry> alcoholEntries = getAlcoholEntries();
+		Set<DrinkEntry> drinkEntries = getDrinkEntries();
+		if(null != alcoholEntries && null != drinkEntries) {
+			AlcoholService.getInstance().saveSales(alcoholEntries, drinkEntries);
 			okButton.setEnabled(false);
 			uiHacks.killMeThenGoToLastPage(contentPane);
 		}
 	}
 
-	private void populateScrollPaneByType() {
+	private void populateScrollPaneWithDrinks() {
+		scrollPane.add(new JSeparator(JSeparator.HORIZONTAL));
+		scrollPane.add(drinkPane.getContentPane());
+	}
+
+	private void populateScrollPaneWithTypes() {
 		for(CustomAlcoholType type : TypeService.getInstance().getAllCustomAlcoholTypes()) {
 			TypePaneUI typePaneUI = new TypePaneUI(type);
 
@@ -190,11 +205,6 @@ public class SalesUI {
 			typePaneUIMap.put(type, typePaneUI);
 			scrollPane.add(typePaneUI.getContentPane());
 		}
-	}
-
-	private void populateScrollPaneWithDrinks() {
-		scrollPane.add(new JSeparator(JSeparator.HORIZONTAL));
-		scrollPane.add(drinkPane.getContentPane());
 	}
 
 	private void populateTabPaneByType() {
