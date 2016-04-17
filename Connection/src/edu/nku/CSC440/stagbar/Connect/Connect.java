@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Connect {
+public class Connect implements Database {
 
 	/** @deprecated Alter to change database. Remove once first time setup UI is complete. */
 	private static final String CURRENT_WORKING_DATABASE = "test16";
@@ -27,6 +27,7 @@ public class Connect {
 		return connect;
 	}
 
+	@Override
 	public boolean authenticateUser(String username, String password) {
 		String sql = "SELECT * FROM user WHERE username = ? AND password = ?;";
 		ResultSet results;
@@ -44,7 +45,6 @@ public class Connect {
 		return false;
 	}
 
-	//method to create a new user that has full privileges.  IE the inventory manager
 	private boolean createDatabase(String name) {
 		boolean success = false;
 		try {
@@ -62,7 +62,7 @@ public class Connect {
 		return success;
 	}
 
-	/** Deletes given ingredient for given drink. */
+	@Override
 	public boolean deleteMixedDrinkIngredient(String mixedDrinkName, Alcohol alcohol) {
 		String sql = "DELETE FROM mixedDrinkIngredients WHERE drink = ? AND alcoholId = ?;";
 		try {
@@ -78,7 +78,7 @@ public class Connect {
 		return false;
 	}
 
-	/** Delete user from database */
+	@Override
 	public boolean deleteUser(String username) {
 		String statement = "DELETE FROM user WHERE username = ?;";
 		try {
@@ -93,11 +93,7 @@ public class Connect {
 		return false;
 	}
 
-	/**
-	 * Checks database for an alcohol with given name & type that is active (not retired as of given date, inclusive).
-	 *
-	 * @return <code>true</code> if specified alcohol is defined in database and is active, <code>false</code> otherwise.
-	 */
+	@Override
 	public boolean doesActiveAlcoholExist(String name, CustomAlcoholType type, LocalDate date) {
 		String statement = "SELECT * FROM alcohol WHERE name = ? AND typeId = ? AND (retireDate IS NULL OR retireDate > ?);";
 		ResultSet result;
@@ -118,14 +114,7 @@ public class Connect {
 		return false;
 	}
 
-	/**
-	 * Checks database for given drink.
-	 *
-	 * @param drinkName Drink to check database for.
-	 * @return <code>true</code> if given drink is in the database,
-	 * <code>false</code> otherwise.
-	 * @throws RuntimeException If user's database connection is closed.
-	 */
+	@Override
 	public boolean doesDrinkExist(String drinkName) {
 		String sql = "SELECT * FROM mixedDrink WHERE name = ?;";
 		ResultSet results;
@@ -142,14 +131,7 @@ public class Connect {
 		return false;
 	}
 
-	/**
-	 * Checks database for given username.
-	 *
-	 * @param username Username to check database for.
-	 * @return <code>true</code> if given username is in the database,
-	 * <code>false</code> otherwise.
-	 * @throws RuntimeException If user's database connection is closed.
-	 */
+	@Override
 	public boolean doesUserExist(String username) {
 		String statement = "SELECT * FROM user WHERE username = ?;";
 		try {
@@ -162,7 +144,7 @@ public class Connect {
 		}
 	}
 
-	/** Searches database for alcohol whose retire date is null or after the start date & whose creation date is before (inclusive) the end date. */
+	@Override
 	public Set<Alcohol> findActiveAlcohol(LocalDate startDate, LocalDate endDate) {
 		String sql = "SELECT a.alcoholId, a.name, a.typeId, a.creationDate, a.retireDate, t.typeId, t.name, t.kind FROM alcohol a, type t WHERE a.typeId = t.typeId AND a.creationDate <= ? AND (a.retireDate IS NULL OR a.retireDate > ?);";
 
@@ -182,12 +164,12 @@ public class Connect {
 		return set;
 	}
 
-	/** Searches database for alcohol whose retire date is null or after the given date & whose creation date is before (inclusive) given date. */
+	@Override
 	public Set<Alcohol> findActiveAlcohol(LocalDate date) {
 		return findActiveAlcohol(date, date);
 	}
 
-	/** Searches database for alcohol, matching given type, whose retire date is null or after the start date & whose creation date is before (inclusive) the end date. */
+	@Override
 	public Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type, LocalDate startDate, LocalDate endDate) {
 		String sql = "SELECT a.alcoholId, a.name, a.typeId, a.creationDate, a.retireDate, t.typeId, t.name, t.kind FROM alcohol a, type t WHERE t.typeId = ? AND a.typeId = t.typeId AND a.creationDate <= ? AND (a.retireDate IS NULL OR a.retireDate > ?);";
 
@@ -208,11 +190,12 @@ public class Connect {
 		return set;
 	}
 
-	/** Searches database for alcohol, matching given type, whose retire date is null or after the given date & whose creation date is before (inclusive) given date. */
+	@Override
 	public Set<Alcohol> findActiveAlcoholByType(CustomAlcoholType type, LocalDate date) {
 		return findActiveAlcoholByType(type, date, date);
 	}
 
+	@Override
 	public Set<Alcohol> findAllAlcohol() {
 		String statement = "SELECT a.alcoholId, a.name, a.typeId, a.creationDate, a.retireDate, t.typeId, t.name, t.kind FROM alcohol a, type t WHERE a.typeId = t.typeId;";
 		ResultSet result;
@@ -231,7 +214,7 @@ public class Connect {
 		return set;
 	}
 
-	/** Pulls all custom types from database. */
+	@Override
 	public Set<CustomAlcoholType> findAllCustomAlcoholTypes() {
 		String statement = "SELECT * FROM type;";
 		Set<CustomAlcoholType> set = new HashSet<>();
@@ -248,6 +231,7 @@ public class Connect {
 		return set;
 	}
 
+	@Override
 	public Set<String> findAllMixedDrinkNames() {
 		String sql = "SELECT name FROM mixedDrink;";
 		ResultSet results;
@@ -265,7 +249,7 @@ public class Connect {
 		return set;
 	}
 
-	/** Searches database for all mixed drinks and their corresponding ingredients. */
+	@Override
 	public Set<MixedDrink> findAllMixedDrinks() {
 		String sql = "SELECT mi.*, a.*, d.*, t.* FROM mixedDrinkIngredients mi, alcohol a, mixedDrink d, type t WHERE mi.drink = d.name AND mi.alcoholId = a.alcoholId AND a.typeId = t.typeId ORDER BY d.name;";
 		ResultSet results;
@@ -292,7 +276,7 @@ public class Connect {
 		return new HashSet<>(mdMap.values());
 	}
 
-	/** Retrieves all users from database. */
+	@Override
 	public Set<User> findAllUsers() {
 		String sql = "SELECT username, permission FROM user;";
 		ResultSet results;
@@ -309,6 +293,7 @@ public class Connect {
 		return set;
 	}
 
+	@Override
 	public MixedDrink findMixedDrinkByName(String drinkName) {
 		String sql = "SELECT mi.*, a.*, d.*, t.* FROM mixedDrinkIngredients mi, alcohol a, mixedDrink d, type t WHERE mi.drink = d.name AND mi.alcoholId = a.alcoholId AND a.typeId = t.typeId AND mi.drink = ? ORDER BY d.name;";
 		ResultSet results;
@@ -335,6 +320,7 @@ public class Connect {
 		return null;
 	}
 
+	@Override
 	public PermissionLevel findPermissionsForUser(String username) {
 		String sql = "SELECT username, permission FROM user WHERE username = ?;";
 		ResultSet results;
@@ -351,7 +337,7 @@ public class Connect {
 		return null;
 	}
 
-	/** Creates the user and necessary tables. */
+	@Override
 	public void firstTimeSetup(String database, String userName, String password) {
 		if(createDatabase(database)) {
 			try {
@@ -391,6 +377,7 @@ public class Connect {
 		return activeConnection;
 	}
 
+	@Override
 	public String getDatabaseName() {
 		if(null == databaseName) { databaseName = getDatabaseNameFromFile(); }
 
@@ -430,9 +417,7 @@ public class Connect {
 		return conn;
 	}
 
-	/**
-	 * Connect to database as master user.
-	 */
+	/** Connect to database as master user. */
 	private Connection makeNewMasterConnection(String database) {
 		return makeNewConnection("stagbar", "Nkucsc440", database);
 	}
@@ -455,6 +440,7 @@ public class Connect {
 		return success;
 	}
 
+	/** Unrefined method. Currently used for JUnit testing ONLY. */
 	protected boolean nukeTable(String name) {
 		boolean success = false;
 		String statement_Delete = "DELETE FROM " + name + ";";
@@ -476,7 +462,7 @@ public class Connect {
 		return success;
 	}
 
-	/** Sets retire date for given alcohol. */
+	@Override
 	public boolean retireAlcohol(int alcoholId, LocalDate date) {
 		String statement = "UPDATE alcohol SET retireDate = ? WHERE alcoholId = ?;";
 		try {
@@ -491,7 +477,7 @@ public class Connect {
 		return false;
 	}
 
-	/** Sets retire date for given mixed drink. */
+	@Override
 	public boolean retireMixedDrink(String mixedDrink, boolean isRetired) {
 		String sql = "UPDATE mixedDrink SET isRetired = ? WHERE name = ?;";
 		try {
@@ -506,12 +492,7 @@ public class Connect {
 		return false;
 	}
 
-	/**
-	 * Saves a new Alcohol record.
-	 * Should be written in a way that can be called effectively once or in a loop.
-	 *
-	 * @return <code>true</code> if successful, <code>false</code> otherwise.
-	 */
+	@Override
 	public boolean saveAlcohol(Alcohol alcohol) {
 		String statement = "INSERT INTO alcohol(name, typeId, creationDate, retireDate) VALUES (?, ?, ?, ?);";
 		try {
@@ -533,6 +514,7 @@ public class Connect {
 		return false;
 	}
 
+	@Override
 	public boolean saveCustomAlcoholType(CustomAlcoholType type) {
 		String sql = "INSERT INTO type (name, kind) VALUES (?, ?);";
 		try {
@@ -550,7 +532,7 @@ public class Connect {
 		return false;
 	}
 
-	/** Creates a new row on the Delivery table with the given entry. */
+	@Override
 	public boolean saveDeliveryEntry(Entry entry) {
 		return saveEntry(EntryCategory.DELIVERY, entry);
 	}
@@ -574,12 +556,12 @@ public class Connect {
 		return false;
 	}
 
-	/** Creates a new row on the Inventory table with the given entry. */
+	@Override
 	public boolean saveInventoryEntry(Entry entry) {
 		return saveEntry(EntryCategory.INVENTORY, entry);
 	}
 
-	/** Creates a new mixed drink with given name and no retire date. */
+	@Override
 	public boolean saveMixedDrink(String name) {
 		String sql = "INSERT INTO mixedDrink (name, isRetired) VALUES (?, FALSE)";
 		try {
@@ -595,7 +577,7 @@ public class Connect {
 		return false;
 	}
 
-	/** Creates a new mixed drink ingredient for drink with given name. */
+	@Override
 	public boolean saveMixedDrinkIngredient(String mixedDrinkName, Alcohol alcohol, Double amount) {
 		String sql = "INSERT INTO mixedDrinkIngredients (drink, alcoholId, amount) VALUES (?, ?, ?);";
 		try {
@@ -612,11 +594,12 @@ public class Connect {
 		return false;
 	}
 
-	/** Creates a new row on the Sales table with the given entry. */
+	@Override
 	public boolean saveSalesEntry(Entry entry) {
 		return saveEntry(EntryCategory.SALES, entry);
 	}
 
+	@Override
 	public boolean saveUser(String username, String password, PermissionLevel permissionLevel) {
 		String statement = "INSERT INTO user (username, password, permission) VALUES (?, ?, ?);";
 		try {
@@ -634,7 +617,7 @@ public class Connect {
 		return false;
 	}
 
-	/** Updates given ingredient for given drink with given value. */
+	@Override
 	public boolean updateMixedDrinkIngredient(String mixedDrinkName, Alcohol alcohol, Double amount) {
 		String sql = "UPDATE mixedDrinkIngredients SET amount = ? WHERE drink = ? AND alcoholId = ?;";
 		try {
@@ -651,7 +634,7 @@ public class Connect {
 		return false;
 	}
 
-	/** Updates password for given user to given value. */
+	@Override
 	public boolean updateUserPassword(String username, String password) {
 		String sql = "UPDATE user SET password = ? WHERE username = ?;";
 		try {
@@ -668,7 +651,7 @@ public class Connect {
 		return false;
 	}
 
-	/** Updates permissions for given user to given value. */
+	@Override
 	public boolean updateUserPermissions(String username, PermissionLevel permissionLevel) {
 		String sql = "UPDATE user SET permission = ? WHERE username = ?;";
 		try {
@@ -685,7 +668,4 @@ public class Connect {
 		return false;
 	}
 
-	private enum EntryCategory {
-		INVENTORY, DELIVERY, SALES
-	}
 }

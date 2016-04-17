@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class ReportService {
+public class ReportService extends BaseService {
 
 	private static final ReportService REPORT_SERVICE = new ReportService();
 

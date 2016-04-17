@@ -1,7 +1,6 @@
 package edu.nku.CSC440.stagbar.service;
 
 import edu.nku.CSC440.stagbar.Application;
-import edu.nku.CSC440.stagbar.Connect.Connect;
 import edu.nku.CSC440.stagbar.dataaccess.PermissionLevel;
 import edu.nku.CSC440.stagbar.dataaccess.User;
 
@@ -18,7 +17,7 @@ import java.util.Set;
  * Contains business logic for handling users.
  * This class manipulates methods from classes on the DataAccess layer to perform its functions and does not handle SQL directly.
  */
-public class UserService {
+public class UserService extends BaseService {
 
 	private static final UserService USER_SERVICE = new UserService();
 
@@ -67,7 +66,7 @@ public class UserService {
 	 */
 	public boolean authenticateUser(String username, char[] password) {
 		//FIXME: hash password
-		return Connect.getInstance().authenticateUser(username.toLowerCase(), new String(password));
+		return getDatabase().authenticateUser(username.toLowerCase(), new String(password));
 	}
 
 	/**
@@ -78,8 +77,8 @@ public class UserService {
 	 * @return <code>true</code> if update is successful, <code>false</code> otherwise.
 	 */
 	public boolean changePassword(String username, char[] password) {
-//		Connect.getInstance().updateUserPassword(username, toHash(password));
-		boolean result = Connect.getInstance().updateUserPassword(username.toLowerCase(), new String(password)); //FIXME: Hash password before storage.
+//		getDatabase().updateUserPassword(username, toHash(password));
+		boolean result = getDatabase().updateUserPassword(username.toLowerCase(), new String(password)); //FIXME: Hash password before storage.
 
 		//Zero out the possible password, for security.
 		Arrays.fill(password, '0');
@@ -95,7 +94,7 @@ public class UserService {
 	 * @return <code>true</code> if update is successful, <code>false</code> otherwise.
 	 */
 	public boolean changePermissions(String username, PermissionLevel permissionLevel) {
-		return Connect.getInstance().updateUserPermissions(username.toLowerCase(), permissionLevel);
+		return getDatabase().updateUserPermissions(username.toLowerCase(), permissionLevel);
 	}
 
 	/**
@@ -110,7 +109,7 @@ public class UserService {
 //		byte[] passwordHash = toHash(password); // FIXME: Disable until we do security.
 
 		//This method below will create a new user (with all permissions) in the database
-		boolean successful = Connect.getInstance().saveUser(username.toLowerCase(), new String(password), permissionLevel);
+		boolean successful = getDatabase().saveUser(username.toLowerCase(), new String(password), permissionLevel);
 		if(successful) System.out.format("New user %s has been created\n", username.toLowerCase());
 
 		//Zero out the possible password, for security.
@@ -120,7 +119,7 @@ public class UserService {
 	}
 
 	public boolean deleteUser(User user) {
-		return Connect.getInstance().deleteUser(user.getUsername());
+		return getDatabase().deleteUser(user.getUsername());
 	}
 
 	public boolean deleteUsers(Set<User> users) {
@@ -140,15 +139,15 @@ public class UserService {
 	 * <code>false</code> otherwise.
 	 */
 	public boolean doesUserExist(String username) {
-		return Connect.getInstance().doesUserExist(username.toLowerCase());
+		return getDatabase().doesUserExist(username.toLowerCase());
 	}
 
 	public Set<User> getAllUsers() {
-		return Connect.getInstance().findAllUsers();
+		return getDatabase().findAllUsers();
 	}
 
 	private PermissionLevel getPermissionsForUser(String username) {
-		return Connect.getInstance().findPermissionsForUser(username.toLowerCase());
+		return getDatabase().findPermissionsForUser(username.toLowerCase());
 	}
 
 	public boolean login(String username, char[] password) {

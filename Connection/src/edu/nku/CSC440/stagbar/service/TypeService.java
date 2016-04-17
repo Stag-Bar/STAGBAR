@@ -1,12 +1,11 @@
 package edu.nku.CSC440.stagbar.service;
 
-import edu.nku.CSC440.stagbar.Connect.Connect;
 import edu.nku.CSC440.stagbar.dataaccess.AlcoholType;
 import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
 
 import java.util.Set;
 
-public class TypeService {
+public class TypeService extends BaseService {
 
 	private static final TypeService TYPE_SERVICE = new TypeService();
 
@@ -19,11 +18,11 @@ public class TypeService {
 	// TODO: Add methods for handling custom types.
 
 	public Set<CustomAlcoholType> getAllCustomAlcoholTypes() {
-		return Connect.getInstance().findAllCustomAlcoholTypes();
+		return getDatabase().findAllCustomAlcoholTypes();
 	}
 
 	public boolean saveCustomAlcoholType(String name, AlcoholType kind) {
-		return Connect.getInstance().saveCustomAlcoholType(new CustomAlcoholType(CustomAlcoholType.NEW_CUSTOM_TYPE_ID, name, kind));
+		return getDatabase().saveCustomAlcoholType(new CustomAlcoholType(CustomAlcoholType.NEW_CUSTOM_TYPE_ID, name, kind));
 	}
 
 }

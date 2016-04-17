@@ -1,6 +1,5 @@
 package edu.nku.CSC440.stagbar.service;
 
-import edu.nku.CSC440.stagbar.Connect.Connect;
 import edu.nku.CSC440.stagbar.dataaccess.*;
 
 import java.time.LocalDate;
@@ -8,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class AlcoholService {
+public class AlcoholService extends BaseService {
 
 	private static final AlcoholService ALCOHOL_SERVICE = new AlcoholService();
 
@@ -19,22 +18,22 @@ public class AlcoholService {
 	}
 
 	public Set<Alcohol> getAlcoholByType(CustomAlcoholType type, LocalDate endDate) {
-		return Connect.getInstance().findActiveAlcoholByType(type, endDate);
+		return getDatabase().findActiveAlcoholByType(type, endDate);
 	}
 
 	public boolean isAlcoholNameUnique(String name, CustomAlcoholType selectedItem) {
-		return Connect.getInstance().doesActiveAlcoholExist(name, selectedItem, LocalDate.now());
+		return getDatabase().doesActiveAlcoholExist(name, selectedItem, LocalDate.now());
 	}
 
 	public boolean retireAlcohol(Alcohol alcohol) {
-		return Connect.getInstance().retireAlcohol(alcohol.getAlcoholId(), LocalDate.now());
+		return getDatabase().retireAlcohol(alcohol.getAlcoholId(), LocalDate.now());
 	}
 
 	public boolean saveDeliveries(Set<Entry> deliveryEntries) {
 		boolean entryFailed = false;
 
 		for(Entry entry : deliveryEntries)
-			entryFailed |= !Connect.getInstance().saveDeliveryEntry(entry);
+			entryFailed |= !getDatabase().saveDeliveryEntry(entry);
 
 		return entryFailed;
 	}
@@ -43,7 +42,7 @@ public class AlcoholService {
 		boolean entryFailed = false;
 
 		for(Entry entry : inventoryEntries)
-			entryFailed |= !Connect.getInstance().saveInventoryEntry(entry);
+			entryFailed |= !getDatabase().saveInventoryEntry(entry);
 
 		return entryFailed;
 	}
@@ -51,7 +50,7 @@ public class AlcoholService {
 	public boolean saveNewAlcohol(String name, CustomAlcoholType type) {
 		Alcohol newAlcohol = new Alcohol(Alcohol.NEW_ALCOHOL_ID, name, type, LocalDate.now(), null);
 
-		return Connect.getInstance().saveAlcohol(newAlcohol);
+		return getDatabase().saveAlcohol(newAlcohol);
 	}
 
 	public boolean saveSales(Set<Entry> salesEntries, Set<DrinkEntry> drinkEntries) {
@@ -85,7 +84,7 @@ public class AlcoholService {
 		boolean entryFailed = false;
 
 		for(Entry entry : salesEntries)
-			entryFailed |= !Connect.getInstance().saveSalesEntry(entry);
+			entryFailed |= !getDatabase().saveSalesEntry(entry);
 
 		return entryFailed;
 	}
