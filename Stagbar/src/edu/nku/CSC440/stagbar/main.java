@@ -2,16 +2,6 @@ package edu.nku.CSC440.stagbar;
 
 import java.awt.*;
 
-/** Using this class to launch application. Subject to change. */
-public class main {
-
-	public static void main(String[] args) {
-		new Splash();
-		Application.getInstance().getApplicationUI();
-	}
-
-}
-
  class Splash {
 
 	public Splash() {
@@ -32,4 +22,14 @@ public class main {
 			 e.printStackTrace();
 		 }
 	 }
+ }
+
+/** Using this class to launch application. Subject to change. */
+public class main {
+
+	public static void main(String[] args) {
+		new Splash();
+		Application.getInstance().getApplicationUI();
+	}
+
 }
