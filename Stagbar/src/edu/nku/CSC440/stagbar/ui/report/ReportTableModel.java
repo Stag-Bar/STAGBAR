@@ -47,6 +47,9 @@ public class ReportTableModel extends AbstractTableModel {
 			case AMT_DELIVERED:
 				value = row.getAmountDelivered();
 				break;
+			case AMT_DISCREPANCY:
+				value = row.getDiscrepency_Amount();
+				break;
 			case AMT_PREVIOUS:
 				value = row.getAmountPrevious();
 				break;
@@ -58,6 +61,9 @@ public class ReportTableModel extends AbstractTableModel {
 				break;
 			case BTL_DELIVERED:
 				value = row.getBottlesDelivered();
+				break;
+			case BTL_DISCREPANCY:
+				value = row.getDiscrepency_Bottles();
 				break;
 			case BTL_PREVIOUS:
 				value = row.getBottlesPrevious();
