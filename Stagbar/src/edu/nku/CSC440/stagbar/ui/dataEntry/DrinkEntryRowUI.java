@@ -55,6 +55,17 @@ public class DrinkEntryRowUI {
 		amountFormattedTextField.setFocusLostBehavior(JFormattedTextField.PERSIST);
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+
+		DrinkEntryRowUI that = (DrinkEntryRowUI)o;
+
+		return drink.equals(that.drink);
+
+	}
+
 	public JPanel getContentPane() {
 		return contentPane;
 	}
@@ -73,5 +84,8 @@ public class DrinkEntryRowUI {
 		return new DrinkEntry(drink, amount);
 	}
 
-
+	@Override
+	public int hashCode() {
+		return drink.hashCode();
+	}
 }
