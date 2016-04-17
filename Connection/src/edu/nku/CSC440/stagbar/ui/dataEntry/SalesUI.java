@@ -11,6 +11,7 @@ import edu.nku.CSC440.stagbar.service.AlcoholService;
 import edu.nku.CSC440.stagbar.service.MixedDrinkService;
 import edu.nku.CSC440.stagbar.service.TypeService;
 import edu.nku.CSC440.stagbar.ui.common.AlcoholCheckBox;
+import edu.nku.CSC440.stagbar.ui.common.MixedDrinkCheckBox;
 import edu.nku.CSC440.stagbar.ui.common.TabUI;
 import edu.nku.CSC440.stagbar.ui.common.uiHacks;
 
@@ -25,8 +26,10 @@ import java.util.Map;
 import java.util.Set;
 
 public class SalesUI {
+	private final DrinkPaneUI drinkPane;
+	private final ItemListener drinkCheckboxListener = e -> onCheck_Drink(e);
 	private final Map<CustomAlcoholType, TypePaneUI> typePaneUIMap;
-	private final ItemListener checkboxListener = e -> onCheck(e);
+	private final ItemListener alcoholCheckboxListener = e -> onCheck_Alcohol(e);
 	private JButton cancelButton;
 	private JPanel contentPane;
 	private JLabel errorMessage;
@@ -39,8 +42,10 @@ public class SalesUI {
 		contentPane.setName("Sales");
 
 		typePaneUIMap = new HashMap<>();
+		drinkPane = new DrinkPaneUI();
 
 		populateScrollPaneByType();
+		populateScrollPaneWithDrinks();
 		populateTabPaneByType();
 		populateTabPaneWithDrinks();
 
@@ -136,7 +141,7 @@ public class SalesUI {
 		uiHacks.killMeThenGoToLastPage(contentPane);
 	}
 
-	private void onCheck(ItemEvent event) {
+	private void onCheck_Alcohol(ItemEvent event) {
 		if(AlcoholCheckBox.class.equals(event.getItemSelectable().getClass())) {
 			AlcoholCheckBox alcoholCheckBox = (AlcoholCheckBox)event.getItemSelectable();
 			TypePaneUI typePaneUI = typePaneUIMap.get(alcoholCheckBox.getAlcohol().getType());
@@ -149,6 +154,21 @@ public class SalesUI {
 			}
 
 			typePaneUI.getContentPane().revalidate();
+		}
+	}
+
+	private void onCheck_Drink(ItemEvent event) {
+		if(MixedDrinkCheckBox.class.equals(event.getItemSelectable().getClass())) {
+			MixedDrinkCheckBox mixedDrinkCheckBox = (MixedDrinkCheckBox)event.getItemSelectable();
+
+			if(event.getStateChange() == ItemEvent.SELECTED) { // Add to scrollPane
+				drinkPane.addEntryRow(mixedDrinkCheckBox.getMixedDrink());
+			}
+			else { // Remove from scrollPane
+				drinkPane.removeEntryRow(mixedDrinkCheckBox.getMixedDrink());
+			}
+
+			drinkPane.getContentPane().revalidate();
 		}
 	}
 
@@ -173,19 +193,13 @@ public class SalesUI {
 	}
 
 	private void populateScrollPaneWithDrinks() {
-		for(CustomAlcoholType type : TypeService.getInstance().getAllCustomAlcoholTypes()) {
-			TypePaneUI typePaneUI = new TypePaneUI(type);
-
-			if(!typePaneUIMap.isEmpty()) scrollPane.add(new JSeparator(JSeparator.HORIZONTAL));
-
-			typePaneUIMap.put(type, typePaneUI);
-			scrollPane.add(typePaneUI.getContentPane());
-		}
+		scrollPane.add(new JSeparator(JSeparator.HORIZONTAL));
+		scrollPane.add(drinkPane.getContentPane());
 	}
 
 	private void populateTabPaneByType() {
 		for(CustomAlcoholType type : TypeService.getInstance().getAllCustomAlcoholTypes()) {
-			TabUI tabUI = new TabUI(checkboxListener);
+			TabUI tabUI = new TabUI(alcoholCheckboxListener);
 
 			for(Alcohol alcohol : AlcoholService.getInstance().getAlcoholByType(type, LocalDate.now())) {
 				tabUI.addCheckbox(alcohol);
@@ -196,7 +210,7 @@ public class SalesUI {
 	}
 
 	private void populateTabPaneWithDrinks() {
-		TabUI tabUI = new TabUI(checkboxListener);
+		TabUI tabUI = new TabUI(drinkCheckboxListener);
 
 		for(MixedDrink mixedDrink : MixedDrinkService.getInstance().getAllMixedDrinks()) {
 			tabUI.addCheckbox(mixedDrink);
