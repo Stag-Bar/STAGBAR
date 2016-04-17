@@ -69,6 +69,8 @@ public class AlcoholService {
 
 				if(null == salesEntry) {
 					salesEntry = new Entry(ingredient.getAlcohol().getAlcoholId(), 0, 0, LocalDate.now());
+					salesEntries.add(salesEntry);
+					salesEntryMap.put(ingredient.getAlcohol().getAlcoholId(), salesEntry);
 				}
 
 				double amountOfIngredientSold = ingredient.getAmount() * amountSold;

@@ -53,7 +53,6 @@ public class DrinkEntryRowUI {
 		amountFormattedTextField = new ImprovedFormattedTextField(integerNumberInstance, null);
 		amountFormattedTextField.setHorizontalAlignment(SwingConstants.RIGHT);
 		amountFormattedTextField.setFocusLostBehavior(JFormattedTextField.PERSIST);
-		amountFormattedTextField.setEnabled(false);
 	}
 
 	public JPanel getContentPane() {
