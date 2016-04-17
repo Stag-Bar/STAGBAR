@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
   <artifact type="jar" build-on-make="true" name="Stagbar:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/Stagbar_jar</output-path>
-    <root id="archive" name="Connection.jar">
+    <root id="archive" name="Stagbar.jar">
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/Stagbar/META-INF/MANIFEST.MF" />
       </element>
