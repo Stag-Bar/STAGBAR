@@ -5,7 +5,6 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import edu.nku.CSC440.stagbar.Application;
-import edu.nku.CSC440.stagbar.Connect.Connect;
 import edu.nku.CSC440.stagbar.dataaccess.data.User;
 import edu.nku.CSC440.stagbar.service.UserService;
 import edu.nku.CSC440.stagbar.ui.common.uiHacks;
@@ -116,7 +115,7 @@ public class DeleteUserUI {
 	}
 
 	private void populateUserCheckBoxes() {
-		for(User user : Connect.getInstance().findAllUsers()) {
+		for(User user : UserService.getInstance().getAllUsers()) {
 			//ensure that current user is not added to list of users to be deleted
 			if(!Application.getInstance().getUser().equals(user)) {
 				JCheckBox userCheckBox = new JCheckBox(user.getUsername(), false); //all are initially false (i.e. unselected)

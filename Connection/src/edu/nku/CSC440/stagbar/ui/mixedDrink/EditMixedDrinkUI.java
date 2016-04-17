@@ -3,7 +3,6 @@ package edu.nku.CSC440.stagbar.ui.mixedDrink;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import edu.nku.CSC440.stagbar.Connect.Connect;
 import edu.nku.CSC440.stagbar.dataaccess.data.Alcohol;
 import edu.nku.CSC440.stagbar.dataaccess.data.CustomAlcoholType;
 import edu.nku.CSC440.stagbar.dataaccess.data.MixedDrink;
@@ -46,7 +45,7 @@ public class EditMixedDrinkUI {
 		checkBoxMap = new HashMap<>();
 		rowUIMap = new HashMap<>();
 		mixedDrinkMap = new HashMap<>();
-		for(MixedDrink drink : Connect.getInstance().findAllMixedDrinks()) {
+		for(MixedDrink drink : MixedDrinkService.getInstance().getAllMixedDrinks()) {
 			mixedDrinkMap.put(drink.getName(), drink);
 		}
 
