@@ -5,9 +5,7 @@
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/Connection/META-INF/MANIFEST.MF" />
       </element>
-      <element id="module-output" name="Connection" />
       <element id="dir-copy" path="$PROJECT_DIR$/Connection/images" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/Connection/lib/mysql-connector-java-5.1.38-bin.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
