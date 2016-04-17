@@ -1,11 +1,11 @@
 package edu.nku.CSC440.stagbar.service;
 
 import edu.nku.CSC440.stagbar.Connect.Connect;
-import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
-import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
-import edu.nku.CSC440.stagbar.dataaccess.Entry;
+import edu.nku.CSC440.stagbar.dataaccess.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class AlcoholService {
@@ -54,7 +54,32 @@ public class AlcoholService {
 		return Connect.getInstance().saveAlcohol(newAlcohol);
 	}
 
-	public boolean saveSales(Set<Entry> salesEntries) {
+	public boolean saveSales(Set<Entry> salesEntries, Map<MixedDrink, Integer> drinkSales) {
+		Map<Integer, Entry> salesEntryMap = new HashMap<>(salesEntries.size());
+		for(Entry salesEntry : salesEntries) {
+			salesEntryMap.put(salesEntry.getAlcoholId(), salesEntry);
+		}
+
+		for(Map.Entry<MixedDrink, Integer> drinkSalesEntry : drinkSales.entrySet()) {
+			MixedDrink drink = drinkSalesEntry.getKey();
+			int amountSold = drinkSalesEntry.getValue();
+
+			for(MixedDrinkIngredient ingredient : drink.getIngredients()) {
+				Entry salesEntry = salesEntryMap.get(ingredient.getAlcohol().getAlcoholId());
+
+				if(null == salesEntry) {
+					salesEntry = new Entry(ingredient.getAlcohol().getAlcoholId(), 0, 0, LocalDate.now());
+				}
+
+				double amountOfIngredientSold = ingredient.getAmount() * amountSold;
+				salesEntry.setAmount(salesEntry.getAmount() + amountOfIngredientSold);
+			}
+		}
+
+		return saveSales(salesEntries);
+	}
+
+	private boolean saveSales(Set<Entry> salesEntries) {
 		boolean entryFailed = false;
 
 		for(Entry entry : salesEntries)

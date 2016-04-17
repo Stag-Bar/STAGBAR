@@ -36,10 +36,6 @@ public class Entry {
 		return alcoholId;
 	}
 
-	public void setAlcoholId(int alcoholId) {
-		this.alcoholId = alcoholId;
-	}
-
 	public double getAmount() {
 		return amount;
 	}
@@ -58,10 +54,6 @@ public class Entry {
 
 	public LocalDate getDate() {
 		return date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = date;
 	}
 
 	@Override

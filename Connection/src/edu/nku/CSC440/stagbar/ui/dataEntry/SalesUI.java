@@ -155,7 +155,7 @@ public class SalesUI {
 	private void onOK() {
 		Set<Entry> entries = getEntries();
 		if(null != entries) {
-			AlcoholService.getInstance().saveSales(entries);
+			AlcoholService.getInstance().saveSales(entries, new HashMap<>());
 			okButton.setEnabled(false);
 			uiHacks.killMeThenGoToLastPage(contentPane);
 		}
