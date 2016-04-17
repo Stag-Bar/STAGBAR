@@ -3,7 +3,7 @@ package edu.nku.CSC440.stagbar.ui.dataEntry;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import edu.nku.CSC440.stagbar.dataaccess.*;
+import edu.nku.CSC440.stagbar.dataaccess.data.*;
 import edu.nku.CSC440.stagbar.service.AlcoholService;
 import edu.nku.CSC440.stagbar.service.MixedDrinkService;
 import edu.nku.CSC440.stagbar.service.TypeService;

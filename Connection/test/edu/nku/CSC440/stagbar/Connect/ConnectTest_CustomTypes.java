@@ -1,7 +1,7 @@
 package edu.nku.CSC440.stagbar.Connect;
 
 import edu.nku.CSC440.stagbar.Connect.mock.ConnectMock;
-import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
+import edu.nku.CSC440.stagbar.dataaccess.data.CustomAlcoholType;
 import org.junit.After;
 import org.junit.Test;
 

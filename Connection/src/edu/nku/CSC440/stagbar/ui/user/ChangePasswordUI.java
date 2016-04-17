@@ -4,7 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import edu.nku.CSC440.stagbar.Application;
-import edu.nku.CSC440.stagbar.dataaccess.PermissionLevel;
+import edu.nku.CSC440.stagbar.dataaccess.data.PermissionLevel;
 import edu.nku.CSC440.stagbar.service.UserService;
 import edu.nku.CSC440.stagbar.ui.common.uiHacks;
 

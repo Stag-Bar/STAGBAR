@@ -1,4 +1,4 @@
-package edu.nku.CSC440.stagbar.dataaccess;
+package edu.nku.CSC440.stagbar.dataaccess.data;
 
 public enum PermissionLevel {
 	ADMIN("Administrator"), GUEST("Guest");

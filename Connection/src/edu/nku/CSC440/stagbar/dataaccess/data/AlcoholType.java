@@ -1,4 +1,4 @@
-package edu.nku.CSC440.stagbar.dataaccess;
+package edu.nku.CSC440.stagbar.dataaccess.data;
 
 public enum AlcoholType {
 	BOTTLED("Single Serve / Bottled Beer"), DRAFT("Draft"), SHELF("Shelf / Liquor");

@@ -6,7 +6,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import edu.nku.CSC440.stagbar.Application;
 import edu.nku.CSC440.stagbar.Connect.Connect;
-import edu.nku.CSC440.stagbar.dataaccess.User;
+import edu.nku.CSC440.stagbar.dataaccess.data.User;
 import edu.nku.CSC440.stagbar.service.UserService;
 import edu.nku.CSC440.stagbar.ui.common.uiHacks;
 

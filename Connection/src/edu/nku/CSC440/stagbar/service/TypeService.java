@@ -1,7 +1,7 @@
 package edu.nku.CSC440.stagbar.service;
 
-import edu.nku.CSC440.stagbar.dataaccess.AlcoholType;
-import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
+import edu.nku.CSC440.stagbar.dataaccess.data.AlcoholType;
+import edu.nku.CSC440.stagbar.dataaccess.data.CustomAlcoholType;
 
 import java.util.Set;
 

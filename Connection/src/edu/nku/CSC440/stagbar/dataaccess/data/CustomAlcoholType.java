@@ -1,4 +1,4 @@
-package edu.nku.CSC440.stagbar.dataaccess;
+package edu.nku.CSC440.stagbar.dataaccess.data;
 
 /** User created type. */
 public class CustomAlcoholType {

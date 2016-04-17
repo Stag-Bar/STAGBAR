@@ -1,6 +1,6 @@
 package edu.nku.CSC440.stagbar.Connect;
 
-import edu.nku.CSC440.stagbar.dataaccess.PermissionLevel;
+import edu.nku.CSC440.stagbar.dataaccess.data.PermissionLevel;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

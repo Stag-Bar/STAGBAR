@@ -1,4 +1,4 @@
-package edu.nku.CSC440.stagbar.dataaccess;
+package edu.nku.CSC440.stagbar.dataaccess.data;
 
 /** Class used by the application to store information on the current user. */
 public class User {

@@ -2,9 +2,9 @@ package edu.nku.CSC440.stagbar.ui.dataEntry;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
-import edu.nku.CSC440.stagbar.dataaccess.AlcoholType;
-import edu.nku.CSC440.stagbar.dataaccess.Entry;
+import edu.nku.CSC440.stagbar.dataaccess.data.Alcohol;
+import edu.nku.CSC440.stagbar.dataaccess.data.AlcoholType;
+import edu.nku.CSC440.stagbar.dataaccess.data.Entry;
 import edu.nku.CSC440.stagbar.ui.common.ImprovedFormattedTextField;
 
 import javax.swing.*;

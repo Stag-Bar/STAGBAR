@@ -1,8 +1,8 @@
 package edu.nku.CSC440.stagbar.Connect.mock;
 
-import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
-import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
-import edu.nku.CSC440.stagbar.dataaccess.MixedDrink;
+import edu.nku.CSC440.stagbar.dataaccess.data.Alcohol;
+import edu.nku.CSC440.stagbar.dataaccess.data.CustomAlcoholType;
+import edu.nku.CSC440.stagbar.dataaccess.data.MixedDrink;
 import edu.nku.CSC440.stagbar.dataaccess.mock.AlcoholMock;
 import edu.nku.CSC440.stagbar.dataaccess.mock.CustomAlcoholTypeMock;
 import edu.nku.CSC440.stagbar.dataaccess.mock.MixedDrinkMock;

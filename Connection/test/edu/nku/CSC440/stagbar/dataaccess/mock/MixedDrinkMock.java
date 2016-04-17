@@ -1,8 +1,8 @@
 package edu.nku.CSC440.stagbar.dataaccess.mock;
 
-import edu.nku.CSC440.stagbar.dataaccess.MixedDrink;
-import edu.nku.CSC440.stagbar.dataaccess.MixedDrinkBuilder;
-import edu.nku.CSC440.stagbar.dataaccess.MixedDrinkIngredient;
+import edu.nku.CSC440.stagbar.dataaccess.data.MixedDrink;
+import edu.nku.CSC440.stagbar.dataaccess.data.MixedDrinkBuilder;
+import edu.nku.CSC440.stagbar.dataaccess.data.MixedDrinkIngredient;
 
 public class MixedDrinkMock {
 	public static final MixedDrink FIREBULL = new MixedDrinkBuilder("Firebull", false)

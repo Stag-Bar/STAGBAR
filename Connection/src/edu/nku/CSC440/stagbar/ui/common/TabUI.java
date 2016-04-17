@@ -1,7 +1,7 @@
 package edu.nku.CSC440.stagbar.ui.common;
 
-import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
-import edu.nku.CSC440.stagbar.dataaccess.MixedDrink;
+import edu.nku.CSC440.stagbar.dataaccess.data.Alcohol;
+import edu.nku.CSC440.stagbar.dataaccess.data.MixedDrink;
 
 import javax.swing.*;
 import java.awt.*;

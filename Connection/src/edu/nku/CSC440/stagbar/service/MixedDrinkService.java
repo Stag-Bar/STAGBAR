@@ -1,7 +1,7 @@
 package edu.nku.CSC440.stagbar.service;
 
-import edu.nku.CSC440.stagbar.dataaccess.MixedDrink;
-import edu.nku.CSC440.stagbar.dataaccess.MixedDrinkIngredient;
+import edu.nku.CSC440.stagbar.dataaccess.data.MixedDrink;
+import edu.nku.CSC440.stagbar.dataaccess.data.MixedDrinkIngredient;
 
 import java.util.HashSet;
 import java.util.Set;

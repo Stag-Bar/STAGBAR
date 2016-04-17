@@ -3,8 +3,8 @@ package edu.nku.CSC440.stagbar.ui.dataEntry;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import edu.nku.CSC440.stagbar.dataaccess.DrinkEntry;
-import edu.nku.CSC440.stagbar.dataaccess.MixedDrink;
+import edu.nku.CSC440.stagbar.dataaccess.data.DrinkEntry;
+import edu.nku.CSC440.stagbar.dataaccess.data.MixedDrink;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,7 +1,7 @@
 package edu.nku.CSC440.stagbar.Connect;
 
 import edu.nku.CSC440.stagbar.Connect.mock.ConnectMock;
-import edu.nku.CSC440.stagbar.dataaccess.*;
+import edu.nku.CSC440.stagbar.dataaccess.data.*;
 import edu.nku.CSC440.stagbar.dataaccess.mock.AlcoholMock;
 import org.junit.After;
 import org.junit.BeforeClass;

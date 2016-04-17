@@ -1,6 +1,6 @@
 package edu.nku.CSC440.stagbar;
 
-import edu.nku.CSC440.stagbar.dataaccess.User;
+import edu.nku.CSC440.stagbar.dataaccess.data.User;
 import edu.nku.CSC440.stagbar.ui.ApplicationUI;
 
 /**

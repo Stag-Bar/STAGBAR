@@ -1,6 +1,6 @@
 package edu.nku.CSC440.stagbar.Connect;
 
-import edu.nku.CSC440.stagbar.dataaccess.*;
+import edu.nku.CSC440.stagbar.dataaccess.data.*;
 
 import java.sql.*;
 import java.time.LocalDate;

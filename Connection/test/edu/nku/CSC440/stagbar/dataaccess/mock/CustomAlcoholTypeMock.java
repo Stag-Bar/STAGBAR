@@ -1,7 +1,7 @@
 package edu.nku.CSC440.stagbar.dataaccess.mock;
 
-import edu.nku.CSC440.stagbar.dataaccess.AlcoholType;
-import edu.nku.CSC440.stagbar.dataaccess.CustomAlcoholType;
+import edu.nku.CSC440.stagbar.dataaccess.data.AlcoholType;
+import edu.nku.CSC440.stagbar.dataaccess.data.CustomAlcoholType;
 
 public class CustomAlcoholTypeMock {
 	public static final CustomAlcoholType CRAFT_BEER = new CustomAlcoholType(2, "Craft Beer", AlcoholType.BOTTLED);

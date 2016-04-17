@@ -1,8 +1,8 @@
 package edu.nku.CSC440.stagbar.service;
 
 import edu.nku.CSC440.stagbar.Application;
-import edu.nku.CSC440.stagbar.dataaccess.PermissionLevel;
-import edu.nku.CSC440.stagbar.dataaccess.User;
+import edu.nku.CSC440.stagbar.dataaccess.data.PermissionLevel;
+import edu.nku.CSC440.stagbar.dataaccess.data.User;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;

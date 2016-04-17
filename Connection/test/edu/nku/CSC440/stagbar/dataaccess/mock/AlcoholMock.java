@@ -1,6 +1,6 @@
 package edu.nku.CSC440.stagbar.dataaccess.mock;
 
-import edu.nku.CSC440.stagbar.dataaccess.Alcohol;
+import edu.nku.CSC440.stagbar.dataaccess.data.Alcohol;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
