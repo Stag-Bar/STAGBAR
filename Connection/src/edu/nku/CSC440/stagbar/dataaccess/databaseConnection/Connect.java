@@ -387,6 +387,7 @@ public class Connect implements Database {
 	/** Gets database name from file. */
 	private String getDatabaseNameFromFile() { //TODO: Get database name from file
 //		return null; // For creating new database
+//		return FileIO.readDatabaseName();
 		return CURRENT_WORKING_DATABASE; // For testing current working database
 	}
 
