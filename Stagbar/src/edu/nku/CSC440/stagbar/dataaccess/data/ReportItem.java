@@ -12,21 +12,23 @@ public class ReportItem {
 	private int bottlesPrevious;
 	private int bottlesSold;
 
-	public ReportItem(Alcohol alcohol) {
+	/** @see ReportItemBuilder */
+	protected ReportItem(Alcohol alcohol) {
 		if(null == alcohol) throw new IllegalArgumentException("Alcohol cannot be null.");
 		this.alcohol = alcohol;
 	}
 
 	/**
 	 * @param alcohol          Alcohol whose data is represented by this entry.
-	 * @param amountCurrent    Amount from MOST RECENT entry, as of endDate, for INVENTORY.
-	 * @param amountDelivered  Summation of DELIVERY entries from startDate to endDate (inclusive).
-	 * @param amountPrevious   Amount from MOST RECENT entry, as of startDate, for INVENTORY.
-	 * @param amountSold       Summation of SALES entries from startDate to endDate (inclusive).
-	 * @param bottlesCurrent   Bottles from MOST RECENT entry, as of endDate, for INVENTORY.
-	 * @param bottlesDelivered Summation of DELIVERY entries from startDate to endDate (inclusive).
-	 * @param bottlesPrevious  Bottles from MOST RECENT entry, as of startDate, for INVENTORY.
-	 * @param bottlesSold      Summation of SALES entries from startDate to endDate (inclusive).
+	 * @param amountCurrent    Amount from MOST RECENT entry, as of <b>endDate</b>, for INVENTORY.
+	 * @param amountDelivered  Summation of DELIVERY entries from <b>startDate</b> to <b>endDate</b> (inclusive).
+	 * @param amountPrevious   Amount from MOST RECENT entry, as of <b>startDate</b>, for INVENTORY.
+	 * @param amountSold       Summation of SALES entries from <b>startDate</b> to <b>endDate</b> (inclusive).
+	 * @param bottlesCurrent   Bottles from MOST RECENT entry, as of <b>endDate</b>, for INVENTORY.
+	 * @param bottlesDelivered Summation of DELIVERY entries from <b>startDate</b> to endDate (inclusive).
+	 * @param bottlesPrevious  Bottles from MOST RECENT entry, as of <b>startDate</b>, for INVENTORY.
+	 * @param bottlesSold      Summation of SALES entries from <b>startDate</b> to <b>endDate</b> (inclusive).
+	 * @see ReportItemBuilder
 	 */
 	public ReportItem(Alcohol alcohol, double amountCurrent, double amountDelivered, double amountPrevious, double amountSold, int bottlesCurrent, int bottlesDelivered, int bottlesPrevious, int bottlesSold) {
 		this(alcohol);
