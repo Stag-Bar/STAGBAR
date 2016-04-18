@@ -32,6 +32,8 @@ public class ReportTableModel extends AbstractTableModel {
 	}
 
 	private Object getValueAt(int rowIndex, Column column) {
+		if(data.isEmpty()) return null;
+
 		ReportItem row = data.get(rowIndex);
 		Object value = null;
 		switch(column) {

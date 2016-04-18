@@ -5,6 +5,7 @@ import edu.nku.CSC440.stagbar.dataaccess.data.ReportItem;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ public class ReportService extends BaseService {
 	/** Calculates report data for all alcohol in database for given date range. */
 	public Set<ReportItem> findReportDataForDateRange(LocalDate startDate, LocalDate endDate) {
 		//TODO: Fill this set via database. May be able to do it with a single query.
-		return null;
+		return new HashSet<>();
 	}
 
 	/** Calculates report data for all alcohol in database for today. */
