@@ -4,7 +4,7 @@ import java.awt.*;
 
  class Splash {
 
-	public Splash() {
+	 Splash() {
 		final SplashScreen splash = SplashScreen.getSplashScreen();
 		if (splash == null) {
 			System.out.println("SplashScreen.getSplashScreen() returned null");
@@ -25,7 +25,7 @@ import java.awt.*;
  }
 
 /** Using this class to launch application. Subject to change. */
-public class main {
+public class Stagbar {
 
 	public static void main(String[] args) {
 		new Splash();
