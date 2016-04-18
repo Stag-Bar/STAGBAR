@@ -1,7 +1,5 @@
 package edu.nku.CSC440.stagbar.ui.mixedDrink;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
 import edu.nku.CSC440.stagbar.dataaccess.data.Alcohol;
 import edu.nku.CSC440.stagbar.dataaccess.data.MixedDrinkIngredient;
 import edu.nku.CSC440.stagbar.ui.common.ImprovedFormattedTextField;

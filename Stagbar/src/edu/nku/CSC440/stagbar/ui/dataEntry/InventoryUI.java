@@ -1,8 +1,5 @@
 package edu.nku.CSC440.stagbar.ui.dataEntry;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
 import edu.nku.CSC440.stagbar.dataaccess.data.Alcohol;
 import edu.nku.CSC440.stagbar.dataaccess.data.CustomAlcoholType;
 import edu.nku.CSC440.stagbar.dataaccess.data.Entry;

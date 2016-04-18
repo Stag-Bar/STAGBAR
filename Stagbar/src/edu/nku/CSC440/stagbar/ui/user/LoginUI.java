@@ -1,7 +1,5 @@
 package edu.nku.CSC440.stagbar.ui.user;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
 import edu.nku.CSC440.stagbar.service.UserService;
 
 import javax.swing.*;

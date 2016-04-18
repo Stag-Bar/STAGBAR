@@ -1,7 +1,5 @@
 package edu.nku.CSC440.stagbar.ui.menu;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
 import edu.nku.CSC440.stagbar.ui.common.uiHacks;
 import edu.nku.CSC440.stagbar.ui.mixedDrink.CreateMixedDrinkUI;
 import edu.nku.CSC440.stagbar.ui.mixedDrink.EditMixedDrinkUI;
