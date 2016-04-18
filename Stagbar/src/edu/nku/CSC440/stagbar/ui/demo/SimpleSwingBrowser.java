@@ -12,7 +12,6 @@ import javafx.scene.web.WebView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -66,36 +65,21 @@ public class SimpleSwingBrowser extends JFrame {
 				engine.titleProperty().addListener(new ChangeListener<String>() {
 					@Override
 					public void changed(ObservableValue<? extends String> observable, String oldValue, final String newValue) {
-						SwingUtilities.invokeLater(new Runnable() {
-							@Override
-							public void run() {
-								SimpleSwingBrowser.this.setTitle(newValue);
-							}
-						});
+						SwingUtilities.invokeLater(() -> SimpleSwingBrowser.this.setTitle(newValue));
 					}
 				});
 
 				engine.setOnStatusChanged(new EventHandler<WebEvent<String>>() {
 					@Override
 					public void handle(final WebEvent<String> event) {
-						SwingUtilities.invokeLater(new Runnable() {
-							@Override
-							public void run() {
-								lblStatus.setText(event.getData());
-							}
-						});
+						SwingUtilities.invokeLater(() -> lblStatus.setText(event.getData()));
 					}
 				});
 
 				engine.locationProperty().addListener(new ChangeListener<String>() {
 					@Override
 					public void changed(ObservableValue<? extends String> ov, String oldValue, final String newValue) {
-						SwingUtilities.invokeLater(new Runnable() {
-							@Override
-							public void run() {
-								txtURL.setText(newValue);
-							}
-						});
+						SwingUtilities.invokeLater(() -> txtURL.setText(newValue));
 					}
 				});
 
@@ -142,12 +126,7 @@ public class SimpleSwingBrowser extends JFrame {
 	private void initComponents() {
 		createScene();
 
-		ActionListener al = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				loadURL(txtURL.getText());
-			}
-		};
+		ActionListener al = e -> loadURL(txtURL.getText());
 
 		btnGo.addActionListener(al);
 		txtURL.addActionListener(al);
