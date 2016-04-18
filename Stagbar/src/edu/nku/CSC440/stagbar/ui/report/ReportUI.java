@@ -7,13 +7,14 @@ import edu.nku.CSC440.stagbar.dataaccess.data.ReportItem;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class ReportUI {
 	private JPanel contentPane;
 	private JTable reportTable;
 
-	public ReportUI(ArrayList<ReportItem> data) {
-		reportTable.setModel(new ReportTableModel(data));
+	public ReportUI(Set<ReportItem> data) {
+		reportTable.setModel(new ReportTableModel(new ArrayList<>(data)));
 	}
 
 	/** @noinspection ALL */

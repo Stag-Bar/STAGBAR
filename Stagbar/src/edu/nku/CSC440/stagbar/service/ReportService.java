@@ -14,6 +14,10 @@ public class ReportService extends BaseService {
 
 	private ReportService() {}
 
+	public static ReportService getInstance() {
+		return REPORT_SERVICE;
+	}
+
 	/** Calculates report data for all alcohol in database for given date range. */
 	public Set<ReportItem> findReportDataForDateRange(LocalDate startDate, LocalDate endDate) {
 		//TODO: Fill this set via database. May be able to do it with a single query.
@@ -47,10 +51,6 @@ public class ReportService extends BaseService {
 		Map<Alcohol, Integer> results = new HashMap<>();
 		for(ReportItem item : reportItemSet) results.put(item.getAlcohol(), item.getDiscrepency_Bottles());
 		return results;
-	}
-
-	public ReportService getInstance() {
-		return REPORT_SERVICE;
 	}
 
 }

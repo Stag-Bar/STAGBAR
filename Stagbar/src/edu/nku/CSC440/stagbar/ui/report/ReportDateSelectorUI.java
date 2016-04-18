@@ -3,6 +3,8 @@ package edu.nku.CSC440.stagbar.ui.report;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import edu.nku.CSC440.stagbar.dataaccess.data.ReportItem;
+import edu.nku.CSC440.stagbar.service.ReportService;
 import edu.nku.CSC440.stagbar.ui.common.uiHacks;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -11,15 +13,16 @@ import javafx.scene.control.DatePicker;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Set;
 
 public class ReportDateSelectorUI {
 	private JButton cancelButton;
 	private JPanel contentPane;
-	private DatePicker endDate;
 	private JFXPanel endDateJFXPanel;
+	private DatePicker endDatePicker;
 	private JButton okButton;
-	private DatePicker startDate;
 	private JFXPanel startDateJFXPanel;
+	private DatePicker startDatePicker;
 
 	public ReportDateSelectorUI() {
 		createScene();
@@ -77,11 +80,11 @@ public class ReportDateSelectorUI {
 
 	private void createScene() {
 		Platform.runLater(() -> {
-			startDate = new DatePicker();
-			startDateJFXPanel.setScene(new Scene(startDate));
+			startDatePicker = new DatePicker();
+			startDateJFXPanel.setScene(new Scene(startDatePicker));
 
-			endDate = new DatePicker();
-			endDateJFXPanel.setScene(new Scene(endDate));
+			endDatePicker = new DatePicker();
+			endDateJFXPanel.setScene(new Scene(endDatePicker));
 		});
 	}
 
@@ -94,8 +97,9 @@ public class ReportDateSelectorUI {
 	}
 
 	private void onOK() {
-		System.out.println(startDate.getValue());
-		System.out.println(endDate.getValue());
+		Set<ReportItem> data = ReportService.getInstance().findReportDataForDateRange(startDatePicker.getValue(), endDatePicker.getValue());
+		ReportUI reportUI = new ReportUI(data);
+		uiHacks.goToPanel(contentPane, reportUI.getContentPane());
 	}
 
 	{
@@ -104,4 +108,5 @@ public class ReportDateSelectorUI {
 // DO NOT EDIT OR ADD ANY CODE HERE!
 		$$$setupUI$$$();
 	}
+
 }
