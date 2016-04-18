@@ -1,4 +1,4 @@
-package edu.nku.CSC440.stagbar.dataaccess;
+package edu.nku.CSC440.stagbar.dataaccess.file;
 
 import org.junit.Ignore;
 import org.junit.Test;

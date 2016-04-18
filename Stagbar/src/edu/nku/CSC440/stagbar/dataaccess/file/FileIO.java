@@ -1,4 +1,4 @@
-package edu.nku.CSC440.stagbar.dataaccess;
+package edu.nku.CSC440.stagbar.dataaccess.file;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
