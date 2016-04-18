@@ -14,6 +14,7 @@ public class ReportUI {
 	private JTable reportTable;
 
 	public ReportUI(Set<ReportItem> data) {
+		contentPane.setName("Report");
 		reportTable.setModel(new ReportTableModel(new ArrayList<>(data)));
 	}
 
