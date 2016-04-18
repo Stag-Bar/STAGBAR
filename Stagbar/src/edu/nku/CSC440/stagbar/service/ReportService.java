@@ -4,15 +4,20 @@ import edu.nku.CSC440.stagbar.dataaccess.data.Alcohol;
 import edu.nku.CSC440.stagbar.dataaccess.data.ReportItem;
 import edu.nku.CSC440.stagbar.dataaccess.data.mock.ReportItemMock;
 
+import javax.swing.*;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ReportService extends BaseService {
 
 	private static final ReportService REPORT_SERVICE = new ReportService();
+	private static final Logger log = Logger.getLogger(ReportService.class.getName());
+
 
 	private ReportService() {}
 
@@ -62,6 +67,16 @@ public class ReportService extends BaseService {
 		Map<Alcohol, Integer> results = new HashMap<>();
 		for(ReportItem item : reportItemSet) results.put(item.getAlcohol(), item.getDiscrepency_Bottles());
 		return results;
+	}
+
+	public void printTable(JTable table) {
+		try {
+			if(!table.print()) {
+				log.info("User cancelled printing");
+			}
+		} catch(java.awt.print.PrinterException e) {
+			log.log(Level.SEVERE, "Cannot print %s%n", e);
+		}
 	}
 
 }

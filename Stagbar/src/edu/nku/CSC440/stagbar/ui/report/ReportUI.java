@@ -2,7 +2,10 @@ package edu.nku.CSC440.stagbar.ui.report;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import edu.nku.CSC440.stagbar.dataaccess.data.ReportItem;
+import edu.nku.CSC440.stagbar.service.ReportService;
+import edu.nku.CSC440.stagbar.ui.common.uiHacks;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,12 +13,16 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class ReportUI {
+	private JButton cancelButton;
 	private JPanel contentPane;
+	private JButton printButton;
 	private JTable reportTable;
 
 	public ReportUI(Set<ReportItem> data) {
 		contentPane.setName("Report");
 		reportTable.setModel(new ReportTableModel(new ArrayList<>(data)));
+		printButton.addActionListener(e -> onPrint());
+		cancelButton.addActionListener(e -> onCancel());
 	}
 
 	/** @noinspection ALL */
@@ -30,17 +37,36 @@ public class ReportUI {
 	 */
 	private void $$$setupUI$$$() {
 		contentPane = new JPanel();
-		contentPane.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+		contentPane.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
 		final JScrollPane scrollPane1 = new JScrollPane();
 		contentPane.add(scrollPane1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
 		reportTable = new JTable();
 		reportTable.setAutoCreateRowSorter(true);
 		reportTable.setFillsViewportHeight(true);
 		scrollPane1.setViewportView(reportTable);
+		final JPanel panel1 = new JPanel();
+		panel1.setLayout(new GridLayoutManager(1, 3, new Insets(5, 10, 10, 10), -1, -1));
+		contentPane.add(panel1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+		printButton = new JButton();
+		printButton.setText("Print");
+		panel1.add(printButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		final Spacer spacer1 = new Spacer();
+		panel1.add(spacer1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+		cancelButton = new JButton();
+		cancelButton.setText("Cancel");
+		panel1.add(cancelButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 	}
 
 	public JPanel getContentPane() {
 		return contentPane;
+	}
+
+	private void onCancel() {
+		uiHacks.killMeThenGoToLastPage(contentPane);
+	}
+
+	private void onPrint() {
+		ReportService.getInstance().printTable(reportTable);
 	}
 
 	{
