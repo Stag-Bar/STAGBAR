@@ -19,11 +19,6 @@ public class ReportItemBuilder {
 		return new ReportItem(alcohol, amountCurrent, amountDelivered, amountPrevious, amountSold, bottlesCurrent, bottlesDelivered, bottlesPrevious, bottlesSold);
 	}
 
-	public ReportItemBuilder setAlcohol(Alcohol alcohol) {
-		this.alcohol = alcohol;
-		return this;
-	}
-
 	public ReportItemBuilder setAmountCurrent(double amountCurrent) {
 		this.amountCurrent = amountCurrent;
 		return this;
