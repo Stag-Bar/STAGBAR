@@ -11,7 +11,7 @@ public class ReportItemBuilder {
 	private int bottlesPrevious;
 	private int bottlesSold;
 
-	ReportItemBuilder(Alcohol alcohol) {
+	public ReportItemBuilder(Alcohol alcohol) {
 		this.alcohol = alcohol;
 	}
 
