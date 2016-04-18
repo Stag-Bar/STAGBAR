@@ -13,6 +13,7 @@ import javafx.scene.control.DatePicker;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
 import java.util.Set;
 
 public class ReportDateSelectorUI {
@@ -81,9 +82,11 @@ public class ReportDateSelectorUI {
 	private void createScene() {
 		Platform.runLater(() -> {
 			startDatePicker = new DatePicker();
+			startDatePicker.setValue(LocalDate.now());
 			startDateJFXPanel.setScene(new Scene(startDatePicker));
 
 			endDatePicker = new DatePicker();
+			endDatePicker.setValue(LocalDate.now());
 			endDateJFXPanel.setScene(new Scene(endDatePicker));
 		});
 	}
