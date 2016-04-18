@@ -59,14 +59,6 @@ public class uiHacks {
 		setTitle(masterPanel);
 	}
 
-//	public static void setTitle(JPanel panel) {
-//		String title = panel.getName();
-//		if(null == title || "Master".equals(title))
-//			getContainingFrame(panel).setTitle(String.format("%s", ApplicationUI.APPLICATION_TITLE));
-//		else
-//			getContainingFrame(panel).setTitle(String.format("%s - %s", ApplicationUI.APPLICATION_TITLE, title));
-//	}
-
 	public static void repack(JPanel panel) {
 		getContainingFrame(panel).pack();
 	}
