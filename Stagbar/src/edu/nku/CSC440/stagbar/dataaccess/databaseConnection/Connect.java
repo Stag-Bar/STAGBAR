@@ -356,7 +356,11 @@ public class Connect implements Database {
 				sta.execute(statement);
 				statement = "CREATE TABLE alcohol (alcoholId INT NOT NULL AUTO_INCREMENT, name VARCHAR(40) NOT NULL, typeId INT, creationDate DATE NOT NULL, retireDate DATE, PRIMARY KEY(alcoholId), FOREIGN KEY(typeId) REFERENCES type(typeId));";
 				sta.execute(statement);
-				statement = "CREATE TABLE entry (entryId INT NOT NULL AUTO_INCREMENT, category VARCHAR(9) NOT NULL, alcoholId INT, amount DOUBLE, bottles INT, date DATE NOT NULL, PRIMARY KEY(entryId), FOREIGN KEY (alcoholId) REFERENCES alcohol(alcoholId));";
+				statement = "CREATE TABLE sales (entryId INT NOT NULL AUTO_INCREMENT, alcoholId INT, amount DOUBLE, bottles INT, date DATE NOT NULL, PRIMARY KEY(entryId), FOREIGN KEY (alcoholId) REFERENCES alcohol(alcoholId));";
+				sta.execute(statement);
+				statement = "CREATE TABLE delivery (entryId INT NOT NULL AUTO_INCREMENT, alcoholId INT, amount DOUBLE, bottles INT, date DATE NOT NULL, PRIMARY KEY(entryId), FOREIGN KEY (alcoholId) REFERENCES alcohol(alcoholId));";
+				sta.execute(statement);
+				statement = "CREATE TABLE inventory (entryId INT NOT NULL AUTO_INCREMENT, alcoholId INT, amount DOUBLE, bottles INT, date DATE NOT NULL, PRIMARY KEY(entryId), FOREIGN KEY (alcoholId) REFERENCES alcohol(alcoholId));";
 				sta.execute(statement);
 				statement = "CREATE TABLE mixedDrink (name VARCHAR(40) NOT NULL, isRetired BOOLEAN NOT NULL, PRIMARY KEY(name));";
 				sta.execute(statement);
@@ -541,14 +545,14 @@ public class Connect implements Database {
 	private boolean saveEntry(EntryCategory category, Entry entry) {
 		log.info("Saving to " + category + ": " + entry);
 
-		String sql = "INSERT INTO entry (category, alcoholId, amount, bottles, date) VALUES (?, ?, ?, ?, ?);";
+		String sql = "INSERT INTO " + category.name().toLowerCase() + " (alcoholId, amount, bottles, date) VALUES (?, ?, ?, ?);";
 		try {
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
-			pSta.setString(1, category.name());
-			pSta.setInt(2, entry.getAlcoholId());
-			pSta.setDouble(3, entry.getAmount());
-			pSta.setInt(4, entry.getBottles());
-			pSta.setDate(5, Date.valueOf(entry.getDate()));
+			
+			pSta.setInt(1, entry.getAlcoholId());
+			pSta.setDouble(2, entry.getAmount());
+			pSta.setInt(3, entry.getBottles());
+			pSta.setDate(4, Date.valueOf(entry.getDate()));
 			pSta.execute();
 			return true;
 		} catch(SQLException e) {
