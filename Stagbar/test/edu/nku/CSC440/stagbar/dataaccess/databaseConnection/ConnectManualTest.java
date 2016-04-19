@@ -23,7 +23,7 @@ public class ConnectManualTest {
 	@Test
 	@Ignore
 	public void testCreateAndLoadDatabase() {
-		Connect.getInstance().firstTimeSetup("test16", "user", "password");
+		Connect.getInstance().firstTimeSetup("test17", "user", "password");
 
 		// Save custom types.
 		for(CustomAlcoholType type : ConnectMock.findAllCustomAlcoholTypes()) {
