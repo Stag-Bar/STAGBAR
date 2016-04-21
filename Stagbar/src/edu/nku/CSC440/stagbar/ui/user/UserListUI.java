@@ -57,11 +57,6 @@ public class UserListUI {
     }
 
     private void createUIComponents() {
-        /*userLabel = new JLabel();
-        userLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        userLabel.setText(user.getUsername());
-        userLabel.setEnabled(true);
-        */
         adminRadio = new JRadioButton();
         guestRadio = new JRadioButton();
 
@@ -74,18 +69,6 @@ public class UserListUI {
             guestRadio.setSelected(true);
             iAmAdmin = false;
         }
-
-        //BELOW IS ORIGINAL CODE
-
-        /*if (Application.getInstance().getUser().getPermissionLevel().equals(PermissionLevel.ADMIN)) {
-            adminRadio.setSelected(true);
-            guestRadio.setSelected(false);
-        } else if (Application.getInstance().getUser().getPermissionLevel().equals(PermissionLevel.GUEST)) {
-            adminRadio.setSelected(false);
-            guestRadio.setSelected(true);
-        }*/
-
-
     }
 
 
