@@ -19,6 +19,8 @@ public class UserListUI {
     private static final String TITLE_PERMISSION_USER = "Permission Change OK";
     private boolean iAmAdmin; //true if this user is Admin, otherwise false
     private User user;
+    private int conversionCount;
+    private boolean iHaveConverted;
 
     public UserListUI(User user) {
         if (null == user) throw new IllegalArgumentException("User cannot be null.");
@@ -29,6 +31,8 @@ public class UserListUI {
         guestRadio.setText("Guest");
         adminRadio.addItemListener(e -> adminRadioSelection());
         guestRadio.addItemListener(e -> guestRadioSelection());
+        conversionCount = 0;
+        iHaveConverted = false;
     }
 
     private void adminRadioSelection() {
@@ -36,7 +40,8 @@ public class UserListUI {
             guestRadio.setSelected(false); //immediately unselect the other button
             iAmAdmin = true; //guest becomes admin
             Connect.getInstance().updateUserPermissions(user.getUsername(), PermissionLevel.ADMIN);
-            JOptionPane.showMessageDialog(contentPane, String.format(CONVERT_TO_ADMIN, user.getUsername()), TITLE_PERMISSION_USER, JOptionPane.INFORMATION_MESSAGE);
+            conversionCount++;
+            //JOptionPane.showMessageDialog(contentPane, String.format(CONVERT_TO_ADMIN, user.getUsername()), TITLE_PERMISSION_USER, JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -45,11 +50,24 @@ public class UserListUI {
             adminRadio.setSelected(false); //immediately unselect the other button
             iAmAdmin = false; //admin becomes guest
             Connect.getInstance().updateUserPermissions(user.getUsername(), PermissionLevel.GUEST);
-            JOptionPane.showMessageDialog(contentPane, String.format(CONVERT_TO_GUEST, user.getUsername()), TITLE_PERMISSION_USER, JOptionPane.INFORMATION_MESSAGE);
+            conversionCount++;
+            //JOptionPane.showMessageDialog(contentPane, String.format(CONVERT_TO_GUEST, user.getUsername()), TITLE_PERMISSION_USER, JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
-    public JPanel getContentPane() { return contentPane;  }
+    public boolean getConversionStatus() { // Have I been converted to the other side?
+        if ((conversionCount % 2) != 0)
+            iHaveConverted = true;
+        return iHaveConverted;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public JPanel getContentPane() {
+        return contentPane;
+    }
 
     private void createUIComponents() {
         adminRadio = new JRadioButton();
@@ -57,11 +75,12 @@ public class UserListUI {
         if (user.getPermissionLevel().equals(PermissionLevel.ADMIN)) { //Admin RButton is selected by default if user is Admin
             adminRadio.setSelected(true);
             guestRadio.setSelected(false);
-            iAmAdmin = true;}
-        else if (user.getPermissionLevel().equals(PermissionLevel.GUEST)) { //Guest RButton is selected by default if user is Guest
+            iAmAdmin = true;
+        } else if (user.getPermissionLevel().equals(PermissionLevel.GUEST)) { //Guest RButton is selected by default if user is Guest
             adminRadio.setSelected(false);
             guestRadio.setSelected(true);
-            iAmAdmin = false; }
+            iAmAdmin = false;
+        }
     }
 
     /**
