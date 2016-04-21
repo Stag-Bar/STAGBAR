@@ -14,12 +14,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
+//import java.util.Map;
 import java.util.Set;
 
 public class EditUserPermissionUI {
 
-    Map<UserListUI, PermissionLevel> userListUIMap;
+    //Map<UserListUI, PermissionLevel> userListUIMap;
     private JButton cancelButton;
     private JButton okButton;
     private JPanel contentPane;
@@ -61,9 +61,9 @@ public class EditUserPermissionUI {
     }
 
     private void populateUserPermissions() {
-        // Set<User> listOfUsers = new HashSet<User>(); //Try TreeSet if it doesn't work
-        // listOfUsers = Connect.getInstance().findAllUsers();
-        Set<User> listOfUsers = Connect.getInstance().findAllUsers();
+         Set<User> listOfUsers = new HashSet<>();
+         listOfUsers = Connect.getInstance().findAllUsers();
+        //Set<User> listOfUsers = Connect.getInstance().findAllUsers();
 
         Iterator<User> iterator = listOfUsers.iterator();
         while (iterator.hasNext()) {
@@ -74,7 +74,7 @@ public class EditUserPermissionUI {
         /*for (User user : Connect.getInstance().findAllUsers()) { //THIS DOES NOT WORK!
             addUserRow(user); }*/
 
-        /*for (User user : UserService.getInstance().getAllUsers()) { //THIS DOES NOT WORK
+        /*for (User user : UserService.getInstance().getAllUsers()) { //THIS DOES NOT WORK EITHER!
             addUserRow(user);
         }*/
 

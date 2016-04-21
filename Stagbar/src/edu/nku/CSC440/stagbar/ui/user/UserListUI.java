@@ -51,10 +51,16 @@ public class UserListUI {
         */
         adminRadio = new JRadioButton();
         guestRadio = new JRadioButton();
-        adminRadio.setSelected(true); //Temporary
-        guestRadio.setSelected(false); //Temporary
 
-        //BELOW SHOULD WORK, DO NOT DELETE
+        if (user.getPermissionLevel().equals(PermissionLevel.ADMIN)) {
+            adminRadio.setSelected(true);
+            guestRadio.setSelected(false);
+        } else if (user.getPermissionLevel().equals(PermissionLevel.GUEST)) {
+            adminRadio.setSelected(false);
+            guestRadio.setSelected(true);
+        }
+
+        //BELOW IS ORIGINAL CODE
 
         /*if (Application.getInstance().getUser().getPermissionLevel().equals(PermissionLevel.ADMIN)) {
             adminRadio.setSelected(true);
