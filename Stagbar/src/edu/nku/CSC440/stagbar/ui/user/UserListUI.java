@@ -1,7 +1,5 @@
 package edu.nku.CSC440.stagbar.ui.user;
 
-import javax.swing.*;
-
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import edu.nku.CSC440.stagbar.dataaccess.data.PermissionLevel;
@@ -10,42 +8,66 @@ import edu.nku.CSC440.stagbar.service.UserService;
 import edu.nku.CSC440.stagbar.Application;
 
 import java.awt.*;
+import javax.swing.*;
 
 public class UserListUI {
     private JPanel contentPane;
     private JRadioButton adminRadio;
     private JRadioButton guestRadio;
     private JLabel userLabel;
-    private UserService userService;
+    //private UserService userService;
     private User user;
-    private Application application;
+    //private Application application;
 
     public UserListUI(User user) {
         if (null == user) throw new IllegalArgumentException("User cannot be null.");
 
         this.user = user;
-        //$$$setupUI$$$();
         $$$setupUI$$$();
         userLabel.setText(user.getUsername());
-    }
+        adminRadio.setText("admin");
+        guestRadio.setText("guest");
 
-
-    private void createUIComponents() {
-        userLabel = new JLabel();
-        userLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        userLabel.setText(user.getUsername());
-        userLabel.setEnabled(true);
-
-        adminRadio = new JRadioButton();
-        guestRadio = new JRadioButton();
-
-        if (Application.getInstance().getUser().getPermissionLevel().equals(PermissionLevel.ADMIN)) {
+        /*if (Application.getInstance().getUser().getPermissionLevel().equals(PermissionLevel.ADMIN)) {
             adminRadio.setSelected(true);
             guestRadio.setSelected(false);
         } else if (Application.getInstance().getUser().getPermissionLevel().equals(PermissionLevel.GUEST)) {
             adminRadio.setSelected(false);
             guestRadio.setSelected(true);
-        }
+        }*/
+    }
+
+    public JPanel getContentPane() {
+        return contentPane;
+    }
+
+    private void createUIComponents() {
+        /*userLabel = new JLabel();
+        userLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        userLabel.setText(user.getUsername());
+        userLabel.setEnabled(true);
+
+
+        */
+        adminRadio = new JRadioButton();
+        guestRadio = new JRadioButton();
+        adminRadio.setSelected(true); //Temporary
+        guestRadio.setSelected(false); //Temporary
+
+        //BELOW SHOULD WORK, DO NOT DELETE
+
+        /*if (Application.getInstance().getUser().getPermissionLevel().equals(PermissionLevel.ADMIN)) {
+            adminRadio.setSelected(true);
+            guestRadio.setSelected(false);
+        } else if (Application.getInstance().getUser().getPermissionLevel().equals(PermissionLevel.GUEST)) {
+            adminRadio.setSelected(false);
+            guestRadio.setSelected(true);
+        }*/
+
+
+
+
+
     }
 
 
@@ -60,6 +82,7 @@ public class UserListUI {
         createUIComponents();
         contentPane = new JPanel();
         contentPane.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
+        userLabel = new JLabel();
         userLabel.setText("Label");
         contentPane.add(userLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         adminRadio.setText("RadioButton");

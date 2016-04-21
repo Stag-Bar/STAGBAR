@@ -7,11 +7,15 @@ import com.intellij.uiDesigner.core.Spacer;
 import edu.nku.CSC440.stagbar.dataaccess.data.PermissionLevel;
 import edu.nku.CSC440.stagbar.dataaccess.data.User;
 import edu.nku.CSC440.stagbar.dataaccess.databaseConnection.Connect;
+import edu.nku.CSC440.stagbar.service.UserService;
 import edu.nku.CSC440.stagbar.ui.common.uiHacks;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 public class EditUserPermissionUI {
 
@@ -26,10 +30,25 @@ public class EditUserPermissionUI {
     public EditUserPermissionUI() {
         $$$setupUI$$$();
         contentPane.setName("Edit User Permission");
-
+        okButton.addActionListener(e -> onOK());
+        cancelButton.addActionListener(e -> onCancel());
         populateUserPermissions();
-        //okButton.addActionListener(e -> onOK());
-        //cancelButton.addActionListener(e -> onCancel());
+    }
+
+    public void addUserRow(User user) {
+        UserListUI userRow = new UserListUI(user);
+        scrollPane.add(userRow.getContentPane());
+        /*
+        IngredientRowUI oldRow = rowUIMap.put(alcohol.getAlcoholId(), ingredientRow); // Ensure each row is unique.
+        if (null != oldRow) {
+            ingredientPane.remove(oldRow.getContentPane());
+        }
+        ingredientPane.add(ingredientRow.getContentPane());
+        */
+    }
+
+    private void onOK() {
+
     }
 
     private void onCancel() {
@@ -42,19 +61,23 @@ public class EditUserPermissionUI {
     }
 
     private void populateUserPermissions() {
-        for (User user : Connect.getInstance().findAllUsers()) {
-            UserListUI userListUI = new UserListUI(user);
+        // Set<User> listOfUsers = new HashSet<User>(); //Try TreeSet if it doesn't work
+        // listOfUsers = Connect.getInstance().findAllUsers();
+        Set<User> listOfUsers = Connect.getInstance().findAllUsers();
 
-            /*for (Alcohol alcohol : AlcoholService.getInstance().getAlcoholByType(type, LocalDate.now(), LocalDate.now())) {
-                typePaneUI.addEntryRow(alcohol);
-            }
-
-            if (!typePaneUIMap.isEmpty()) scrollPane.add(new JSeparator(JSeparator.HORIZONTAL));
-
-            typePaneUIMap.put(type, typePaneUI);*/
-
-            //scrollPane.add(userListUI.getContentPane());
+        Iterator<User> iterator = listOfUsers.iterator();
+        while (iterator.hasNext()) {
+            User user = iterator.next();
+            addUserRow(user);
         }
+
+        /*for (User user : Connect.getInstance().findAllUsers()) { //THIS DOES NOT WORK!
+            addUserRow(user); }*/
+
+        /*for (User user : UserService.getInstance().getAllUsers()) { //THIS DOES NOT WORK
+            addUserRow(user);
+        }*/
+
     }
 
     public JPanel getContentPane() {
@@ -110,3 +133,8 @@ public class EditUserPermissionUI {
         return contentPane;
     }
 }
+
+
+
+
+
