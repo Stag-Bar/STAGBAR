@@ -16,7 +16,7 @@ public class UserListUI {
     private JLabel userLabel;
     private static final String CONVERT_TO_ADMIN = "%s is Admin now!";
     private static final String CONVERT_TO_GUEST = "%s is Guest now!";
-    private static final String TITLE_PERMISSION_USER = "Permission level change succeeded.";
+    private static final String TITLE_PERMISSION_USER = "Permission Change OK";
     private boolean iAmAdmin; //true if this user is Admin, otherwise false
     private User user;
 
@@ -57,8 +57,7 @@ public class UserListUI {
         if (user.getPermissionLevel().equals(PermissionLevel.ADMIN)) { //Admin RButton is selected by default if user is Admin
             adminRadio.setSelected(true);
             guestRadio.setSelected(false);
-            iAmAdmin = true;
-        }
+            iAmAdmin = true;}
         else if (user.getPermissionLevel().equals(PermissionLevel.GUEST)) { //Guest RButton is selected by default if user is Guest
             adminRadio.setSelected(false);
             guestRadio.setSelected(true);
