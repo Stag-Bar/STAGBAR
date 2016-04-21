@@ -14,6 +14,9 @@ public class UserListUI {
     private JRadioButton adminRadio;
     private JRadioButton guestRadio;
     private JLabel userLabel;
+    private static final String CONVERT_TO_ADMIN = "%s is Admin now!";
+    private static final String CONVERT_TO_GUEST = "%s is Guest now!";
+    private static final String TITLE_PERMISSION_USER = "Permission level change succeeded.";
     private boolean iAmAdmin; //true if this user is Admin, otherwise false
     private User user;
 
@@ -32,14 +35,18 @@ public class UserListUI {
         if (iAmAdmin == false && adminRadio.isSelected()) { //if user is Guest and needs to convert to Admin status,
             guestRadio.setSelected(false); //immediately unselect the other button
             iAmAdmin = true; //guest becomes admin
-            Connect.getInstance().updateUserPermissions(user.getUsername(), PermissionLevel.ADMIN); }
+            Connect.getInstance().updateUserPermissions(user.getUsername(), PermissionLevel.ADMIN);
+            JOptionPane.showMessageDialog(contentPane, String.format(CONVERT_TO_ADMIN, user.getUsername()), TITLE_PERMISSION_USER, JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     private void guestRadioSelection() {
         if (iAmAdmin == true && guestRadio.isSelected()) { //if user is Admin and needs to convert to Guest status,
             adminRadio.setSelected(false); //immediately unselect the other button
             iAmAdmin = false; //admin becomes guest
-            Connect.getInstance().updateUserPermissions(user.getUsername(), PermissionLevel.GUEST); }
+            Connect.getInstance().updateUserPermissions(user.getUsername(), PermissionLevel.GUEST);
+            JOptionPane.showMessageDialog(contentPane, String.format(CONVERT_TO_GUEST, user.getUsername()), TITLE_PERMISSION_USER, JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     public JPanel getContentPane() { return contentPane;  }
@@ -50,7 +57,8 @@ public class UserListUI {
         if (user.getPermissionLevel().equals(PermissionLevel.ADMIN)) { //Admin RButton is selected by default if user is Admin
             adminRadio.setSelected(true);
             guestRadio.setSelected(false);
-            iAmAdmin = true; }
+            iAmAdmin = true;
+        }
         else if (user.getPermissionLevel().equals(PermissionLevel.GUEST)) { //Guest RButton is selected by default if user is Guest
             adminRadio.setSelected(false);
             guestRadio.setSelected(true);
