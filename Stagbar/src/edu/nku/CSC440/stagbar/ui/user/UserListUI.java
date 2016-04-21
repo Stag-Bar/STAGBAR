@@ -29,14 +29,14 @@ public class UserListUI {
     }
 
     private void adminRadioSelection() {
-        if (iAmAdmin == false && adminRadio.isSelected()) { //if user is originally Guest and needs to be converted to Admin status,
+        if (iAmAdmin == false && adminRadio.isSelected()) { //if user is Guest and needs to convert to Admin status,
             guestRadio.setSelected(false); //immediately unselect the other button
             iAmAdmin = true; //guest becomes admin
             Connect.getInstance().updateUserPermissions(user.getUsername(), PermissionLevel.ADMIN); }
     }
 
     private void guestRadioSelection() {
-        if (iAmAdmin == true && guestRadio.isSelected()) { //if user is originally Admin and needs to be converted to Guest status,
+        if (iAmAdmin == true && guestRadio.isSelected()) { //if user is Admin and needs to convert to Guest status,
             adminRadio.setSelected(false); //immediately unselect the other button
             iAmAdmin = false; //admin becomes guest
             Connect.getInstance().updateUserPermissions(user.getUsername(), PermissionLevel.GUEST); }
