@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 public class Connect implements Database {
 
 	/** @deprecated Alter to change database. Remove once first time setup UI is complete. */
-	private static final String CURRENT_WORKING_DATABASE = "test17";
+	private static final String CURRENT_WORKING_DATABASE = "test16";
 	private static final String DATABASE_URL = "jdbc:mysql://stagbar2.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306";
 	private static final Connect connect = new Connect();
 	private static final Logger log = Logger.getLogger(Connect.class.getName());
@@ -374,20 +374,33 @@ public class Connect implements Database {
 		}
 	}
 	public Set<ReportItem> generateReport(LocalDate startDate, LocalDate endDate){
-		/* @param amountSold   Summation of SALES entries from <b>startDate</b> to <b>endDate</b> (inclusive).
-		 * @param bottlesSold  Summation of SALES entries from <b>startDate</b> to <b>endDate</b> (inclusive).
-		 */
-		String sql = "SELECT alcoholId, sum(amount) as salesamount, sum(bottles) as salesbottles FROM sales WHERE date >= ? and date <= ? GROUP BY alcoholId ORDER BY alcoholId;";
-		ResultSet resultsOne;
-		ResultSet resultsTwo;
-		ResultSet resultsThree; 
-		ResultSet resultsFour;
-		Set<ReportItem> set = new HashSet<>();
+		String sql;
+		ResultSet results;
+		Map<Integer, ReportItem> map = new HashMap<>();
+		ReportItem temp;
 		try {
+			sql ="SELECT a.*, t.* FROM alcohol a, type t where a.typeId = t.typeId AND a.creationDate <= ? AND (a.retireDate IS NULL OR a.retireDate > ?) order by alcoholId;";
 			PreparedStatement pSta = getActiveConnection().prepareStatement(sql);
+			pSta.setDate(1, Date.valueOf(endDate));
+			pSta.setDate(2, Date.valueOf(startDate));
+			results = pSta.executeQuery();
+			while(results.next())
+				map.put(results.getInt(1), new ReportItem(new Alcohol(results.getInt(1), results.getString(2), new CustomAlcoholType(results.getInt(6), results.getString(7), AlcoholType.valueOf(results.getString(8))), results.getDate(4).toLocalDate(), results.getDate(5) == null ? null : results.getDate(5).toLocalDate()))); 
+			/* @param amountSold   Summation of SALES entries from <b>startDate</b> to <b>endDate</b> (inclusive).
+			 * @param bottlesSold  Summation of SALES entries from <b>startDate</b> to <b>endDate</b> (inclusive).
+			 */
+			sql = "SELECT alcoholId, sum(amount) as salesamount, sum(bottles) as salesbottles FROM sales WHERE date >= ? and date <= ? GROUP BY alcoholId ORDER BY alcoholId;";
+			pSta = getActiveConnection().prepareStatement(sql);
 			pSta.setDate(1, Date.valueOf(startDate));
 			pSta.setDate(2, Date.valueOf(endDate));
-			resultsOne = pSta.executeQuery();
+			results = pSta.executeQuery();
+			while(results.next()){
+				temp = map.get(results.getInt(1));
+				if(temp != null){
+					temp.setAmountSold(results.getDouble(2));
+					temp.setBottlesSold(results.getInt(3));
+				}
+			}
 			/* @param amountDelivered  Summation of DELIVERY entries from <b>startDate</b> to <b>endDate</b> (inclusive).
 			 * @param bottlesDelivered Summation of DELIVERY entries from <b>startDate</b> to endDate (inclusive).
 			 */
@@ -395,33 +408,49 @@ public class Connect implements Database {
 			pSta = getActiveConnection().prepareStatement(sql);
 			pSta.setDate(1, Date.valueOf(startDate));
 			pSta.setDate(2, Date.valueOf(endDate));
-			resultsTwo = pSta.executeQuery();
+			results = pSta.executeQuery();
+			while(results.next()){
+				temp = map.get(results.getInt(1));
+				if(temp != null){
+					temp.setAmountDelivered(results.getDouble(2));
+					temp.setBottlesDelivered(results.getInt(3));
+				}
+			}
+			
 			/* @param amountCurrent    Amount from MOST RECENT entry, as of <b>endDate</b>, for INVENTORY. 
 			 * @param bottlesCurrent   Bottles from MOST RECENT entry, as of <b>endDate</b>, for INVENTORY. 
 			 */
-			sql = "SELECT i.alcoholId, i.amount, i.bottles, a.*, MAX(date) FROM inventory i, alcohol a WHERE date <= ? AND i.alcoholId = a.alcoholId GROUP BY i.alcoholId ORDER BY i.alcoholId;";
+			sql = "SELECT i.alcoholId, i.amount, i.bottles, MAX(date) FROM inventory i WHERE date <= ? GROUP BY i.alcoholId ORDER BY i.alcoholId;";
 			pSta = getActiveConnection().prepareStatement(sql);
 			pSta.setDate(1, Date.valueOf(endDate));
-			resultsThree = pSta.executeQuery();
+			results = pSta.executeQuery();
+			while(results.next()){
+				temp = map.get(results.getInt(1));
+				if(temp != null){
+					temp.setAmountCurrent(results.getDouble(2));
+					temp.setBottlesCurrent(results.getInt(3));
+				}
+			}
 			/* @param amountPrevious   Amount from MOST RECENT entry, as of <b>startDate</b>, for INVENTORY.
 			 * @param bottlesPrevious  Bottles from MOST RECENT entry, as of <b>startDate</b>, for INVENTORY.
 			 */
-			sql = "SELECT i.alcoholId, i.amount, i.bottles, a.*, MAX(date) FROM inventory i, alcohol a WHERE date >= ? AND i.alcoholId = a.alcoholId GROUP BY i.alcoholId ORDER BY i.alcoholId;";
+			sql = "SELECT i.alcoholId, i.amount, i.bottles, MAX(date) FROM inventory i WHERE date <= ? AND i.alcoholId GROUP BY i.alcoholId ORDER BY i.alcoholId;";
 			pSta = getActiveConnection().prepareStatement(sql);
 			pSta.setDate(1, Date.valueOf(startDate));
-			resultsFour = pSta.executeQuery();
-			while(resultsOne.next()){
-				resultsTwo.next();
-				resultsThree.next();
-				resultsFour.next();
-				set.add(new ReportItem(new Alcohol(resultsFour.getInt(4), resultsFour.getString(5), new CustomAlcoholType(resultsFour.getInt(9), resultsFour.getString(10), AlcoholType.valueOf(resultsFour.getString(11))), resultsFour.getDate(7).toLocalDate(), resultsFour.getDate(8) == null ? null : resultsFour.getDate(8).toLocalDate()), resultsThree.getInt(2), resultsTwo.getDouble(2), resultsFour.getDouble(2), resultsOne.getDouble(2), resultsThree.getInt(3), resultsTwo.getInt(3), resultsFour.getInt(3), resultsOne.getInt(3)));
-				
+			results = pSta.executeQuery();
+			while(results.next()){
+				temp = map.get(results.getInt(1));
+				if(temp != null){
+					temp.setAmountPrevious(results.getDouble(2));
+					temp.setBottlesPrevious(results.getInt(3));
+				}
 			}
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return set;
+		return new HashSet<>(map.values());
 	}
 	private Connection getActiveConnection() {
 		if(!isConnectionValid()) // Lazy initialization in case databaseConnection is closed/corrupted.

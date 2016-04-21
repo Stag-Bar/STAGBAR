@@ -13,7 +13,7 @@ public class ReportItem {
 	private int bottlesSold;
 
 	/** @see ReportItemBuilder */
-	protected ReportItem(Alcohol alcohol) {
+	public ReportItem(Alcohol alcohol) {
 		if(null == alcohol) throw new IllegalArgumentException("Alcohol cannot be null.");
 		this.alcohol = alcohol;
 	}
