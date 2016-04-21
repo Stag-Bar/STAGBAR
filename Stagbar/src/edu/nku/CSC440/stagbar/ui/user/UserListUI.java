@@ -4,7 +4,6 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import edu.nku.CSC440.stagbar.dataaccess.data.PermissionLevel;
 import edu.nku.CSC440.stagbar.dataaccess.data.User;
-import edu.nku.CSC440.stagbar.dataaccess.databaseConnection.Connect;
 
 import java.awt.*;
 import javax.swing.*;
@@ -14,9 +13,6 @@ public class UserListUI {
     private JRadioButton adminRadio;
     private JRadioButton guestRadio;
     private JLabel userLabel;
-    private static final String CONVERT_TO_ADMIN = "%s is Admin now!";
-    private static final String CONVERT_TO_GUEST = "%s is Guest now!";
-    private static final String TITLE_PERMISSION_USER = "Permission Change OK";
     private boolean iAmAdmin; //true if this user is Admin, otherwise false
     private User user;
     private int conversionCount;
@@ -36,27 +32,21 @@ public class UserListUI {
     }
 
     private void adminRadioSelection() {
-        if (iAmAdmin == false && adminRadio.isSelected()) { //if user is Guest and needs to convert to Admin status,
-            guestRadio.setSelected(false); //immediately unselect the other button
-            iAmAdmin = true; //guest becomes admin
-            Connect.getInstance().updateUserPermissions(user.getUsername(), PermissionLevel.ADMIN);
-            conversionCount++;
-            //JOptionPane.showMessageDialog(contentPane, String.format(CONVERT_TO_ADMIN, user.getUsername()), TITLE_PERMISSION_USER, JOptionPane.INFORMATION_MESSAGE);
-        }
+        if (iAmAdmin == false && adminRadio.isSelected()) { // if user is Guest and needs to convert to Admin status,
+            guestRadio.setSelected(false); // immediately unselect the other button
+            iAmAdmin = true; // Guest becomes Admin
+            conversionCount++;   }
     }
 
     private void guestRadioSelection() {
-        if (iAmAdmin == true && guestRadio.isSelected()) { //if user is Admin and needs to convert to Guest status,
-            adminRadio.setSelected(false); //immediately unselect the other button
-            iAmAdmin = false; //admin becomes guest
-            Connect.getInstance().updateUserPermissions(user.getUsername(), PermissionLevel.GUEST);
-            conversionCount++;
-            //JOptionPane.showMessageDialog(contentPane, String.format(CONVERT_TO_GUEST, user.getUsername()), TITLE_PERMISSION_USER, JOptionPane.INFORMATION_MESSAGE);
-        }
+        if (iAmAdmin == true && guestRadio.isSelected()) { // if user is Admin and needs to convert to Guest status,
+            adminRadio.setSelected(false); // immediately unselect the other button
+            iAmAdmin = false; // Admin becomes Guest
+            conversionCount++;   }
     }
 
     public boolean getConversionStatus() { // Have I been converted to the other side?
-        if ((conversionCount % 2) != 0)
+        if ((conversionCount % 2) != 0) //if I have been converted even number of times, that means I have not converted yet
             iHaveConverted = true;
         return iHaveConverted;
     }
@@ -75,12 +65,11 @@ public class UserListUI {
         if (user.getPermissionLevel().equals(PermissionLevel.ADMIN)) { //Admin RButton is selected by default if user is Admin
             adminRadio.setSelected(true);
             guestRadio.setSelected(false);
-            iAmAdmin = true;
-        } else if (user.getPermissionLevel().equals(PermissionLevel.GUEST)) { //Guest RButton is selected by default if user is Guest
+            iAmAdmin = true;   }
+        else if (user.getPermissionLevel().equals(PermissionLevel.GUEST)) { //Guest RButton is selected by default if user is Guest
             adminRadio.setSelected(false);
             guestRadio.setSelected(true);
-            iAmAdmin = false;
-        }
+            iAmAdmin = false;   }
     }
 
     /**
