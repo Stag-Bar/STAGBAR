@@ -4,10 +4,12 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import edu.nku.CSC440.stagbar.dataaccess.data.PermissionLevel;
 import edu.nku.CSC440.stagbar.dataaccess.data.User;
+import edu.nku.CSC440.stagbar.dataaccess.databaseConnection.Connect;
 import edu.nku.CSC440.stagbar.service.UserService;
 import edu.nku.CSC440.stagbar.Application;
 
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import javax.swing.*;
 
 public class UserListUI {
@@ -15,6 +17,8 @@ public class UserListUI {
     private JRadioButton adminRadio;
     private JRadioButton guestRadio;
     private JLabel userLabel;
+    private boolean iAmAdmin;
+    private boolean changeIsMade;
     //private UserService userService;
     private User user;
     //private Application application;
@@ -23,18 +27,29 @@ public class UserListUI {
         if (null == user) throw new IllegalArgumentException("User cannot be null.");
 
         this.user = user;
+        changeIsMade = false;
         $$$setupUI$$$();
         userLabel.setText(user.getUsername());
         adminRadio.setText("admin");
         guestRadio.setText("guest");
+        adminRadio.addItemListener(e -> adminRadioSelection());
+        guestRadio.addItemListener(e -> guestRadioSelection());
+    }
 
-        /*if (Application.getInstance().getUser().getPermissionLevel().equals(PermissionLevel.ADMIN)) {
-            adminRadio.setSelected(true);
+    private void adminRadioSelection() {
+        if (iAmAdmin == false && adminRadio.isSelected()) {
             guestRadio.setSelected(false);
-        } else if (Application.getInstance().getUser().getPermissionLevel().equals(PermissionLevel.GUEST)) {
+            iAmAdmin = true;
+            Connect.getInstance().updateUserPermissions(user.getUsername(), PermissionLevel.ADMIN);
+        }
+    }
+
+    private void guestRadioSelection() {
+        if (iAmAdmin == true && guestRadio.isSelected()) {
             adminRadio.setSelected(false);
-            guestRadio.setSelected(true);
-        }*/
+            iAmAdmin = false;
+            Connect.getInstance().updateUserPermissions(user.getUsername(), PermissionLevel.GUEST);
+        }
     }
 
     public JPanel getContentPane() {
@@ -46,8 +61,6 @@ public class UserListUI {
         userLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         userLabel.setText(user.getUsername());
         userLabel.setEnabled(true);
-
-
         */
         adminRadio = new JRadioButton();
         guestRadio = new JRadioButton();
@@ -55,9 +68,11 @@ public class UserListUI {
         if (user.getPermissionLevel().equals(PermissionLevel.ADMIN)) {
             adminRadio.setSelected(true);
             guestRadio.setSelected(false);
+            iAmAdmin = true;
         } else if (user.getPermissionLevel().equals(PermissionLevel.GUEST)) {
             adminRadio.setSelected(false);
             guestRadio.setSelected(true);
+            iAmAdmin = false;
         }
 
         //BELOW IS ORIGINAL CODE
@@ -69,9 +84,6 @@ public class UserListUI {
             adminRadio.setSelected(false);
             guestRadio.setSelected(true);
         }*/
-
-
-
 
 
     }

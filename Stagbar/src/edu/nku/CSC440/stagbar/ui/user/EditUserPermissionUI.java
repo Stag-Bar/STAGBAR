@@ -38,17 +38,11 @@ public class EditUserPermissionUI {
     public void addUserRow(User user) {
         UserListUI userRow = new UserListUI(user);
         scrollPane.add(userRow.getContentPane());
-        /*
-        IngredientRowUI oldRow = rowUIMap.put(alcohol.getAlcoholId(), ingredientRow); // Ensure each row is unique.
-        if (null != oldRow) {
-            ingredientPane.remove(oldRow.getContentPane());
-        }
-        ingredientPane.add(ingredientRow.getContentPane());
-        */
     }
 
     private void onOK() {
-
+        okButton.setEnabled(false);
+        uiHacks.killMeThenGoToLastPage(contentPane);
     }
 
     private void onCancel() {
@@ -61,9 +55,7 @@ public class EditUserPermissionUI {
     }
 
     private void populateUserPermissions() {
-         Set<User> listOfUsers = new HashSet<>();
-         listOfUsers = Connect.getInstance().findAllUsers();
-        //Set<User> listOfUsers = Connect.getInstance().findAllUsers();
+        Set<User> listOfUsers = Connect.getInstance().findAllUsers();
 
         Iterator<User> iterator = listOfUsers.iterator();
         while (iterator.hasNext()) {
