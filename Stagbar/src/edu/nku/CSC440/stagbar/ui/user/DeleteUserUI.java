@@ -8,7 +8,6 @@ import edu.nku.CSC440.stagbar.Application;
 import edu.nku.CSC440.stagbar.dataaccess.data.User;
 import edu.nku.CSC440.stagbar.dataaccess.databaseConnection.Connect;
 import edu.nku.CSC440.stagbar.ui.common.uiHacks;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -24,7 +23,7 @@ public class DeleteUserUI {
 	private JPanel contentPane;
 	private JButton okButton;
 	private JPanel scrollPane;
-	private int userPurged;
+	private int userPurged; // number of unfortunate users who will need to be purged
 
 	public DeleteUserUI() {
 		$$$setupUI$$$();
@@ -76,11 +75,11 @@ public class DeleteUserUI {
 
 	private void populateUserCheckBoxes() {
 		Set<User> listOfUsers = Connect.getInstance().findAllUsers();
-		usersToBePurged = new ArrayList<>();
+		usersToBePurged = new ArrayList<>(); // prepare candidates to be purged
 		Iterator<User> iterator = listOfUsers.iterator();
 		while (iterator.hasNext()) {
 			User user = iterator.next();
-			if (!(user.equals(Application.getInstance().getUser()))) { //NEVER allow current user to delete self
+			if (!(user.equals(Application.getInstance().getUser()))) { // NEVER EVER allow current user to delete self
 				DeleteUserListUI userRow = new DeleteUserListUI(user);
 				addUserRow(userRow);
 				usersToBePurged.add(userRow);
