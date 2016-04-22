@@ -49,8 +49,8 @@ public class DeleteUserUI {
 	}
 
 	private void onOK() {
-		int reply = JOptionPane.showConfirmDialog(null, "Are you absolutely sure?", "Delete?",  JOptionPane.YES_NO_OPTION);
-		if (reply == JOptionPane.YES_OPTION)
+		int banishFromTribe = JOptionPane.showConfirmDialog(null, "Are you absolutely sure?", "Delete?",  JOptionPane.YES_NO_OPTION);
+		if (banishFromTribe == JOptionPane.YES_OPTION)
 		{
 			for (DeleteUserListUI userRow : usersToBePurged) {
 				if (userRow.getDeletionStatus()) { //if this user has been purged
@@ -58,11 +58,11 @@ public class DeleteUserUI {
 					Connect.getInstance().deleteUser(userRow.getUser().getUsername());
 				}
 			}
-			if (userPurged == 1) //One user has been banished from the tribe... Good riddance!
+			if (userPurged == 1) // One user has been banished from the tribe... Good riddance!
 				JOptionPane.showMessageDialog(contentPane, CONGRATS, TITLE_CONGRATS, JOptionPane.INFORMATION_MESSAGE);
-			else if (userPurged > 1) //More than one user has been banished from the tribe! MUAHAHAHA
+			else if (userPurged > 1) // More than one user has been banished from the tribe! MUAHAHAHA
 				JOptionPane.showMessageDialog(contentPane, CONGRATS_PLURAL, TITLE_CONGRATS, JOptionPane.INFORMATION_MESSAGE);
-			else//Oh c'mon man, no one banished at all? Please don't waste my time!
+			else // Oh c'mon man, no one banished at all? Please don't waste my time!
 				JOptionPane.showMessageDialog(contentPane, NOTHING, TITLE_NOTHING, JOptionPane.INFORMATION_MESSAGE);
 			okButton.setEnabled(false);
 			uiHacks.killMeThenGoToLastPage(contentPane);
