@@ -49,7 +49,7 @@ public class DeleteUserUI {
 	}
 
 	private void onOK() {
-		int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the user(s)?", "Close?",  JOptionPane.YES_NO_OPTION);
+		int reply = JOptionPane.showConfirmDialog(null, "Are you absolutely sure?", "Delete?",  JOptionPane.YES_NO_OPTION);
 		if (reply == JOptionPane.YES_OPTION)
 		{
 			for (DeleteUserListUI userRow : usersToBePurged) {
