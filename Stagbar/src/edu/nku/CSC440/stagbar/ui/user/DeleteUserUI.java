@@ -49,20 +49,25 @@ public class DeleteUserUI {
 	}
 
 	private void onOK() {
-		for (DeleteUserListUI userRow : usersToBePurged) {
-			if (userRow.getDeletionStatus()) { //if this user has been purged
-				userPurged++;
-				Connect.getInstance().deleteUser(userRow.getUser().getUsername());
+		int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the user(s)?", "Close?",  JOptionPane.YES_NO_OPTION);
+		if (reply == JOptionPane.YES_OPTION)
+		{
+			for (DeleteUserListUI userRow : usersToBePurged) {
+				if (userRow.getDeletionStatus()) { //if this user has been purged
+					userPurged++;
+					Connect.getInstance().deleteUser(userRow.getUser().getUsername());
+				}
 			}
+			if (userPurged == 1) //One user has been banished from the tribe... Good riddance!
+				JOptionPane.showMessageDialog(contentPane, CONGRATS, TITLE_CONGRATS, JOptionPane.INFORMATION_MESSAGE);
+			else if (userPurged > 1) //More than one user has been banished from the tribe! MUAHAHAHA
+				JOptionPane.showMessageDialog(contentPane, CONGRATS_PLURAL, TITLE_CONGRATS, JOptionPane.INFORMATION_MESSAGE);
+			else//Oh c'mon man, no one banished at all? Please don't waste my time!
+				JOptionPane.showMessageDialog(contentPane, NOTHING, TITLE_NOTHING, JOptionPane.INFORMATION_MESSAGE);
+			okButton.setEnabled(false);
+			uiHacks.killMeThenGoToLastPage(contentPane);
 		}
-		if (userPurged == 1) //One user has been banished from the tribe... Good riddance!
-			JOptionPane.showMessageDialog(contentPane, CONGRATS, TITLE_CONGRATS, JOptionPane.INFORMATION_MESSAGE);
-		else if (userPurged > 1) //More than one user has been banished from the tribe! MUAHAHAHA
-			JOptionPane.showMessageDialog(contentPane, CONGRATS_PLURAL, TITLE_CONGRATS, JOptionPane.INFORMATION_MESSAGE);
-		else//Oh c'mon man, no one banished at all? Please don't waste my time!
-			JOptionPane.showMessageDialog(contentPane, NOTHING, TITLE_NOTHING, JOptionPane.INFORMATION_MESSAGE);
-		okButton.setEnabled(false);
-		uiHacks.killMeThenGoToLastPage(contentPane);
+
 	}
 
 	public void addUserRow(DeleteUserListUI userRow) {
