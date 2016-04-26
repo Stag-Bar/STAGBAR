@@ -18,19 +18,19 @@ public class DeleteUserUI {
 	private static final String TITLE_CONGRATS = "Congratulations!";
 	private static final String TITLE_NOTHING = "Nothing happened!";
 	private static final String NOTHING = "You haven't deleted any user. Bye!";
-	private ArrayList<DeleteUserListUI> usersToBePurged;
+	private ArrayList<DeleteUserListUI> usersToBeBanished;
 	private JButton cancelButton;
 	private JPanel contentPane;
 	private JButton okButton;
 	private JPanel scrollPane;
-	private int userPurged; // number of unfortunate users who will need to be purged
+	private int userBanished; // number of unfortunate users who will need to be expelled from the tribe
 
 	public DeleteUserUI() {
 		$$$setupUI$$$();
 		contentPane.setName("Delete User");
 		okButton.addActionListener(e -> onOK());
 		cancelButton.addActionListener(e -> onCancel());
-		userPurged = 0;
+		userBanished = 0;
 		populateUserCheckBoxes();
 	}
 
@@ -51,15 +51,15 @@ public class DeleteUserUI {
 		int banishFromTribe = JOptionPane.showConfirmDialog(null, "Are you absolutely sure?", "Delete?",  JOptionPane.YES_NO_OPTION);
 		if (banishFromTribe == JOptionPane.YES_OPTION)
 		{
-			for (DeleteUserListUI userRow : usersToBePurged) {
-				if (userRow.getDeletionStatus()) { //if this user has been purged
-					userPurged++;
+			for (DeleteUserListUI userRow : usersToBeBanished) {
+				if (userRow.getDeletionStatus()) { //if this user has been banished from the tribe
+					userBanished++;
 					Connect.getInstance().deleteUser(userRow.getUser().getUsername());
 				}
 			}
-			if (userPurged == 1) // One user has been banished from the tribe... Good riddance!
+			if (userBanished == 1) // One user has been banished from the tribe... Good riddance!
 				JOptionPane.showMessageDialog(contentPane, CONGRATS, TITLE_CONGRATS, JOptionPane.INFORMATION_MESSAGE);
-			else if (userPurged > 1) // More than one user has been banished from the tribe! MUAHAHAHA
+			else if (userBanished > 1) // More than one user has been banished from the tribe! MUAHAHAHA
 				JOptionPane.showMessageDialog(contentPane, CONGRATS_PLURAL, TITLE_CONGRATS, JOptionPane.INFORMATION_MESSAGE);
 			else // Oh c'mon man, no one banished at all? Please don't waste my time!
 				JOptionPane.showMessageDialog(contentPane, NOTHING, TITLE_NOTHING, JOptionPane.INFORMATION_MESSAGE);
@@ -75,14 +75,14 @@ public class DeleteUserUI {
 
 	private void populateUserCheckBoxes() {
 		Set<User> listOfUsers = Connect.getInstance().findAllUsers();
-		usersToBePurged = new ArrayList<>(); // prepare candidates to be purged
+		usersToBeBanished = new ArrayList<>(); // prepare candidates to be expelled from the tribe
 		Iterator<User> iterator = listOfUsers.iterator();
 		while (iterator.hasNext()) {
 			User user = iterator.next();
-			if (!(user.equals(Application.getInstance().getUser()))) { // NEVER EVER allow current user to delete self
+			if (!(user.equals(Application.getInstance().getUser()))) { // NEVER EVER allow current user to expel self from tribe
 				DeleteUserListUI userRow = new DeleteUserListUI(user);
 				addUserRow(userRow);
-				usersToBePurged.add(userRow);
+				usersToBeBanished.add(userRow);
 			}
 		}
 	}
@@ -126,4 +126,3 @@ public class DeleteUserUI {
 		return contentPane;
 	}
 }
-
