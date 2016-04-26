@@ -32,17 +32,19 @@ public class UserListUI {
     }
 
     private void adminRadioSelection() {
-        if (iAmAdmin == false && adminRadio.isSelected()) { // if user is Guest and needs to convert to Admin status,
+        if (!iAmAdmin && adminRadio.isSelected()) { // if user is Guest and needs to convert to Admin status,
             guestRadio.setSelected(false); // immediately unselect the other button
             iAmAdmin = true; // Guest becomes Admin
-            conversionCount++;   }
+            conversionCount++;
+        }
     }
 
     private void guestRadioSelection() {
-        if (iAmAdmin == true && guestRadio.isSelected()) { // if user is Admin and needs to convert to Guest status,
+        if (iAmAdmin && guestRadio.isSelected()) { // if user is Admin and needs to convert to Guest status,
             adminRadio.setSelected(false); // immediately unselect the other button
             iAmAdmin = false; // Admin becomes Guest
-            conversionCount++;   }
+            conversionCount++;
+        }
     }
 
     public boolean getConversionStatus() { // Have I been converted to the other side?
@@ -65,11 +67,12 @@ public class UserListUI {
         if (user.getPermissionLevel().equals(PermissionLevel.ADMIN)) { //Admin RButton is selected by default if user is Admin
             adminRadio.setSelected(true);
             guestRadio.setSelected(false);
-            iAmAdmin = true;   }
-        else if (user.getPermissionLevel().equals(PermissionLevel.GUEST)) { //Guest RButton is selected by default if user is Guest
+            iAmAdmin = true;
+        } else if (user.getPermissionLevel().equals(PermissionLevel.GUEST)) { //Guest RButton is selected by default if user is Guest
             adminRadio.setSelected(false);
             guestRadio.setSelected(true);
-            iAmAdmin = false;   }
+            iAmAdmin = false;
+        }
     }
 
     /**
@@ -85,7 +88,7 @@ public class UserListUI {
         contentPane.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
         userLabel = new JLabel();
         userLabel.setText("Label");
-        contentPane.add(userLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        contentPane.add(userLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         adminRadio.setText("RadioButton");
         contentPane.add(adminRadio, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         guestRadio.setText("RadioButton");
