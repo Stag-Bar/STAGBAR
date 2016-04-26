@@ -22,7 +22,7 @@ public class CreateCustomGroupUI {
 	public CreateCustomGroupUI(){
 				
 		mainpanel = new JPanel();
-		mainpanel.setLayout(new GridLayout(3, 2, 100, 100));
+		mainpanel.setLayout(new GridLayout(3, 2, 5, 5));
 		
 		mainpanel.setName("Custom Group");
 		mainpanel.setVisible(true);
