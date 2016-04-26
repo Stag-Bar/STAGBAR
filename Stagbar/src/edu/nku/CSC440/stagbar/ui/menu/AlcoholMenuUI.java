@@ -5,6 +5,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 
 import edu.nku.CSC440.stagbar.ui.alcohol.CreateAlcoholUI;
 import edu.nku.CSC440.stagbar.ui.alcohol.CreateCustomGroupUI;
+import edu.nku.CSC440.stagbar.ui.alcohol.RetireAlcoholUI;
 import edu.nku.CSC440.stagbar.ui.common.uiHacks;
 
 import javax.swing.*;
@@ -74,7 +75,8 @@ public class AlcoholMenuUI {
 	}
 
 	private void onRetireAlcohol() {
-		//TODO: Naviagte to retire alcohol panel
+		RetireAlcoholUI retireAlcoholUI = new RetireAlcoholUI();
+		uiHacks.goToPanel(contentPane, retireAlcoholUI.getContentPane());
 	}
 
 	{
