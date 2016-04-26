@@ -42,10 +42,10 @@ public class RetireAlcoholListUI {
         return expelliarmus;
     }
 
-    private void alcoholDeletion() { // Should user be expelled from the tribe?
+    private void alcoholDeletion() { // Should alcohol be expelled from the tribe?
         if (alcoholCheckBox.isSelected()) { // Expelliarmus! Bye Felicia!
             expelliarmus = true;
-        } else if (!alcoholCheckBox.isSelected()) { // if the checkbox is back to unselected status, then user is safe
+        } else if (!alcoholCheckBox.isSelected()) { // if the checkbox is back to unselected status, then alcohol is safe
             expelliarmus = false;
         }
 
