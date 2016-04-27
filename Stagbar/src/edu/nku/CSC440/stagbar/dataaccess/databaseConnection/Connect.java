@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 public class Connect implements Database {
 
 	/** @deprecated Alter to change database. Remove once first time setup UI is complete. */
-	private static final String CURRENT_WORKING_DATABASE = "test16";
+	private static final String CURRENT_WORKING_DATABASE = "test17";
 	private static final String DATABASE_URL = "jdbc:mysql://stagbar2.cgef59ufduu4.us-west-2.rds.amazonaws.com:3306";
 	private static final Connect connect = new Connect();
 	private static final Logger log = Logger.getLogger(Connect.class.getName());
