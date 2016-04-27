@@ -2,14 +2,12 @@ package edu.nku.CSC440.stagbar.ui.menu;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-
 import edu.nku.CSC440.stagbar.ui.alcohol.CreateAlcoholUI;
 import edu.nku.CSC440.stagbar.ui.alcohol.CreateCustomGroupUI;
 import edu.nku.CSC440.stagbar.ui.alcohol.RetireAlcoholUI;
 import edu.nku.CSC440.stagbar.ui.common.uiHacks;
 
 import javax.swing.*;
-
 import java.awt.*;
 
 public class AlcoholMenuUI {

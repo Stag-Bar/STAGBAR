@@ -17,6 +17,7 @@
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/images" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/META-INF" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/demo" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../.idea" />
       <excludeFolder url="file://$MODULE_DIR$/../Deliverables" />
       <excludeFolder url="file://$MODULE_DIR$/.settings" />
